@@ -21,27 +21,31 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Name</th>
-								<th>Date Time</th>
-								<th>Edit</th>
-								<th>Delete</th>
+								<th>Product Model</th>
+								<th>Product Year</th>
+								<th>Description</th>
+								<th>Lot Size</th>
+								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 
 						<tbody>
 							<?php $count = 1; ?>
-							<?php foreach ($categories as $category): ?>
+							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $category->name; ?></td>
-									<td><?php echo $category->datetime; ?></td>
+									<td><?php echo $entity->product_model; ?></td>
+									<td><?php echo $entity->product_year; ?></td>
+									<td><?php echo $entity->description; ?></td>
+									<td><?php echo $entity->lot_size; ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/category/form/' . $category->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/category/notice/' . $category->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>
