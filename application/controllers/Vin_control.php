@@ -40,9 +40,14 @@ class Vin_control extends CI_Controller {
 
 	public function store()
 	{
+		$config = array_map('trim', $this->input->post());
+
+		$config['last_user']   = $this->session->userdata('fullname');
+		$config['last_update'] = date('Y-m-d H:i:s');
+
 		$id = $this->input->post('id') ? $this->input->post('id') : 0;
 
-		$this->vin_control->store();
+		$this->vin_control->store($config);
 
 		if ($id > 0)
 		{
