@@ -27,12 +27,6 @@ class Login extends CI_Controller {
 			$this->session->set_userdata($user_data);
 
 			redirect('/vin/list_');
-			/*if($user_data['user_type'] == 'admin')
-			{
-				redirect(base_url('index.php/admin/rooms'));
-			}
-			
-			redirect(base_url('index.php/requestor/rooms'));*/
 		}
 
 		$data['message'] = '<span class="col-sm-12 alert alert-warning">You have no rights to access this system.</span>';
