@@ -34,17 +34,17 @@ class Vin_control_model extends CI_Model {
 		}
 	}
 
-	public function store()
+	public function store($params)
 	{
 		$id = $this->input->post('id') ? $this->input->post('id') : 0;
 
 		if ($id > 0)
 		{
-			$this->db->update('vin_control_tbl', $this->input->post(), array('id' => $id));
+			$this->db->update('vin_control_tbl', $params, array('id' => $id));
 		}
 		else
 		{
-			$this->db->insert('vin_control_tbl', $this->input->post());
+			$this->db->insert('vin_control_tbl', $params);
 		}
 
 		return $this;
