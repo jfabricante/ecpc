@@ -70,40 +70,20 @@ class Vin extends CI_Controller {
 	{
 		$data['id'] = $this->uri->segment(3);
 
-		$this->load->view('category/delete_view', $data);
+		$this->load->view('vin/delete_view', $data);
 	}
 
 	public function delete()
 	{
-		$this->category->delete();
+		$this->vin_model->delete();
 
-		$this->session->set_flashdata('message', '<div class="alert alert-success">Category has been deleted!</div>');
+		$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been deleted!</div>');
 
-		redirect('category/list_');
-	}
-
-	public function set_menu()
-	{
-		$data = array(
-				'title'   => 'Set Menu',
-				'content' => 'category/set_menu_view',
-			);
-
-		$this->load->view('include/template', $data);
+		redirect($this->agent->referrer());
 	}
 
 	public function ajax_category_list()
 	{
 		echo json_encode($this->category->browse());
-	}
-
-	public function ajax_category_items()
-	{
-		echo json_encode($this->category->fetch_category_items());
-	}
-
-	public function ajax_featured_items()
-	{
-		echo json_encode($this->category->fetch_featured_items());
 	}
 }
