@@ -49,7 +49,7 @@ class Login extends CI_Controller {
 	{
 		$this->session->sess_destroy();
 
-		redirect('login/index');
+		redirect('login');
 	}
 
 	protected function _validate_input()
