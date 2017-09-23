@@ -1,21 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category extends CI_Controller {
+class Vin extends CI_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->model('category_model', 'category');
+		$this->load->model('vin_model');
 	}
 
 	public function list_()
 	{
 		$data = array(
-				'title'      => 'List of Categories',
-				'content'    => 'category/list_view',
-				'categories' => $this->category->browse()
+				'title'    => 'List of Vin Model',
+				'content'  => 'vin/list_view',
+				'entities' => $this->vin_model->browse()
 			);
 
 		$this->load->view('include/template', $data);
@@ -31,18 +31,17 @@ class Category extends CI_Controller {
 			);
 
 		$data = array(
-				'title'   => $id ? 'Update Details' : 'Add Category',
-				'entity'  => $id ? $this->category->read($config) : ''
+				'title'   => $id ? 'Update Details' : 'Add Vin Model',
+				'entity'  => $id ? $this->vin_model->read($config) : ''
 			);
 
-		$this->load->view('category/form_view', $data);
+		$this->load->view('vin/form_view', $data);
 	}
 
 	public function store()
 	{
 		$id = $this->input->post('id') ? $this->input->post('id') : 0;
 
-		$this->category->store();
 
 		if ($id > 0)
 		{
