@@ -1,4 +1,4 @@
-<form action="<?php echo base_url('index.php/category/store'); ?>" method="post">
+<form action="<?php echo base_url('index.php/vin/store'); ?>" method="post">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">×</span>
@@ -12,8 +12,23 @@
 		</div>
 
 		<div class="form-group">
-			<label for="name">Category Name</label>
-			<input type="text" class="form-control" id="name" name="name" value="<?php echo isset($entity->name) ? $entity->name : ''; ?>" required>
+			<label for="product_model">Product Model</label>
+			<input type="text" class="form-control" id="product_model" name="product_model" value="<?php echo isset($entity->product_model) ? $entity->product_model : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="product_name">Product Year</label>
+			<input type="text" class="form-control" id="product_year" name="product_year" value="<?php echo isset($entity->product_year) ? $entity->product_year : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="description">Description</label>
+			<input type="text" class="form-control" id="description" name="description" value="<?php echo isset($entity->description) ? $entity->description : ''; ?>">
+		</div>
+
+		<div class="form-group">
+			<label for="lot_size">Lot Size</label>
+			<input type="number" class="form-control" id="lot_size" name="lot_size" value="<?php echo isset($entity->lot_size) ? $entity->lot_size : ''; ?>" required>
 		</div>
 	</div>
 	
