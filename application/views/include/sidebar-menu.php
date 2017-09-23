@@ -31,21 +31,9 @@
 			
 			<?php $menu = $this->uri->uri_string(); ?>
 
-			<li class="<?php echo $menu == 'item/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/item/list_') ?>"><i class="fa fa-table"></i><span>Items</span></a></li>
+			<li class="<?php echo $menu == 'vin/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/list_') ?>"><i class="fa fa-table"></i><span>Vin Model</span></a></li>
 
-			<li class="<?php echo $menu == 'category/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/category/list_') ?>"><i class="fa fa-table"></i><span>Categories</span></a></li>
-
-			<li class="<?php echo $menu == 'category/set_menu' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/category/set_menu') ?>"><i class="fa fa-table"></i><span>Set Menu</span></a></li>
-
-			<li class="<?php echo $menu == 'user/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/user/list_') ?>"><i class="fa fa-table"></i><span>Users</span></a></li>
-
-			<li class="<?php echo $menu == 'transaction/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/transaction/index') ?>"><i class="fa fa-table"></i><span>POS</span></a></li>
-
-			<li class="<?php echo $menu == 'transaction/generate_billing_report' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/transaction/generate_billing_report') ?>"><i class="fa fa-table"></i><span>Billing Report</span></a></li>
-
-			<li class="<?php echo $menu == 'user/balances' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/user/balances') ?>"><i class="fa fa-table"></i><span>Balances</span></a></li>
-
-			<li class="<?php echo $menu == 'user/purchased_items' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/user/purchased_items') ?>"><i class="fa fa-table"></i><span>Purchased Items</span></a></li>
+			<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-table"></i><span>Vin Control</span></a></li>
 
 		</ul><!-- /.sidebar-menu -->
 
