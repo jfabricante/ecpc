@@ -35,6 +35,8 @@
 
 			<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-table"></i><span>Vin Control</span></a></li>
 
+			<li class="<?php echo $menu == 'vin_engine/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/index') ?>"><i class="fa fa-table"></i><span>Vin Engine</span></a></li>
+
 		</ul><!-- /.sidebar-menu -->
 
 	</section>
