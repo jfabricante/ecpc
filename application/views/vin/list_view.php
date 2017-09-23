@@ -1,17 +1,17 @@
 <!-- Items block -->
-<section class="content category">
+<section class="content vin_model">
 	<!-- row -->
 	<div class="row">
 		<!-- col-md-6 -->
-		<div class="col-md-5">
+		<div class="col-md-6">
 			<!-- Box danger -->
 			<?php echo $this->session->flashdata('message'); ?>
 
 			<div class="box box-danger">
 				<!-- Content -->
 				<div class="box-header with-border">
-					<a href="<?php echo base_url('index.php/category/form') ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
-						<button class="btn btn-flat btn-success pull-right">Add Category <i class="fa fw fa-plus" aria-hidden="true"></i></button>
+					<a href="<?php echo base_url('index.php/vin/form') ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+						<button class="btn btn-flat btn-success pull-right">Add Vin Model <i class="fa fw fa-plus" aria-hidden="true"></i></button>
 					</a>
 				</div>
 
