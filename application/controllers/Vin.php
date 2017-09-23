@@ -42,17 +42,28 @@ class Vin extends CI_Controller {
 	{
 		$id = $this->input->post('id') ? $this->input->post('id') : 0;
 
+		// Trim the post data
+		$config = array_map('trim', $this->input->post());
 
-		if ($id > 0)
+		if ($this->vin_model->exist($config))
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-success">Category has been updated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
 		}
 		else
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-success">Category has been added!</div>');
+			$this->vin_model->store($config);
+
+			if ($id > 0)
+			{
+				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been updated!</div>');
+			}
+			else
+			{
+				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been added!</div>');
+			}
 		}
 
-		redirect('/category/list_');
+		redirect($this->agent->referrer());
 	}
 
 	public function notice()
