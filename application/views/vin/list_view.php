@@ -1,5 +1,5 @@
 <!-- Items block -->
-<section class="content vin_model">
+<section class="content vin_control">
 	<!-- row -->
 	<div class="row">
 		<!-- col-md-6 -->
