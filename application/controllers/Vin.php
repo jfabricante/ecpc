@@ -82,8 +82,8 @@ class Vin extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_category_list()
+	public function ajax_model_list()
 	{
-		echo json_encode($this->category->browse());
+		echo json_encode($this->vin_model->browse(), true);
 	}
 }
