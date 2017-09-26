@@ -34,6 +34,13 @@ class Vin_control_model extends CI_Model {
 		}
 	}
 
+	public function readByProductModel($params)
+	{
+		$query = $this->db->order_by('lot_no', 'DESC')->get_where('vin_control_tbl', $params);
+
+		return $query->row();
+	}
+
 	public function store($params)
 	{
 		$id = $this->input->post('id') ? $this->input->post('id') : 0;
