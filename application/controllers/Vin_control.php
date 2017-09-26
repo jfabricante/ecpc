@@ -77,8 +77,10 @@ class Vin_control extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_category_list()
+	public function ajax_vin_control_entity()
 	{
-		echo json_encode($this->vin_control->browse());
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		echo json_encode($this->vin_control->readByProductModel($data));
 	}
 }
