@@ -1,3 +1,4 @@
+<link href="<?php echo base_url('resources/plugins/select/css/bootstrap-select.min.css');?>" rel="stylesheet" >
 <form action="<?php echo base_url('index.php/vin/store'); ?>" method="post">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -40,4 +41,5 @@
 	</div>
 	
 </form><!-- End Form -->
+<script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script>
 					
