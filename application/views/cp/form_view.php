@@ -74,6 +74,7 @@
 					<label for="stamp">Stamp</label>
 					<input type="text" class="form-control" id="stamp" name="stamp" value="<?php echo isset($entity->stamp) ? $entity->stamp : ''; ?>" >
 				</div>
+
 			</div>
 			<!-- ./col-md-6 -->
 		</div>
