@@ -31,6 +31,20 @@
 			<label for="lot_size">Lot Size</label>
 			<input type="number" class="form-control" id="lot_size" name="lot_size" value="<?php echo isset($entity->lot_size) ? $entity->lot_size : ''; ?>" required>
 		</div>
+
+		<div class="form-group">
+			<label for="cp_id">CP</label>
+			<select name="cp_id" id="cp_id" class="form-control selectpicker" data-live-search="true">
+				<option></option>
+
+				<?php foreach($cp_items as $row): ?>
+					<option value="<?php echo $row->id; ?>" <?php echo isset($entity->cp_id) ? $entity->cp_id == $row->id ? 'selected' : '' : ''; ?> >
+						<?php echo $row->model . ' - '. $row->year_model; ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+
 	</div>
 	
 	<div class="modal-footer">
@@ -42,4 +56,9 @@
 	
 </form><!-- End Form -->
 <script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#cp_id').selectpicker({});
+	});
+</script>
 					
