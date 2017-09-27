@@ -8,6 +8,7 @@ class Vin extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('vin_model');
+		$this->load->model('cp_model');
 	}
 
 	public function list_()
@@ -31,8 +32,9 @@ class Vin extends CI_Controller {
 			);
 
 		$data = array(
-				'title'   => $id ? 'Update Details' : 'Add Vin Model',
-				'entity'  => $id ? $this->vin_model->read($config) : ''
+				'title'    => $id ? 'Update Details' : 'Add Vin Model',
+				'entity'   => $id ? $this->vin_model->read($config) : '',
+				'cp_items' => $this->cp_model->browse()
 			);
 
 		$this->load->view('vin/form_view', $data);
@@ -45,7 +47,7 @@ class Vin extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		if ($this->vin_model->exist($config))
+		if ($this->vin_model->exist($config) && $id == 0)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
 		}
