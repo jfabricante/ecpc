@@ -177,7 +177,7 @@
 						sequence: count,
 						product_model: this.vinControl.product_model || '',
 						vin_no: this.vinControl.vin_no || '',
-						engine_no: this.vinControl.engine || '',
+						engine_no: this.selected.engine_pref || '',
 						security_no: '',
 						lot_no: Number(this.vinControl.lot_no) + 1 || '',
 						model_name: this.vinControl.model_name || '',
@@ -201,9 +201,6 @@
 				})
 				.then((response) => {
 					this.vinControl = response.data
-
-					//this.populateItems()
-					_.debounce(this.populateItems(), 200)					
 
 				})
 				.catch((error) => {
