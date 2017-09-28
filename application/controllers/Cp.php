@@ -86,8 +86,11 @@ class Cp extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_model_list()
+	public function ajax_cp_entity()
 	{
-		echo json_encode($this->vin_model->browse(), true);
+		$data = json_decode(file_get_contents("php://input"), true);
+		$data['type'] = 'object';
+
+		echo json_encode($this->cp_model->read($data), true);
 	}
 }
