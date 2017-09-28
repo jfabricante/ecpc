@@ -221,6 +221,22 @@
 					console.log(error)
 				});
 			},
+			// Get the occurence of number from right to left
+			occurenceOfNumber: function(params)
+			{
+				var count = 0
+
+				for(var i = params.length -1; i > 0; i--)
+				{
+					if (isNaN(params.charAt(i)))
+					{
+						break
+					}
+					count++
+				}
+
+				return count
+			},
 		},
 	});
 
