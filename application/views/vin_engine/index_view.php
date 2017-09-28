@@ -164,6 +164,15 @@
 			},
 			formatData: function(count)
 			{
+				// Increment the value
+				this.vinSuff = Number(this.vinSuff) + 1
+
+				// Pad to get the exact number of character lost
+				this.vinSuff = _.padStart(this.vinSuff, this.calculatedLength, 0);
+
+				// Concatenate the prefix and suffix
+				this.vinControl.vin_no = this.vinPref + this.vinSuff
+
 				var formattedData = {
 						sequence: count,
 						product_model: this.vinControl.product_model || '',
