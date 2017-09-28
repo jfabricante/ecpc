@@ -202,6 +202,19 @@
 				.then((response) => {
 					this.vinControl = response.data
 
+					if (response.data !== null)
+					{
+						this.separateVin()
+						this.populateItems()
+					}
+					else
+					{
+						this.clearItems()
+						this.calculatedLength = 0
+						this.separator = 0
+						this.vinPref = ''
+						this.vinSuff = ''
+					}
 				})
 				.catch((error) => {
 					// your action on error success
