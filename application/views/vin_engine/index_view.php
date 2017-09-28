@@ -237,6 +237,19 @@
 
 				return count
 			},
+			// Separate vin into two parts as prefix and suffix
+			separateVin: function()
+			{
+				// Assign the point of reference
+				this.calculatedLength = this.occurenceOfNumber(this.vinControl.vin_no)
+				this.separator = this.vinControl.vin_no.length - this.calculatedLength
+
+				// Set the prefix from start to separator
+				this.vinPref = this.vinControl.vin_no.substr(0, this.separator)
+
+				// Set the vin suffix from separator until the end of the string
+				this.vinSuff =  this.vinControl.vin_no.substr(this.separator)
+			},
 		},
 	});
 
