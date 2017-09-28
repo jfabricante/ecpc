@@ -31,6 +31,12 @@
 			
 			<?php $menu = $this->uri->uri_string(); ?>
 
+			<li class="<?php echo $menu == 'classification/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/classification/list_') ?>"><i class="fa fa-table"></i><span>Classification</span></a></li>
+
+			<li class="<?php echo $menu == 'serial/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/serial/list_') ?>"><i class="fa fa-table"></i><span>Serial</span></a></li>
+
+			<li class="<?php echo $menu == 'portcode/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/portcode/list_') ?>"><i class="fa fa-table"></i><span>Port Code</span></a></li>
+
 			<li class="<?php echo $menu == 'cp/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cp/list_') ?>"><i class="fa fa-table"></i><span>CP Details</span></a></li>
 
 			<li class="<?php echo $menu == 'vin/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/list_') ?>"><i class="fa fa-table"></i><span>Vin Model</span></a></li>
