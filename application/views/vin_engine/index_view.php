@@ -11,9 +11,42 @@
 			<div class="box box-danger">
 				<!-- box-header -->
 				<div class="box-header">
+					<form action="<?php //echo base_url('index.php/vin_engine/store'); ?>" v-on:submit.prevent="analyzer" method="post" enctype="multipart/form-data">
+						<!-- row -->
+						<div class="row">
+							<!-- model picker -->
+							<div class="col-md-4">
+								<div class="form-group" id="model">
+									<label for="vin_model">Model Name</label>
+									<select name="vin_model" id="vin_model" ref="vin_model" class="select2 form-control" >
+										<option></option>
+										<option v-for="option in vinModel" v-bind:value="option.product_model">
+											{{ option.product_model }}
+										</option>
+									</select>
+								</div>
+							</div>
+							<!-- ./model-picker -->
 
+							<!-- file-upload -->
+							<div class="col-md-3">
+								<div class="form-group" id="file-upload">
+									<label for="file-upload">Upload Spreadsheet</label>
+									<input type="file" name="upload" accept=".xlsx, .xls, .csv">
+								</div>
+							</div>
+							<!-- ./file-upload -->
+
+							<div class="col-md-3">
+								<input type="submit" name="check" value="Check" class="btn btn-flat btn-danger">
+							</div>
+						</div>
+						<!-- ./row -->
+					</form>
 				</div>
+				<!-- ./box-header -->
 
+				<!-- box-body -->
 				<div class="box-body">
 					<!-- Item table -->
 					<table class="table table-condensed table-striped table-bordered">
@@ -44,7 +77,7 @@
 					</table>
 					<!-- End of table -->
 				</div>
-				<!-- End of content -->
+				<!-- End of box-body -->
 			</div>
 			<!-- End of danger -->
 		</div>
