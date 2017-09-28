@@ -1,5 +1,4 @@
 <link href="<?php echo base_url('resources/plugins/select2/css/select2.css');?>" rel="stylesheet" >
-<!-- <link href="<?php echo base_url('resources/plugins/select/css/bootstrap-select.min.css');?>" rel="stylesheet" > -->
 <!-- Items block -->
 <section class="content vin_engine">
 	<!-- row -->
@@ -70,10 +69,8 @@
   </div>
 </div>
 <script src="<?php echo base_url('resources/plugins/select2/js/select2.js');?>"></script>
-<!-- <script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script> -->
 <script src="<?php echo base_url('resources/js/axios/axios.min.js') ?>"></script>
 <script src="<?php echo base_url('resources/js/vue/vue.min.js') ?>"></script>
-<!-- <script src="<?php echo base_url('resources/js/vue-select/vue-select.js') ?>"></script> -->
 <script src="<?php echo base_url('resources/js/lodash/lodash.js') ?>"></script>
 <script type="text/javascript">
 	var appUrl = '<?php echo base_url('index.php') ?>';
