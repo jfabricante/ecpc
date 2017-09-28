@@ -9,17 +9,8 @@
 			<?php echo $this->session->flashdata('message'); ?>
 
 			<div class="box box-danger">
-				<!-- Content -->
+				<!-- box-header -->
 				<div class="box-header">
-					<div class="form-group" id="model">
-						<label for="vin_model">Model Name</label>
-						<select name="vin_model" id="vin_model" ref="vin_model" class="select2 form-control" >
-							<option></option>
-							<option v-for="option in vinModel" v-bind:value="option.product_model">
-								{{ option.product_model }}
-							</option>
-						</select>
-					</div>
 
 				</div>
 
