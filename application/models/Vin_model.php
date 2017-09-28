@@ -19,6 +19,27 @@ class Vin_model extends CI_Model {
 		return $this->db->get('vin_model_tbl')->result_array();
 	}
 
+	public function browse_with_cp()
+	{
+		$fields = array(
+				'a.id',
+				'a.product_model',
+				'a.product_year',
+				'a.description',
+				'a.lot_size',
+				'a.cp_id',
+				'b.engine_pref',
+			);
+
+		$query = $this->db->select("*")
+				->from('vin_model_tbl AS a')
+				->join('cp_tbl AS b', 'a.cp_id = b.id', 'LEFT')
+				->order_by('a.product_model')
+				->get();
+
+		return $query->result();
+	}
+
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
