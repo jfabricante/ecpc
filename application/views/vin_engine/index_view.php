@@ -72,14 +72,18 @@
 			vinModel: [],
 			selected: '',
 			items: [],
-			vinControl: ''
+			vinControl: '',
+			calculatedLength: 0,
+			vinPref: '',
+			vinSuff: '',
+			separator: 0
 		},            
 		created() {
 			this.fetchVinModel()	
 		},
 		watch: {
 			selected: function() {
-				console.log(this.selected);
+				console.log(this.selected)
 				this.fetchVinControlEntity()
 			},
 		},
