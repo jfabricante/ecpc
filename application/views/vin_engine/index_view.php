@@ -148,7 +148,7 @@
 			},
 			getSelectedModel: function(searchItem)
 			{
-				for(var [index, value] of this.vinModel.entries())
+				for (let [index, value] of this.vinModel.entries())
 				{
 					if (searchItem == value.product_model)
 					{
@@ -165,7 +165,7 @@
 					// Clear items before populate
 					this.clearItems()
 
-					for(var i = 1; i <= this.selected.lot_size; i++)
+					for (var i = 1; i <= this.selected.lot_size; i++)
 					{
 						this.items.push(this.formatData(i))
 					}
