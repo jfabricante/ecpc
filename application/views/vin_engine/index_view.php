@@ -133,6 +133,8 @@
 			$(this.$refs.vin_model).on("change", function() {
 				self.selected = self.getSelectedModel($(this).val())
 			})
+
+			$(this.$refs.fileUpload).on('change', this.filePicked)
 		},
 		methods: {
 			fetchVinModel: function() {
