@@ -114,7 +114,9 @@
 			calculatedLength: 0,
 			vinPref: '',
 			vinSuff: '',
-			separator: 0
+			separator: 0,
+			fileUpload: '',
+			excelObject: []
 		},            
 		created() {
 			this.fetchVinModel()	
