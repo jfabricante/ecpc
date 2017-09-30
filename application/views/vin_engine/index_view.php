@@ -30,9 +30,9 @@
 
 							<!-- file-upload -->
 							<div class="col-md-3">
-								<div class="form-group" id="file-upload">
+								<div class="form-group">
 									<label for="file-upload">Upload Spreadsheet</label>
-									<input type="file" name="upload" accept=".xlsx, .xls, .csv">
+									<input type="file" name="file-upload" v-model="fileUpload" ref="fileUpload" id="file-upload" accept=".xlsx, .xls, .csv">
 								</div>
 							</div>
 							<!-- ./file-upload -->
