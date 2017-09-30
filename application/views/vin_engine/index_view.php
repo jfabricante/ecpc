@@ -275,6 +275,47 @@
 				// Set the vin suffix from separator until the end of the string
 				this.vinSuff =  this.vinControl.vin_no.substr(this.separator)
 			},
+			filePicked: function(oEvent) {
+				// Get The File From The Input
+				var oFile = oEvent.target.files[0];
+
+				// Create A File Reader HTML5
+				var reader = new FileReader();
+
+				// Ready The Event For When A File Gets Selected
+				reader.onload = (e) => {
+					var data = e.target.result;
+					var wb = XLSX.read(data, {type: 'binary'});
+
+					// Assume that the first sheet has its value
+					var sheetName = wb.SheetNames[0]
+
+					// Look for possible sheet in a smarter way
+					for (let model of wb.SheetNames)
+					{
+						// Split into two to get the model prefix
+						model = model.split('-')
+
+						if (this.selected.product_model.includes(model[0]))
+						{
+							sheetName = model.join('-')
+							break
+						}
+					}
+
+					// Reset the element of excel object
+					this.excelObject.splice(0, this.excelObject.length)
+
+					// Assign the json values to excelObject
+					this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
+
+					// Convert it to linear form
+					this.excelObject = _.flatten(this.excelObject)
+				};
+
+				// Tell JS To Start Reading The File.. You could delay this if desired
+				reader.readAsBinaryString(oFile);
+			},
 		},
 	});
 
