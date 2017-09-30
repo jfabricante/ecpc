@@ -254,10 +254,8 @@
 	});
 
 	$(document).ready(function() {
-		//$('.table').DataTable();
+		$('select').select2()	
 	});
-
-	$('select').select2()
 
 	// Detroy modal
 	$('body').on('hidden.bs.modal', '.modal', function () {
