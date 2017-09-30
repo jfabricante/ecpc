@@ -11,7 +11,7 @@
 			<div class="box box-danger">
 				<!-- box-header -->
 				<div class="box-header">
-					<form action="<?php //echo base_url('index.php/vin_engine/store'); ?>" v-on:submit.prevent="analyzer" method="post" enctype="multipart/form-data">
+					<form method="post" v-on:submit.prevent="analyzer" enctype="multipart/form-data" role="form" id="form">
 						<!-- row -->
 						<div class="row">
 							<!-- model picker -->
