@@ -96,6 +96,11 @@
 <script src="<?php echo base_url('resources/js/axios/axios.min.js') ?>"></script>
 <script src="<?php echo base_url('resources/js/vue/vue.min.js') ?>"></script>
 <script src="<?php echo base_url('resources/js/lodash/lodash.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/cpexcel.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/xlsx.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/jszip.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/xlsx.full.min.js') ?>"></script>
+
 <script type="text/javascript">
 	var appUrl = '<?php echo base_url('index.php') ?>';
 
