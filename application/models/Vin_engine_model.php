@@ -13,17 +13,17 @@ class Vin_engine_model extends CI_Model {
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('vin_model_tbl')->result();	
+			return $this->db->get('vin_engine_tbl')->result();	
 		}
 
-		return $this->db->get('vin_model_tbl')->result_array();
+		return $this->db->get('vin_engine_tbl')->result_array();
 	}
 
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('vin_model_tbl', array('id' => $params['id']));
+			$query = $this->db->get_where('vin_engine_tbl', array('id' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -40,11 +40,11 @@ class Vin_engine_model extends CI_Model {
 
 		if ($id > 0)
 		{
-			$this->db->update('vin_model_tbl', $params, array('id' => $id));
+			$this->db->update('vin_engine_tbl', $params, array('id' => $id));
 		}
 		else
 		{
-			$this->db->insert('vin_model_tbl', $params);
+			$this->db->insert('vin_engine_tbl', $params);
 		}
 
 		return $this;	
