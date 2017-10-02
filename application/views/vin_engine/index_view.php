@@ -87,6 +87,37 @@
 							</div>
 						</div>
 						<!-- ./row -->
+
+						<!-- row -->
+						<div class="row">
+							<!-- last vin -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Last Vin</label>
+									<p>{{ lastVin }}</p>
+								</div>
+							</div>
+							<!-- ./last vin -->
+
+							<!-- last lot -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Last Lot</label>
+									<p>{{ lastLot }}</p>
+								</div>
+							</div>
+							<!-- ./last lot -->
+
+							<!-- last lot -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="entry_no">Entry No.</label>
+									<input type="text" name="entry_no" class="form-control" id="entry_no" v-model="entryNo">
+								</div>
+							</div>
+							<!-- ./last lot -->
+						</div>
+						<!-- ./row -->
 					</form>
 				</div>
 				<!-- ./box-header -->
