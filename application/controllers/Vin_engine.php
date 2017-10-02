@@ -167,4 +167,78 @@ class Vin_engine extends CI_Controller {
 		$this->vin_control_model->store($config);
 	}
 
+	protected function _excel_report($params)
+	{
+		// Create an instance of PHPExcel
+		$excelObj          = new PHPExcel();
+		$excelActiveSheet  = $excelObj->getActiveSheet();
+		$excelDefaultStyle = $excelObj->getDefaultStyle();
+
+		$excelDefaultStyle->getFont()->setSize(10)->setName('Times New Roman');
+
+		// Set the Active sheet
+		$excelObj->setActiveSheetIndex(0);
+
+		// Add header to the excel
+		$excelActiveSheet->setCellValue('A1', 'Port Code')
+						->setCellValue('B1', 'Year')
+						->setCellValue('C1', 'Entry Serial')
+						->setCellValue('D1', 'Entry No.')
+						->setCellValue('E1', 'MVDP Member')
+						->setCellValue('F1', 'Engine Number')
+						->setCellValue('G1', 'Chassis Number')
+						->setCellValue('H1', 'Classification Code')
+						->setCellValue('I1', 'VIN No.')
+						->setCellValue('J1', 'Vehicle Make')
+						->setCellValue('K1', 'Series')
+						->setCellValue('L1', 'Color')
+						->setCellValue('M1', 'Piston Displacement')
+						->setCellValue('N1', 'Body Type')
+						->setCellValue('O1', 'Manufacturer')
+						->setCellValue('P1', 'Year Model')
+						->setCellValue('Q1', 'Gross Wt')
+						->setCellValue('R1', 'Net Wt')
+						->setCellValue('S1', 'No Cylinder')
+						->setCellValue('T1', 'Fuel');
+
+		$excelActiveSheet->getStyle('A1:T1')->getAlignment()->setWrapText(true); 
+
+		$excelActiveSheet->fromArray($params, NULL, 'A2');
+
+		// Apply background color on cell
+		$excelActiveSheet->getStyle('A1:T1')
+						->getFill()
+						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+						->getStartColor()
+						->setRGB('ffff99');
+
+		// Set the alignment for the whole document
+		$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$style = array(
+			        'borders' => array(
+			            'allborders' => array(
+			                'style' => PHPExcel_Style_Border::BORDER_THIN,
+			                'color' => array('rgb' => '000000')
+			            )
+			        ),
+			        'alignment' => array(
+			        	'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+						'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			        ),
+			    );
+
+		// Apply header style
+		$excelActiveSheet->getStyle("A1:T1")->applyFromArray($style);
+
+		// Generate excel version using Excel 2017
+		$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel2007');
+
+
+		$name = './resources/download/ecpc.xlsx';
+		$objWriter->save($name);
+
+		return $objWriter;
+	}
+
 }
