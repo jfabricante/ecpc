@@ -196,7 +196,37 @@
 				.then((response) => {
 					this.vinModel = response.data
 				})
-				.catch(function (err) {
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
+			fetchPortcode: function() {
+				axios.get(appUrl + '/portcode/ajax_portcode_list')
+				.then((response) => {
+					this.portcode = response.data
+					console.log(this.portcode)
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
+			fetchSerial: function() {
+				axios.get(appUrl + '/serial/ajax_serial_list')
+				.then((response) => {
+					this.serial = response.data
+					console.log(this.serial)
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
+			fetchClassification: function() {
+				axios.get(appUrl + '/classification/ajax_classification_list')
+				.then((response) => {
+					this.classification = response.data
+					console.log(this.classification)
+				})
+				.catch((err) => {
 					console.log(err.message);
 				});
 			},
@@ -326,7 +356,6 @@
 					var wb = XLSX.read(data, {type: 'binary'});
 
 					// Assume that the first sheet has its value
-					var sheetName = wb.SheetNames[0]
 
 					// Look for possible sheet in a smarter way
 					for (let model of wb.SheetNames)
