@@ -11,7 +11,7 @@
 			<div class="box box-danger">
 				<!-- box-header -->
 				<div class="box-header">
-					<form method="post" v-on:submit.prevent="analyzer" enctype="multipart/form-data" role="form" id="form">
+					<form method="post" v-on:submit.prevent="storeResource" enctype="multipart/form-data" role="form" id="form">
 						<!-- row -->
 						<div class="row">
 							<!-- model picker -->
