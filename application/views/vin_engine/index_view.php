@@ -192,6 +192,19 @@
 			})
 
 			$(this.$refs.fileUpload).on('change', this.filePicked)
+
+			$(this.$refs.portcode).on('change', function() {
+				self.$set(self.portcode, 'selected', $(this).val())
+			})
+
+			$(this.$refs.serial).on('change', function() {
+				self.$set(self.serial, 'selected', $(this).val())
+			})
+
+			$(this.$refs.classification).on('change', function() {
+				self.$set(self.classification, 'selected', $(this).val())
+			})
+
 		},
 		methods: {
 			fetchVinModel: function() {
