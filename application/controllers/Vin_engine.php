@@ -151,5 +151,20 @@ class Vin_engine extends CI_Controller {
 		}
 
 		echo json_encode($this->_excel_report($config), true);
+		
+		// Format insert data for vin control
+		$config = array(
+				'code'          => $vin_control['code'],
+				'vin_no'        => $vin_control['vin_no'],
+				'lot_no'        => $last_item['lot_no'],
+				'engine'        => $vin_control['engine'],
+				'product_model' => $vin_control['product_model'],
+				'model_name'    => $vin_control['model_name'],
+				'last_user'     => $fullname,
+				'last_update'   => $vin_control['last_update']
+			);	
+
+		$this->vin_control_model->store($config);
 	}
+
 }
