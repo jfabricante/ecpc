@@ -241,4 +241,22 @@ class Vin_engine extends CI_Controller {
 		return $objWriter;
 	}
 
+	public function download()
+	{
+		$path = './resources/download/ecpc.xlsx';
+
+		if (file_exists($path))
+		{
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename='.basename($path));
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($path));
+			ob_clean();
+			flush();
+			readfile($path);
+		}
+	}
 }
