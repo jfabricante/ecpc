@@ -374,28 +374,47 @@
 					var wb = XLSX.read(data, {type: 'binary'});
 
 					// Assume that the first sheet has its value
+					//var sheetName = wb.SheetNames[0]
+
+					// Set the initial value of sheet
+					var sheetName = ''
 
 					// Look for possible sheet in a smarter way
 					for (let model of wb.SheetNames)
 					{
 						// Split into two to get the model prefix
-						model = model.split('-')
+						//model = model.split('-')
 
-						if (this.selected.product_model.includes(model[0]))
+						/*if (this.selected.product_model.includes(model[0]))
 						{
 							sheetName = model.join('-')
+							break
+						}*/
+
+						// Implement a strict cheking of excel sheet
+						if (this.selected.product_model === model)
+						{
+							sheetName = model
 							break
 						}
 					}
 
-					// Reset the element of excel object
-					this.excelObject.splice(0, this.excelObject.length)
+					if (sheetName === '')
+					{
+						alert('Cannot find sheet that match on the model.')
+						console.log(this.selected.product_model)
+					}
+					else
+					{
+						// Reset the element of excel object
+						this.excelObject.splice(0, this.excelObject.length)
 
-					// Assign the json values to excelObject
-					this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
+						// Assign the json values to excelObject
+						this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
 
-					// Convert it to linear form
-					this.excelObject = _.flatten(this.excelObject)
+						// Convert it to linear form
+						this.excelObject = _.flatten(this.excelObject)	
+					}
 				};
 
 				// Tell JS To Start Reading The File.. You could delay this if desired
