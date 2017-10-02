@@ -168,7 +168,10 @@
 			classification: []
 		},            
 		created() {
-			this.fetchVinModel()	
+			this.fetchVinModel()
+			this.fetchPortcode()
+			this.fetchSerial()
+			this.fetchClassification()
 		},
 		watch: {
 			selected: function() {
