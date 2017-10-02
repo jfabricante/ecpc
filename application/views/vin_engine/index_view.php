@@ -15,7 +15,7 @@
 						<!-- row -->
 						<div class="row">
 							<!-- model picker -->
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<div class="form-group" id="model">
 									<label for="vin_model">Model Name</label>
 									<select name="vin_model" id="vin_model" ref="vin_model" class="select2 form-control" >
@@ -29,7 +29,7 @@
 							<!-- ./model-picker -->
 
 							<!-- file-upload -->
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="form-group">
 									<label for="file-upload">Upload Spreadsheet</label>
 									<input type="file" name="file-upload" v-model="fileUpload" ref="fileUpload" id="file-upload" accept=".xlsx, .xls, .csv">
@@ -37,8 +37,6 @@
 							</div>
 							<!-- ./file-upload -->
 
-							<div class="col-md-3">
-								<input type="submit" name="check" value="Check" class="btn btn-flat btn-danger">
 							</div>
 						</div>
 						<!-- ./row -->
