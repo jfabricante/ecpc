@@ -11,7 +11,10 @@ class Vin_engine extends CI_Controller {
 		parent::__construct();
 
 		$this->load->helper('form');
-		$this->load->model('vin_model');
+
+		$models = array('vin_model', 'portcode_model', 'classification_model', 'serial_model', 'vin_engine_model', 'vin_control_model');
+
+		$this->load->model($models);
 	}
 
 	public function index()
