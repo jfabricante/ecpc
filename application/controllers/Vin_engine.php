@@ -115,5 +115,41 @@ class Vin_engine extends CI_Controller {
 		$classification = $data['classification'];
 		$entry_no       = $data['entry_no'];
 
+		$config = array();
+	
+		// Insert the items
+		foreach ($items as $row) 
+		{
+			$row['last_update'] = $current_date;
+			$row['last_user']   = $fullname;
+			$row['security_no'] = '';
+
+			$config[] = array(
+					'portcode'       => $portcode,
+					'year'           => date('Y'),
+					'serial'         => $serial,
+					'entry_no'       => $entry_no,
+					'mvdp'           => 'Y',
+					'engine_no'      => $row['engine_no'],
+					'chassis_no'     => $row['vin_no'],
+					'classification' => str_pad($classification, 3, '0', STR_PAD_LEFT),
+					'vin_no'         => $row['vin_no'],
+					'make'           => 'ISUZU',
+					'series'         => $model['series'],
+					'color'          => 'NA',
+					'piston'         => strtoupper($model['piston_displacement']),
+					'body_type'      => $model['body_type'],
+					'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
+					'year_model'     => $model['year_model'],
+					'gross_weight'   => number_format($model['gross_weight'], 2),
+					'net_weight'     => '',
+					'cylinder'       => $model['cylinder'],
+					'fuel'           => strtoupper($model['fuel'])
+				);
+
+			$this->vin_engine_model->store($row); 
+		}
+
+		echo json_encode($this->_excel_report($config), true);
 	}
 }
