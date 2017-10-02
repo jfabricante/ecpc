@@ -175,24 +175,10 @@
 		},
 		watch: {
 			selected: function() {
-				console.log(this.selected)
 				this.fetchVinControlEntity()
 			},
 			excelObject: function() {
-
-				if (this.selected.lot_size == this.excelObject.length)
-				{
-					for(let [index, excel] of this.excelObject.entries())
-					{
-						this.items[index].engine_no  = this.selected.engine_pref + '-' + excel["Engine No."]
-						this.items[index].invoice_no = excel["MC Invoice No."]
-					}
-				}
-				else
-				{
-					alert('Lot Size and Excel content does not match in terms of items')
-				}
-
+				this.assignValues()
 			}
 		},
 		mounted() {
@@ -367,6 +353,21 @@
 
 				// Tell JS To Start Reading The File.. You could delay this if desired
 				reader.readAsBinaryString(oFile);
+			},
+			assignValues: function()
+			{
+				if (this.selected.lot_size == this.excelObject.length)
+				{
+					for(let [index, excel] of this.excelObject.entries())
+					{
+						this.items[index].engine_no  = this.selected.engine_pref + '-' + excel["Engine No."] + (this.selected.stamp || '')
+						this.items[index].invoice_no = excel["MC Invoice No."]
+					}
+				}
+				else
+				{
+					alert('Lot Size and Excel Sheet content does not match in terms of items')
+				}
 			},
 		},
 	});
