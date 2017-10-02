@@ -100,12 +100,20 @@ class Vin_engine extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function analyzer()
+	public function store_resource()
 	{
-		$excelObj = new PHPExcel();
+		$data = json_decode(file_get_contents("php://input"), true);
 
-		echo '<pre>';
-		print_r($excelObj);
-		echo '</pre>'; die;
+		$current_date   = date('Y-m-d H:i:s');
+		$fullname       = $this->session->userdata('fullname');
+		$vin_control    = $data['vin_control'];
+		$last_item      = end($data['items']);
+		$model          = $data['selected_model'];
+		$items          = $data['items'];
+		$portcode       = $data['portcode'];
+		$serial         = $data['serial'];
+		$classification = $data['classification'];
+		$entry_no       = $data['entry_no'];
+
 	}
 }
