@@ -310,6 +310,8 @@
 				})
 				.then((response) => {
 					this.vinControl = response.data
+					this.lastVin    = this.vinControl.vin_no
+					this.lastLot    = this.vinControl.lot_no
 
 					if (response.data !== null)
 					{
