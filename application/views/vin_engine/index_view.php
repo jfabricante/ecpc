@@ -435,6 +435,36 @@
 					alert('Lot Size and Excel Sheet content does not match in terms of items')
 				}
 			},
+			storeResource: function()
+			{
+				axios({
+					url: appUrl + '/vin_engine/store_resource',
+					method: 'post',
+					data: {
+						items: this.items,
+						selected_model: this.selected,
+						portcode: this.portcode.selected,
+						serial: this.serial.selected,
+						classification: this.classification.selected,
+						vin_control: this.vinControl,
+						entry_no: this.entryNo
+					}
+				})
+				.then((response) => {
+
+					console.log(response)
+
+					if (response.data !== null)
+					{
+						window.open(appUrl + '/vin_engine/download')
+					}
+					
+				})
+				.catch((error) => {
+					// your action on error success
+					console.log(error)
+				});
+			},
 		},
 	});
 
