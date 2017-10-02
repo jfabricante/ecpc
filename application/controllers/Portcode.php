@@ -82,8 +82,8 @@ class Portcode extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_model_list()
+	public function ajax_portcode_list()
 	{
-		echo json_encode($this->vin_model->browse(), true);
+		echo json_encode($this->portcode_model->browse(), true);
 	}
 }

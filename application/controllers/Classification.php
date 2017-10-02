@@ -82,7 +82,7 @@ class Classification extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_model_list()
+	public function ajax_classification_list()
 	{
 		echo json_encode($this->classification_model->browse(), true);
 	}

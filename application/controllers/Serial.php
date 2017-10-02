@@ -82,7 +82,7 @@ class Serial extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function ajax_model_list()
+	public function ajax_serial_list()
 	{
 		echo json_encode($this->serial_model->browse(), true);
 	}
