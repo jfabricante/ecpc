@@ -37,6 +37,53 @@
 							</div>
 							<!-- ./file-upload -->
 
+							<!-- portcode picker -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="portcode">Portcode</label>
+									<select name="portcode" id="portcode" ref="portcode" class="select2 form-control" >
+										<option></option>
+										<option v-for="option in portcode" v-bind:value="option.short_code">
+											{{ option.short_code }} 
+										</option>
+									</select>
+								</div>
+							</div>
+							<!-- ./portcode-picker -->
+
+							<!-- serial picker -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="serial">Serial</label>
+									<select name="serial" id="serial" ref="serial" class="select2 form-control" >
+										<option></option>
+										<option v-for="option in serial" v-bind:value="option.short_code">
+											{{ option.short_code }} 
+										</option>
+									</select>
+								</div>
+							</div>
+							<!-- ./serial-picker -->
+
+							<!-- classification picker -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="classification">Classification</label>
+									<select name="classification" id="classification" ref="classification" class="select2 form-control" >
+										<option></option>
+										<option v-for="option in classification" v-bind:value="option.short_code">
+											{{ _.padStart(option.short_code, 3, '0') }} 
+										</option>
+									</select>
+								</div>
+							</div>
+							<!-- ./classification-picker -->
+
+							<div class="col-md-2">
+								<div class="form-group">
+									<label> </label>
+									<input type="submit" name="check" value="Process" class="btn btn-flat btn-danger form-control">
+								</div>
 							</div>
 						</div>
 						<!-- ./row -->
