@@ -426,7 +426,7 @@
 				{
 					for(let [index, excel] of this.excelObject.entries())
 					{
-						this.items[index].engine_no  = this.selected.engine_pref + '-' + excel["Engine No."] + (this.selected.stamp || '')
+						this.items[index].engine_no  += '-' + excel["Engine No."] + (this.selected.stamp || '')
 						this.items[index].invoice_no = excel["MC Invoice No."]
 					}
 				}
