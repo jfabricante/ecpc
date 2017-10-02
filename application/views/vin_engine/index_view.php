@@ -112,7 +112,8 @@
 								<td>{{ item.sequence }}</td>
 								<td>{{ item.product_model }}</td>
 								<td>{{ item.vin_no }}</td>
-								<td><input type="text" class="form-control" v-bind:value="item.engine_no" v-model="items[index].engine_no"></td>
+								<!-- <td><input type="text" class="form-control" v-bind:value="item.engine_no" v-model="items[index].engine_no"></td> -->
+								<td>{{ item.engine_no }}</td>
 								<td>{{ item.security_no }}</td>
 								<td>{{ item.lot_no }}</td>
 								<td>{{ item.model_name }}</td>
