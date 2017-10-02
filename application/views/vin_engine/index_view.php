@@ -162,7 +162,10 @@
 			vinSuff: '',
 			separator: 0,
 			fileUpload: '',
-			excelObject: []
+			excelObject: [],
+			porcode: [],
+			serial: [],
+			classification: []
 		},            
 		created() {
 			this.fetchVinModel()	
