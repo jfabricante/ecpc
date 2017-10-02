@@ -160,12 +160,15 @@
 			calculatedLength: 0,
 			vinPref: '',
 			vinSuff: '',
+			lastVin: '',
+			lastLot: '',
 			separator: 0,
 			fileUpload: '',
 			excelObject: [],
 			porcode: [],
 			serial: [],
-			classification: []
+			classification: [],
+			entryNo: ''
 		},            
 		created() {
 			this.fetchVinModel()
