@@ -453,18 +453,35 @@
 			},
 			assignValues: function()
 			{
-				if (this.selected.lot_size == this.excelObject.length)
+				// Count the occurence of engine number
+				let result = _.countBy(this.excelObject, 'Engine No.')
+
+				// Get the key
+				let keys = _.keys(result)
+
+				// Verify if has duplicate
+				let hasDuplicate = keys.map((key) => { return result[key] > 1 })
+
+				if (_.includes(hasDuplicate, true))
 				{
-					for(let [index, excel] of this.excelObject.entries())
-					{
-						this.items[index].engine_no  += '-' + excel["Engine No."] + (this.selected.stamp || '')
-						this.items[index].invoice_no = excel["MC Invoice No."]
-					}
+					alert('Engine No. has duplicate.')
 				}
 				else
 				{
-					alert('Lot Size and Excel Sheet content does not match in terms of items')
+					if (this.selected.lot_size == this.excelObject.length)
+					{
+						for(let [index, excel] of this.excelObject.entries())
+						{
+							this.items[index].engine_no += excel["Engine No."] + (this.selected.stamp || '')
+							this.items[index].invoice_no = excel["MC Invoice No."]
+						}
+					}
+					else
+					{
+						alert('Lot Size and Excel Sheet content does not match in terms of items.')
+					}
 				}
+
 			},
 			storeResource: function()
 			{
