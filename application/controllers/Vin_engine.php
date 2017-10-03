@@ -120,9 +120,13 @@ class Vin_engine extends CI_Controller {
 		// Insert the items
 		foreach ($items as $row) 
 		{
-			$row['last_update'] = $current_date;
-			$row['last_user']   = $fullname;
-			$row['security_no'] = '';
+			$row['last_update']    = $current_date;
+			$row['last_user']      = $fullname;
+			$row['security_no']    = '';
+			$row['portcode']       = $portcode;
+			$row['serial']         = $serial;
+			$row['classification'] = $classification;
+			$row['entry_no']       = $entry_no;
 
 			$config[] = array(
 					'portcode'       => $portcode,
