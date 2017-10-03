@@ -65,4 +65,15 @@ class Vin_engine_model extends CI_Model {
 
 		return $query->num_rows();
 	}
+
+	public function fetchInvoice()
+	{
+		$query = $this->db->select('invoice_no')
+				->from('vin_engine_tbl')
+				->distinct('invoice_no')
+				->get();
+
+		return $query->result();
+	}
+
 }
