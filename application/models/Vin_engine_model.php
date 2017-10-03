@@ -76,4 +76,34 @@ class Vin_engine_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function fetchInvoiceItem($params)
+	{
+		$fields = array(
+					'a.portcode',
+					'a.serial',
+					'a.entry_no',
+					'a.vin_no',
+					'a.engine_no',
+					'a.classification',
+					'a.lot_no',
+					'a.invoice_no',
+					'c.series',
+					'c.piston_displacement',
+					'c.body_type',
+					'c.year_model',
+					'c.gross_weight',
+					'c.net_weight',
+					'c.cylinder',
+					'c.fuel'
+				);
+
+		$query = $this->db->select($fields)
+				->from('vin_engine_tbl AS a')
+				->join('vin_model_tbl AS b', 'a.product_model = b.product_model', 'INNER')
+				->join('cp_tbl AS c', 'b.cp_id = c.id', 'INNER')
+				->where($params)
+				->get();
+
+		return $query->result();
+	}
 }
