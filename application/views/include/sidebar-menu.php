@@ -45,6 +45,8 @@
 
 			<li class="<?php echo $menu == 'vin_engine/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/index') ?>"><i class="fa fa-table"></i><span>Vin Engine</span></a></li>
 
+			<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-table"></i><span>Reports</span></a></li>
+
 		</ul><!-- /.sidebar-menu -->
 
 	</section>
