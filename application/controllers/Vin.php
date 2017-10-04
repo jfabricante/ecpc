@@ -90,4 +90,10 @@ class Vin extends CI_Controller {
 	{
 		echo json_encode($this->vin_model->browse_with_cp(), true);
 	}
+
+	public function ajax_model_list2()
+	{
+		echo json_encode($this->vin_model->browse(), true);
+	}
+
 }
