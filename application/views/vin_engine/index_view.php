@@ -199,13 +199,15 @@
 			porcode: [],
 			serial: [],
 			classification: [],
-			entryNo: ''
+			entryNo: '',
+			color: []
 		},            
 		created() {
 			this.fetchVinModel()
 			this.fetchPortcode()
 			this.fetchSerial()
 			this.fetchClassification()
+			this.fetchColor()
 		},
 		watch: {
 			selected: function() {
@@ -269,6 +271,16 @@
 				axios.get(appUrl + '/classification/ajax_classification_list')
 				.then((response) => {
 					this.classification = response.data
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
+			fetchColor: function() {
+				axios.get(appUrl + '/color/ajax_color_list')
+				.then((response) => {
+					this.color = response.data
+					console.log(this.color)
 				})
 				.catch((err) => {
 					console.log(err.message);
