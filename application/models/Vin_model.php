@@ -13,7 +13,7 @@ class Vin_model extends CI_Model {
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('vin_model_tbl')->result();	
+			return $this->db->get('vin_model_tbl')->result();
 		}
 
 		return $this->db->get('vin_model_tbl')->result_array();
