@@ -251,7 +251,6 @@
 				axios.get(appUrl + '/portcode/ajax_portcode_list')
 				.then((response) => {
 					this.portcode = response.data
-					console.log(this.portcode)
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -261,7 +260,6 @@
 				axios.get(appUrl + '/serial/ajax_serial_list')
 				.then((response) => {
 					this.serial = response.data
-					console.log(this.serial)
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -271,7 +269,6 @@
 				axios.get(appUrl + '/classification/ajax_classification_list')
 				.then((response) => {
 					this.classification = response.data
-					console.log(this.classification)
 				})
 				.catch((err) => {
 					console.log(err.message);
