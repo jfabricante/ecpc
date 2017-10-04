@@ -22,6 +22,11 @@ table thead{
 	background: #fff;
 }
 
+table.dataTable,
+table.table.table-condensed.table-striped.table-bordered {
+	font-size: 90%;
+}
+
 .back-to-top {
     cursor: pointer;
     position: fixed;
