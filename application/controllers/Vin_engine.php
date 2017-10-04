@@ -139,6 +139,7 @@ class Vin_engine extends CI_Controller {
 			$row['serial']         = $serial;
 			$row['classification'] = $classification;
 			$row['entry_no']       = $entry_no;
+			$row['year']           = date('Y');
 
 			$config[] = array(
 					'portcode'       => $portcode,
@@ -283,5 +284,24 @@ class Vin_engine extends CI_Controller {
 			flush();
 			readfile($path);
 		}
+	}
+
+	public function ajax_fetch_invoice_list()
+	{
+		echo json_encode($this->vin_engine_model->fetchInvoice());
+	}
+
+	public function ajax_fetch_invoice_items()
+	{
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		echo json_encode($this->vin_engine_model->fetchInvoiceView($data), true);
+	}
+
+	public function ajax_fetch_model_items()
+	{
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		echo json_encode($this->vin_engine_model->fetchModelItems($data), true);
 	}
 }
