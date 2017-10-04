@@ -7,8 +7,10 @@ class Vin extends CI_Controller {
 	{
 		parent::__construct();
 
-		$this->load->model('vin_model');
-		$this->load->model('cp_model');
+		// Arrays of models
+		$models = array('vin_model', 'cp_model', 'vin_control_model');
+
+		$this->load->model($models);
 	}
 
 	public function list_()
