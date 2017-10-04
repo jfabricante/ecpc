@@ -73,12 +73,14 @@ class Vin_engine extends CI_Controller {
 		$this->_excel_report($config);
 	}
 
+	public function model_view()
+	{
 		$data = array(
-				'title'   => $id ? 'Update Details' : 'Add Vin Model',
-				'entity'  => $id ? $this->vin_model->read($config) : ''
+				'title'   => 'Select Model Name and Lot No.',
+				'content' => '/vin_engine/model_view'
 			);
 
-		$this->load->view('vin/form_view', $data);
+		$this->load->view('include/template', $data);
 	}
 
 	public function store()
