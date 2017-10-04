@@ -14,6 +14,20 @@
 					<form method="post" v-on:submit.prevent="storeResource" enctype="multipart/form-data" role="form" id="form">
 						<!-- row -->
 						<div class="row">
+							<!-- classification picker -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label for="classification">Classification</label>
+									<select name="classification" id="classification" ref="classification" class="select2 form-control" >
+										<option></option>
+										<option v-for="option in classification" v-bind:value="option.short_code">
+											{{ _.padStart(option.short_code, 3, '0') }} - {{ option.description }}
+										</option>
+									</select>
+								</div>
+							</div>
+							<!-- ./classification-picker -->
+							
 							<!-- model picker -->
 							<div class="col-md-2">
 								<div class="form-group" id="model">
@@ -64,20 +78,6 @@
 								</div>
 							</div>
 							<!-- ./serial-picker -->
-
-							<!-- classification picker -->
-							<div class="col-md-2">
-								<div class="form-group">
-									<label for="classification">Classification</label>
-									<select name="classification" id="classification" ref="classification" class="select2 form-control" >
-										<option></option>
-										<option v-for="option in classification" v-bind:value="option.short_code">
-											{{ _.padStart(option.short_code, 3, '0') }} - {{ option.description }}
-										</option>
-									</select>
-								</div>
-							</div>
-							<!-- ./classification-picker -->
 
 							<div class="col-md-2">
 								<div class="form-group">
