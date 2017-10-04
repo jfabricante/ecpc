@@ -308,7 +308,7 @@
 				this.vinSuff = Number(this.vinSuff) + 1
 
 				// Pad to get the exact number of character lost
-				this.vinSuff = _.padStart(this.vinSuff, this.calculatedLength, 0);
+				this.vinSuff = _.padStart(this.vinSuff, this.calculatedLength, 0)
 
 				// Concatenate the prefix and suffix
 				this.vinControl.vin_no = this.vinPref + this.vinSuff
