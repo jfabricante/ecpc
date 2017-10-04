@@ -28,25 +28,50 @@ class Vin_engine extends CI_Controller {
 		$this->load->view('include/template', $data);
 	}
 
-	public function list_()
+	public function invoice()
 	{
 		$data = array(
-				'title'    => 'List of Vin Model',
-				'content'  => 'vin/list_view',
-				'entities' => $this->vin_model->browse()
+				'title'    => '',
+				'content'  => 'vin_engine/invoice_view',
 			);
 
 		$this->load->view('include/template', $data);
 	}
 
-	public function form()
+	public function invoice_process()
 	{
-		$id = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+		$entities = $this->vin_engine_model->fetchInvoiceItem($this->input->post());
+		
+		$config = array();
 
-		$config = array(
-				'id'   => $id,
-				'type' => 'object'
-			);
+		foreach ($entities as $entity)
+		{
+			$config[] = array(
+					'portcode'       => $entity->portcode,
+					'year'           => $entity->year,
+					'serial'         => $entity->serial,
+					'entry_no'       => $entity->entry_no,
+					'mvdp'           => 'Y',
+					'engine_no'      => $entity->engine_no,
+					'chassis_no'     => $entity->vin_no,
+					'classification' => $entity->classification,
+					'vin_no'         => $entity->vin_no,
+					'make'           => 'ISUZU',
+					'series'         => $entity->series,
+					'color'          => 'NA',
+					'piston'         => strtoupper($entity->piston_displacement),
+					'body_type'      => $entity->body_type,
+					'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
+					'year_model'     => $entity->year_model,
+					'gross_weight'   => number_format($entity->gross_weight, 2),
+					'net_weight'     => $entity->net_weight,
+					'cylinder'       => $entity->cylinder,
+					'fuel'           => strtoupper($entity->fuel)
+				);
+		}
+
+		$this->_excel_report($config);
+	}
 
 		$data = array(
 				'title'   => $id ? 'Update Details' : 'Add Vin Model',
