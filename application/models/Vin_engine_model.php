@@ -87,6 +87,7 @@ class Vin_engine_model extends CI_Model {
 					'a.classification',
 					'a.lot_no',
 					'a.invoice_no',
+					'a.year',
 					'c.series',
 					'c.piston_displacement',
 					'c.body_type',
