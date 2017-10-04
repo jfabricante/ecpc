@@ -111,21 +111,6 @@ class Vin_engine extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function notice()
-	{
-		$data['id'] = $this->uri->segment(3);
-
-		$this->load->view('vin/delete_view', $data);
-	}
-
-	public function delete()
-	{
-		$this->vin_model->delete();
-
-		$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been deleted!</div>');
-
-		redirect($this->agent->referrer());
-	}
 
 	public function store_resource()
 	{
