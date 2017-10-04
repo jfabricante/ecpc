@@ -31,6 +31,8 @@
 			
 			<?php $menu = $this->uri->uri_string(); ?>
 
+			<li class="<?php echo $menu == 'color/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/color/list_') ?>"><i class="fa fa-table"></i><span>Color</span></a></li>
+
 			<li class="<?php echo $menu == 'classification/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/classification/list_') ?>"><i class="fa fa-table"></i><span>Classification</span></a></li>
 
 			<li class="<?php echo $menu == 'serial/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/serial/list_') ?>"><i class="fa fa-table"></i><span>Serial</span></a></li>
@@ -45,7 +47,9 @@
 
 			<li class="<?php echo $menu == 'vin_engine/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/index') ?>"><i class="fa fa-table"></i><span>Vin Engine</span></a></li>
 
-			<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-table"></i><span>Reports</span></a></li>
+			<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-table"></i><span>Invoice Report</span></a></li>
+
+			<li class="<?php echo $menu == 'vin_engine/model_view' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/model_view') ?>"><i class="fa fa-table"></i><span>Model View</span></a></li>
 
 		</ul><!-- /.sidebar-menu -->
 
