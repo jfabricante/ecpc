@@ -107,4 +107,23 @@ class Vin_engine_model extends CI_Model {
 
 		return $query->result();
 	}
+
+	public function fetchInvoiceView($params)
+	{
+		$query = $this->db->get_where('vin_engine_tbl', $params);
+	
+		return $query->result();
+	}
+
+	public function fetchModelItems($params)
+	{
+		$clause = sprintf('lot_no BETWEEN %s AND %s', $params['lot_from'], $params['lot_to']);
+
+		$query = $this->db->from('vin_engine_tbl')
+				->where('product_model', $params['product_model'])
+				->where($clause)
+				->get();
+
+		return $query->result();
+	}
 }
