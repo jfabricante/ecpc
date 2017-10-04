@@ -84,6 +84,16 @@ class Color extends CI_Controller {
 
 	public function ajax_color_list()
 	{
-		echo json_encode($this->color_model->browse(), true);
+		$entities = $this->color_model->browse();
+
+		$config = array();
+		
+		// Set code as an index
+		foreach ($entities as $entity)
+		{
+			$config[$entity->code] = $entity->name;
+		}
+
+		echo json_encode($config, true);
 	}
 }
