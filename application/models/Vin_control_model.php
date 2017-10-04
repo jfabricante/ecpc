@@ -65,4 +65,14 @@ class Vin_control_model extends CI_Model {
 
 		return $this;
 	}
+
+	public function fetchLot($params)
+	{
+		$query = $this->db->select('lot_no')
+				->from('vin_control_tbl')
+				->where($params)
+				->get();
+
+		return $query->result();
+	}
 }
