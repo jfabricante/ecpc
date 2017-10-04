@@ -96,4 +96,12 @@ class Vin extends CI_Controller {
 		echo json_encode($this->vin_model->browse(), true);
 	}
 
+	public function ajax_vin_lot()
+	{
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		$lot = $this->vin_control_model->fetchLot($data);
+
+		echo $lot ?  json_encode($lot, true) : '';
+	}
 }
