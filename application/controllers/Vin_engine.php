@@ -92,36 +92,102 @@ class Vin_engine extends CI_Controller {
 		$this->load->view('include/template', $data);
 	}
 
-	public function store()
+	public function store_ckd_resource()
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$data       = json_decode(file_get_contents("php://input"), true);
+		$new_vin    = array_column($data['items'], 'vin_no');
+		$new_engine = array_column($data['items'], 'engine_no');
 
-		// Trim the post data
-		$config = array_map('trim', $this->input->post());
+		// Vin and Engine no. from the resource
+		$resources       = $this->vin_engine_model->fetchFields();
+		$resource_vin    = array_column($resources, 'vin_no');
+		$resource_engine = array_column($resources, 'engine_no');
 
-		if ($this->vin_model->exist($config))
+		// Vin and Engine no. that matches
+		$exist_vin    = array_intersect($resource_vin, $new_vin);
+		$exist_engine = array_intersect($resource_engine, $new_engine);
+
+		if (count($exist_vin))
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			echo json_encode($exist_vin, true);
+		}
+		else if (count($exist_engine))
+		{
+			echo json_encode($exist_engine, true);
 		}
 		else
 		{
-			$this->vin_model->store($config);
+			$current_date   = date('Y-m-d H:i:s');
+			$fullname       = $this->session->userdata('fullname');
+			$vin_control    = $data['vin_control'];
+			$last_item      = end($data['items']);
+			$model          = $data['selected_model'];
+			$items          = $data['items'];
+			$portcode       = $data['portcode'];
+			$serial         = $data['serial'];
+			$classification = $data['classification'];
+			$entry_no       = $data['entry_no'];
 
-			if ($id > 0)
+			$config = array();
+
+			// Format for batch insertion
+			for ($i = 0; $i < count($items); $i++)
 			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been updated!</div>');
+				$items[$i]['last_update']    = $current_date;
+				$items[$i]['last_user']      = $fullname;
+				$items[$i]['security_no']    = '';
+				$items[$i]['portcode']       = $portcode;
+				$items[$i]['serial']         = $serial;
+				$items[$i]['classification'] = $classification;
+				$items[$i]['entry_no']       = $entry_no;
+				$items[$i]['year']           = date('Y');
+
+				$config[] = array(
+						'portcode'       => $portcode,
+						'year'           => date('Y'),
+						'serial'         => $serial,
+						'entry_no'       => $entry_no,
+						'mvdp'           => 'Y',
+						'engine_no'      => $items[$i]['engine_no'],
+						'chassis_no'     => $items[$i]['vin_no'],
+						'classification' => str_pad($classification, 3, '0', STR_PAD_LEFT),
+						'vin_no'         => $items[$i]['vin_no'],
+						'make'           => 'ISUZU',
+						'series'         => $model['series'],
+						'color'          => $items[$i]['color'],
+						'piston'         => strtoupper($model['piston_displacement']),
+						'body_type'      => $model['body_type'],
+						'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
+						'year_model'     => $model['year_model'],
+						'gross_weight'   => number_format($model['gross_weight'], 2),
+						'net_weight'     => '',
+						'cylinder'       => $model['cylinder'],
+						'fuel'           => strtoupper($model['fuel'])
+					);
 			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been added!</div>');
-			}
+
+			// Perform batch insert
+			$this->vin_engine_model->store_batch($items);
+
+			// Create excel file
+			$this->_excel_report($config);
+			
+			// Format insert data for vin control
+			$config = array(
+					'code'          => $vin_control['code'],
+					'vin_no'        => $vin_control['vin_no'],
+					'lot_no'        => $last_item['lot_no'],
+					'engine'        => $vin_control['engine'],
+					'product_model' => $vin_control['product_model'],
+					'model_name'    => $vin_control['model_name'],
+					'last_user'     => $fullname,
+					'last_update'   => $vin_control['last_update']
+				);	
+
+			$this->vin_control_model->store($config);
 		}
-
-		redirect($this->agent->referrer());
 	}
 
-
-	public function store_resource()
 	{
 		$data = json_decode(file_get_contents("php://input"), true);
 
