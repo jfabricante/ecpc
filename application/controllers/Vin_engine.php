@@ -17,12 +17,11 @@ class Vin_engine extends CI_Controller {
 		$this->load->model($models);
 	}
 
-	public function index()
+	public function ckd()
 	{
 		$data = array(
-				'title'    => 'Engine and Chassis Form',
-				'content'  => 'vin_engine/index_view',
-				'entities' => $this->vin_model->browse()
+				'title'   => 'Engine and Chassis Form CKD',
+				'content' => 'vin_engine/ckd_view',
 			);
 
 		$this->load->view('include/template', $data);
