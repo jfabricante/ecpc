@@ -142,7 +142,7 @@
 
 			$(this.$refs.lot_from).on('change', function() {
 				self.lot_from = $(this).val()
-				
+
 				// Assign the initial value of lot to
 				self.lot_to = $(this).val()
 
