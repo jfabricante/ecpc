@@ -67,7 +67,7 @@ class Vin_engine extends CI_Controller {
 					'vin_no'         => $entity->vin_no,
 					'make'           => 'ISUZU',
 					'series'         => $entity->series,
-					'color'          => 'NA',
+					'color'          => $entity->color,
 					'piston'         => strtoupper($entity->piston_displacement),
 					'body_type'      => $entity->body_type,
 					'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
