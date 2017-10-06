@@ -19,6 +19,17 @@ class Vin_engine_model extends CI_Model {
 		return $this->db->get('vin_engine_tbl')->result_array();
 	}
 
+	public function fetchFields()
+	{
+		$fields = array('vin_no', 'engine_no');
+
+		$query = $this->db->select($fields)
+				->from('vin_engine_tbl')
+				->get();
+
+		return $query->result_array();
+	}
+
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
