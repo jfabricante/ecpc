@@ -149,4 +149,9 @@ class Vin_engine_model extends CI_Model {
 
 		return $query->result();
 	}
+
+	public function store_batch(array $data)
+	{
+		$this->db->insert_batch('vin_engine_tbl', $data);
+	}
 }
