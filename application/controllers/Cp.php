@@ -59,11 +59,11 @@ class Cp extends CI_Controller {
 
 			if ($id > 0)
 			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been updated!</div>');
+				$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been updated!</div>');
 			}
 			else
 			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been added!</div>');
+				$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been added!</div>');
 			}
 		//}
 
