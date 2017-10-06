@@ -99,6 +99,7 @@ class Vin_engine_model extends CI_Model {
 					'a.lot_no',
 					'a.invoice_no',
 					'a.year',
+					'a.color',
 					'c.series',
 					'c.piston_displacement',
 					'c.body_type',
@@ -106,15 +107,26 @@ class Vin_engine_model extends CI_Model {
 					'c.gross_weight',
 					'c.net_weight',
 					'c.cylinder',
-					'c.fuel'
+					'c.fuel',
 				);
 
+		// If the first query has no result
 		$query = $this->db->select($fields)
 				->from('vin_engine_tbl AS a')
 				->join('vin_model_tbl AS b', 'a.product_model = b.product_model', 'INNER')
 				->join('cp_tbl AS c', 'b.cp_id = c.id', 'INNER')
 				->where($params)
 				->get();
+
+		// Generate query that directs to cp details model
+		if (!$query->num_rows())
+		{
+			$query = $this->db->select($fields)
+					->from('vin_engine_tbl AS a')
+					->join('cp_tbl AS c', 'a.product_model = c.model', 'INNER')
+					->where($params)
+					->get();
+		}
 
 		return $query->result();
 	}
