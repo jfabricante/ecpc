@@ -27,6 +27,16 @@ class Vin_engine extends CI_Controller {
 		$this->load->view('include/template', $data);
 	}
 
+	public function cbu()
+	{
+		$data = array(
+				'title'   => 'Engine and Chassis Form CBU',
+				'content' => 'vin_engine/cbu_view',
+			);
+
+		$this->load->view('include/template', $data);
+	}
+
 	public function invoice()
 	{
 		$data = array(
