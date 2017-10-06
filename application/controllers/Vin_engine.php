@@ -188,63 +188,89 @@ class Vin_engine extends CI_Controller {
 		}
 	}
 
+	public function store_cbu_resource()
 	{
-		$data = json_decode(file_get_contents("php://input"), true);
+		$data       = json_decode(file_get_contents("php://input"), true);
+		$new_vin    = array_column($data['items'], 'vin_no');
+		$new_engine = array_column($data['items'], 'engine_no');
 
-		$current_date   = date('Y-m-d H:i:s');
-		$fullname       = $this->session->userdata('fullname');
-		$vin_control    = $data['vin_control'];
-		$last_item      = end($data['items']);
-		$model          = $data['selected_model'];
-		$items          = $data['items'];
-		$portcode       = $data['portcode'];
-		$serial         = $data['serial'];
-		$classification = $data['classification'];
-		$entry_no       = $data['entry_no'];
+		// Vin and Engine no. from the resource
+		$resources       = $this->vin_engine_model->fetchFields();
+		$resource_vin    = array_column($resources, 'vin_no');
+		$resource_engine = array_column($resources, 'engine_no');
 
-		$config = array();
-	
-		// Insert the items
-		foreach ($items as $row) 
+		// Vin and Engine no. that matches
+		$exist_vin    = array_intersect($resource_vin, $new_vin);
+		$exist_engine = array_intersect($resource_engine, $new_engine);
+
+		if (count($exist_vin))
 		{
-			$row['last_update']    = $current_date;
-			$row['last_user']      = $fullname;
-			$row['security_no']    = '';
-			$row['portcode']       = $portcode;
-			$row['serial']         = $serial;
-			$row['classification'] = $classification;
-			$row['entry_no']       = $entry_no;
-			$row['year']           = date('Y');
-
-			$config[] = array(
-					'portcode'       => $portcode,
-					'year'           => date('Y'),
-					'serial'         => $serial,
-					'entry_no'       => $entry_no,
-					'mvdp'           => 'Y',
-					'engine_no'      => $row['engine_no'],
-					'chassis_no'     => $row['vin_no'],
-					'classification' => str_pad($classification, 3, '0', STR_PAD_LEFT),
-					'vin_no'         => $row['vin_no'],
-					'make'           => 'ISUZU',
-					'series'         => $model['series'],
-					'color'          => 'NA',
-					'piston'         => strtoupper($model['piston_displacement']),
-					'body_type'      => $model['body_type'],
-					'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
-					'year_model'     => $model['year_model'],
-					'gross_weight'   => number_format($model['gross_weight'], 2),
-					'net_weight'     => '',
-					'cylinder'       => $model['cylinder'],
-					'fuel'           => strtoupper($model['fuel'])
-				);
-
-			$this->vin_engine_model->store($row); 
+			echo json_encode($exist_vin, true);
 		}
+		else if (count($exist_engine))
+		{
+			echo json_encode($exist_engine, true);
+		}
+		else
+		{
+			$items          = $data['items'];
+			$portcode       = $data['portcode'];
+			$serial         = $data['serial'];
+			$classification = $data['classification'];
+			$entry_no       = $data['entry_no'];
+			$current_date   = date('Y-m-d H:i:s');
+			$fullname       = $this->session->userdata('fullname');
+			$items2         = $data['items2'];
 
-		echo json_encode($this->_excel_report($config), true);
-		
-		// Format insert data for vin control
+			$config = array();
+
+			// Format data for batch insertion
+			for ($i = 0; $i < count($items); $i++)
+			{
+				$items[$i]['last_update']    = $current_date;
+				$items[$i]['last_user']      = $fullname;
+				$items[$i]['security_no']    = '';
+				$items[$i]['portcode']       = $portcode;
+				$items[$i]['serial']         = $serial;
+				$items[$i]['classification'] = $classification;
+				$items[$i]['entry_no']       = $entry_no;
+				$items[$i]['year']           = date('Y');
+			}
+
+			// Perform batch insert
+			$this->vin_engine_model->store_batch($items);
+
+			// Format for excel content
+			foreach ($items2 as $row)
+			{
+				$config[] = array(
+						'portcode'       => $portcode,
+						'year'           => date('Y'),
+						'serial'         => $serial,
+						'entry_no'       => $entry_no,
+						'mvdp'           => 'Y',
+						'engine_no'      => $row['engine_no'],
+						'chassis_no'     => $row['chassis_no'],
+						'classification' => $classification,
+						'vin_no'         => $row['vin_no'],
+						'make'           => 'ISUZU',
+						'series'         => $row['series'],
+						'color'          => $row['color'],
+						'piston'         => $row['piston_displacement'],
+						'body_type'      => $row['body_type'],
+						'manufacturer'   => 'ISUZUPHILIPPINESCORPORATION',
+						'year_model'     => $row['year_model'],
+						'gross_weight'   => $row['gross_weight'],
+						'net_weight'     => $row['net_weight'],
+						'cylinder'       => $row['cylinder'],
+						'fuel'           => $row['fuel']
+					);
+			}
+
+			$this->_excel_report($config);
+		}
+	}
+
 		$config = array(
 				'code'          => $vin_control['code'],
 				'vin_no'        => $vin_control['vin_no'],
