@@ -271,18 +271,23 @@ class Vin_engine extends CI_Controller {
 		}
 	}
 
+	protected function _handle_upload()
+	{
 		$config = array(
-				'code'          => $vin_control['code'],
-				'vin_no'        => $vin_control['vin_no'],
-				'lot_no'        => $last_item['lot_no'],
-				'engine'        => $vin_control['engine'],
-				'product_model' => $vin_control['product_model'],
-				'model_name'    => $vin_control['model_name'],
-				'last_user'     => $fullname,
-				'last_update'   => $vin_control['last_update']
-			);	
+				//'upload_path'   => './resources/thumbnail',
+				'allowed_types' => 'xlsx|xls|csv',
+			);
 
-		$this->vin_control_model->store($config);
+		$this->load->library('upload', $config);
+
+		if (!$this->upload->do_upload('file-upload'))
+		{
+			$error = array('error' => $this->upload->display_errors());
+
+			return $this->upload->display_errors();
+		}
+
+		return $this->upload;
 	}
 
 	protected function _excel_report($params)
