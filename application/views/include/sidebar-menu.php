@@ -45,7 +45,9 @@
 
 			<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-table"></i><span>Vin Control</span></a></li>
 
-			<li class="<?php echo $menu == 'vin_engine/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/index') ?>"><i class="fa fa-table"></i><span>Vin Engine</span></a></li>
+			<li class="<?php echo $menu == 'vin_engine/ckd' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/ckd') ?>"><i class="fa fa-table"></i><span>CKD</span></a></li>
+
+			<li class="<?php echo $menu == 'vin_engine/cbu' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/cbu') ?>"><i class="fa fa-table"></i><span>CBU</span></a></li>
 
 			<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-table"></i><span>Invoice Report</span></a></li>
 
