@@ -14,19 +14,6 @@
 					<form method="post" v-on:submit.prevent="storeResource" enctype="multipart/form-data" role="form" id="form">
 						<!-- row -->
 						<div class="row">
-							<!-- classification picker -->
-							<div class="col-md-2">
-								<div class="form-group">
-									<label for="classification">Classification</label>
-									<select name="classification" id="classification" ref="classification" class="select2 form-control" >
-										<option></option>
-										<option v-for="option in classification" v-bind:value="option.short_code">
-											{{ _.padStart(option.short_code, 3, '0') }} - {{ option.description }}
-										</option>
-									</select>
-								</div>
-							</div>
-							<!-- ./classification-picker -->
 							
 							<!-- model picker -->
 							<div class="col-md-2">
@@ -143,7 +130,6 @@
 								<td>{{ item.sequence }}</td>
 								<td>{{ item.product_model }}</td>
 								<td>{{ item.vin_no }}</td>
-								<!-- <td><input type="text" class="form-control" v-bind:value="item.engine_no" v-model="items[index].engine_no"></td> -->
 								<td>{{ item.engine_no }}</td>
 								<td>{{ item.security_no }}</td>
 								<td>{{ item.lot_no }}</td>
@@ -196,18 +182,15 @@
 			separator: 0,
 			fileUpload: '',
 			excelObject: [],
-			porcode: [],
+			portcode: [],
 			serial: [],
-			classification: [],
+			classification: '003',
 			entryNo: '',
-			color: []
 		},            
 		created() {
 			this.fetchVinModel()
 			this.fetchPortcode()
 			this.fetchSerial()
-			this.fetchClassification()
-			this.fetchColor()
 		},
 		watch: {
 			selected: function() {
@@ -220,7 +203,7 @@
 		mounted() {
 			var self = this
 
-			$(this.$refs.vin_model).on("change", function() {
+			$(this.$refs.vin_model).on('change', function() {
 				self.selected = self.getSelectedModel($(this).val())
 			})
 
@@ -232,10 +215,6 @@
 
 			$(this.$refs.serial).on('change', function() {
 				self.$set(self.serial, 'selected', $(this).val())
-			})
-
-			$(this.$refs.classification).on('change', function() {
-				self.$set(self.classification, 'selected', $(this).val())
 			})
 
 		},
@@ -267,25 +246,6 @@
 					console.log(err.message);
 				});
 			},
-			fetchClassification: function() {
-				axios.get(appUrl + '/classification/ajax_classification_list')
-				.then((response) => {
-					this.classification = response.data
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-			},
-			fetchColor: function() {
-				axios.get(appUrl + '/color/ajax_color_list')
-				.then((response) => {
-					this.color = response.data
-					console.log(this.color)
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-			},
 			getSelectedModel: function(searchItem)
 			{
 				for (let [index, value] of this.vinModel.entries())
@@ -302,6 +262,7 @@
 			{
 				if (this.selected instanceof Object)
 				{
+					console.log(this.selected)
 					// Clear items before populate
 					this.clearItems()
 
@@ -309,7 +270,7 @@
 					{
 						this.items.push(this.formatData(i))
 					}
-				}	
+				}
 			},
 			formatData: function(count)
 			{
@@ -330,7 +291,8 @@
 						security_no: '',
 						lot_no: Number(this.vinControl.lot_no) + 1 || '',
 						model_name: this.vinControl.model_name || '',
-						invoice_no: ''
+						invoice_no: '',
+						color: 'NA'
 					}
 
 				return formattedData
@@ -350,8 +312,6 @@
 				})
 				.then((response) => {
 					this.vinControl = response.data
-					this.lastVin    = this.vinControl.vin_no
-					this.lastLot    = this.vinControl.lot_no
 
 					if (response.data !== null)
 					{
@@ -391,6 +351,10 @@
 			// Separate vin into two parts as prefix and suffix
 			separateVin: function()
 			{
+				// Asign the last vin and last lot
+				this.lastVin = this.vinControl.vin_no
+				this.lastLot = this.vinControl.lot_no
+
 				// Assign the point of reference
 				this.calculatedLength = this.occurenceOfNumber(this.vinControl.vin_no)
 				this.separator = this.vinControl.vin_no.length - this.calculatedLength
@@ -422,15 +386,6 @@
 					// Look for possible sheet in a smarter way
 					for (let model of wb.SheetNames)
 					{
-						// Split into two to get the model prefix
-						//model = model.split('-')
-
-						/*if (this.selected.product_model.includes(model[0]))
-						{
-							sheetName = model.join('-')
-							break
-						}*/
-
 						// Implement a strict cheking of excel sheet
 						if (this.selected.product_model === model)
 						{
@@ -490,30 +445,33 @@
 						alert('Lot Size and Excel Sheet content does not match in terms of items.')
 					}
 				}
-
 			},
 			storeResource: function()
 			{
 				axios({
-					url: appUrl + '/vin_engine/store_resource',
+					url: appUrl + '/vin_engine/store_ckd_resource',
 					method: 'post',
 					data: {
 						items: this.items,
 						selected_model: this.selected,
 						portcode: this.portcode.selected,
 						serial: this.serial.selected,
-						classification: this.classification.selected,
+						classification: this.classification,
 						vin_control: this.vinControl,
-						entry_no: this.entryNo
+						entry_no: this.entryNo,
 					}
 				})
 				.then((response) => {
 
-					console.log(response)
-
-					if (response.data !== null)
+					if (typeof response.data == 'string')
 					{
 						window.open(appUrl + '/vin_engine/download')
+					}
+					else
+					{
+						let objectValues = _.values(response.data)
+
+						alert('Values existed on the resouce ' + objectValues.join(', '))
 					}
 					
 				})
