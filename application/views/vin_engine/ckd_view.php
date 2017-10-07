@@ -168,6 +168,7 @@
 
 <script type="text/javascript">
 	var appUrl = '<?php echo base_url('index.php') ?>';
+	var tmUrl  = '<?php echo base_url('resources/images/') ?>';
 
 	var app = new Vue({
 		el: '#app',
@@ -219,6 +220,7 @@
 				self.$set(self.serial, 'selected', $(this).val())
 			})
 
+			$(this.$refs.process).on('click', this.showModal)
 		},
 		methods: {
 			fetchVinModel: function() {
@@ -246,6 +248,13 @@
 				})
 				.catch((err) => {
 					console.log(err.message);
+				});
+			},
+			showModal: function() {
+				$("#myModal").modal({backdrop: 'static', keyboard: false})
+
+				$('#myModal').on('shown.bs.modal', function() {
+					$(this).find('.modal-body').html('<img src="' + tmUrl + 'loading.gif" class="img-responsive"/>')
 				});
 			},
 			getSelectedModel: function(searchItem)
@@ -464,6 +473,8 @@
 					}
 				})
 				.then((response) => {
+					// Close the modal
+					$('#myModal').modal('hide')
 
 					if (typeof response.data == 'string')
 					{
