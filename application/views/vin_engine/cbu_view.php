@@ -127,12 +127,14 @@
 	</div>
 	<!-- End of row -->
 </section>
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="myModal">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
 </div>
 <script src="<?php echo base_url('resources/plugins/select2/js/select2.js');?>"></script>
 <script src="<?php echo base_url('resources/js/axios/axios.min.js') ?>"></script>
