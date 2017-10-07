@@ -189,6 +189,8 @@
 			$(this.$refs.serial).on('change', function() {
 				self.$set(self.serial, 'selected', $(this).val())
 			})
+
+			$(this.$refs.process).on('click', this.showModal)
 		},
 		methods: {
 			fetchPortcode: function() {
@@ -227,6 +229,13 @@
 				})
 				.catch((err) => {
 					console.log(err.message);
+				});
+			},
+			showModal: function() {
+				$("#myModal").modal({backdrop: 'static', keyboard: false})
+
+				$('#myModal').on('shown.bs.modal', function() {
+					$(this).find('.modal-body').html('<img src="' + tmUrl + 'loading.gif" class="img-responsive"/>')
 				});
 			},
 			clearItems: function()
@@ -366,6 +375,7 @@
 			},
 			storeResource: function()
 			{
+
 				//console.log(this.items2)
 				axios({
 					url: appUrl + '/vin_engine/store_cbu_resource',
@@ -380,8 +390,9 @@
 					}
 				})
 				.then((response) => {
+					// Close the modal
+					$('#myModal').modal('hide')
 
-					console.log(response)
 					if (typeof response.data == 'string')
 					{
 						window.open(appUrl + '/vin_engine/download')
