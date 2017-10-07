@@ -73,7 +73,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label> </label>
-									<input type="submit" name="process" value="Process" class="btn btn-flat btn-danger form-control">
+									<input type="submit" name="process" value="Process" ref="process" class="btn btn-flat btn-danger form-control">
 								</div>
 							</div>
 						</div>
