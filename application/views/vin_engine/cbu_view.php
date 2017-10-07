@@ -61,14 +61,14 @@
 							</div>
 							<!-- ./entry no -->
 
-							<!-- entry no -->
+							<!-- lot no -->
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="lot_no">Lot No.</label>
-									<input type="text" name="lot_no" class="form-control" id="lot_no" v-model="lotNo">
+									<input type="number" name="lot_no" class="form-control" id="lot_no" v-model="lotNo">
 								</div>
 							</div>
-							<!-- ./entry no -->
+							<!-- ./lot no -->
 
 							<div class="col-md-2">
 								<div class="form-group">
