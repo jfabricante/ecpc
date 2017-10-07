@@ -154,4 +154,24 @@ class Vin_engine_model extends CI_Model {
 	{
 		$this->db->insert_batch('vin_engine_tbl', $data);
 	}
+
+	public function fetchDistinctModel()
+	{
+		$query = $this->db->distinct('product_model')
+				->select('product_model')
+				->get('vin_engine_tbl');
+
+		return $query->result();
+	}
+
+	public function fetchDistinctLot($params)
+	{
+		$query = $this->db->distinct('lot_no')
+				->select('lot_no')
+				->order_by('lot_no', 'ASC')
+				->where($params)
+				->get('vin_engine_tbl');
+
+		return $query->result();
+	}
 }
