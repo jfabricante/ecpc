@@ -410,4 +410,17 @@ class Vin_engine extends CI_Controller {
 
 		echo json_encode($this->vin_engine_model->fetchModelItems($data), true);
 	}
+
+	public function ajax_distinct_model()
+	{
+		echo json_encode($this->vin_engine_model->fetchDistinctModel());
+	}
+
+	public function ajax_distinct_lot()
+	{
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		echo json_encode($this->vin_engine_model->fetchDistinctLot($data), true);
+	}
+
 }
