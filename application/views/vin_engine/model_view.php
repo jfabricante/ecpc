@@ -154,7 +154,7 @@
 		},
 		methods: {
 			fetchVinModel: function() {
-				axios.get(appUrl + '/vin/ajax_model_list2')
+				axios.get(appUrl + '/vin_engine/ajax_distinct_model')
 					.then((response) => {
 						this.vinModelList = response.data
 						console.log(response.data)
@@ -168,13 +168,14 @@
 				this.lot = ''
 
 				axios({
-					url: appUrl + '/vin/ajax_vin_lot',
+					url: appUrl + '/vin_engine/ajax_distinct_lot',
 					method: 'post',
 					data: {
 						product_model: this.vinSelected || ''
 					}
 				})
 				.then((response) => {
+					console.log(response.data)
 					this.lot = response.data
 				})
 				.catch((error) => {
