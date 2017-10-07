@@ -147,6 +147,7 @@
 
 <script type="text/javascript">
 	var appUrl = '<?php echo base_url('index.php') ?>';
+	var tmUrl  = '<?php echo base_url('resources/images/') ?>';
 
 	var app = new Vue({
 		el: '#app',
