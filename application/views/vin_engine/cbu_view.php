@@ -100,7 +100,7 @@
 								<th>Engine No.</th>
 								<th>Security No.</th>
 								<th>Lot No.</th>
-								<th>Product Model</th>
+								<th>Color</th>
 								<th>Invoice No.</th>
 							</tr>
 						</thead>
@@ -112,7 +112,7 @@
 								<td>{{ item.engine_no }}</td>
 								<td>{{ item.security_no }}</td>
 								<td>{{ item.lot_no = lotNo }}</td>
-								<td>{{ item.model_name }}</td>
+								<td>{{ item.color }}</td>
 								<td>{{ item.invoice_no }}</td>
 							</tr>
 						</tbody>
@@ -337,8 +337,9 @@
 							security_no: '',
 							lot_no: '',
 							model_name: '',
-							invoice_no: entity['INVOICE NO'],
-							color: this.color[Number(entity['COLOR'])]
+							invoice_no: entity['INVOICE NO.'],
+							color: this.color[Number(entity['COLOR'])] ? this.color[Number(entity['COLOR'])] : entity['COLOR'],
+							key_no: entity['KEY NO.']
 						}
 
 					this.items.push(formattedData)
@@ -356,7 +357,7 @@
 							gross_weight: this.cpEntity.gross_weight,
 							net_weight: this.cpEntity.net_weight,
 							cylinder: this.cpEntity.cylinder,
-							fuel: _.toUpper(this.cpEntity.fuel) 
+							fuel: _.toUpper(this.cpEntity.fuel)
 						}
 					
 					this.items2.push(excelFormat)
@@ -406,6 +407,8 @@
 					
 				})
 				.catch((error) => {
+					$('#myModal').modal('hide')
+					alert('There was no data to process.')
 					// your action on error success
 					console.log(error)
 				});
