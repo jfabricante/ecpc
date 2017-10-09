@@ -17,7 +17,10 @@ class User_model extends CI_Model {
 				'password' => $this->input->post('password')
 			);
 
-		$fields = array(
+		$query = $this->db->where($config)->get('users_tbl');
+
+
+		/*$fields = array(
 				'a.id',
 				'a.username',
 				'a.fullname',
@@ -31,7 +34,7 @@ class User_model extends CI_Model {
 				->join('users_role_tbl AS b', 'a.id = b.user_id', 'INNER')
 				->join('roles_tbl AS c', 'b.role_id = c.id', 'INNER')
 				->where($config)
-				->get();
+				->get();*/
 
 		if ($query->num_rows())
 		{
