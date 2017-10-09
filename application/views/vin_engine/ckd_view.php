@@ -121,7 +121,7 @@
 								<th>Engine No.</th>
 								<th>Security No.</th>
 								<th>Lot No.</th>
-								<th>Product Model</th>
+								<th>Color</th>
 								<th>Invoice No.</th>
 							</tr>
 						</thead>
@@ -133,7 +133,7 @@
 								<td>{{ item.engine_no }}</td>
 								<td>{{ item.security_no }}</td>
 								<td>{{ item.lot_no }}</td>
-								<td>{{ item.model_name }}</td>
+								<td>{{ item.color }}</td>
 								<td>{{ item.invoice_no }}</td>
 							</tr>
 						</tbody>
@@ -489,6 +489,8 @@
 					
 				})
 				.catch((error) => {
+					$('#myModal').modal('hide')
+					alert('There was no data to process.')
 					// your action on error success
 					console.log(error)
 				});
