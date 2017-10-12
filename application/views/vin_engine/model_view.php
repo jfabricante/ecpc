@@ -75,7 +75,7 @@
 								<th>Engine No.</th>
 								<th>Security No.</th>
 								<th>Lot No.</th>
-								<th>Product Model</th>
+								<th>Color</th>
 								<th>Invoice No.</th>
 							</tr>
 						</thead>
@@ -171,7 +171,7 @@
 					url: appUrl + '/vin_engine/ajax_distinct_lot',
 					method: 'post',
 					data: {
-						product_model: this.vinSelected || ''
+						PRODUCT_MODEL: this.vinSelected || ''
 					}
 				})
 				.then((response) => {
@@ -228,8 +228,8 @@
 				// Insert the new content
 				for (let entity of this.vinModelItems)
 				{
-					$table.row.add([ entity.product_model, entity.vin_no, entity.engine_no, entity.security_no, entity.lot_no,
-					entity.model_name, entity.invoice_no ]).draw().node();
+					$table.row.add([ entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					entity.COLOR, entity.INVOICE_NO ]).draw().node();
 				}
 			}
 		}
