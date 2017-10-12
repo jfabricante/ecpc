@@ -20,8 +20,8 @@
 									<div class="col-md-8">
 										<select name="vin_model" id="vin_model" ref="vin_model" class="select2 form-control">
 											<option></option>
-											<option v-for="entity of vinModelList" v-bind:value="entity.product_model">
-												{{ entity.product_model }}
+											<option v-for="entity of vinModelList" v-bind:value="entity.PRODUCT_MODEL">
+												{{ entity.PRODUCT_MODEL }}
 											</option>
 										</select>
 									</div>
@@ -34,8 +34,8 @@
 									<div class="col-md-7">
 										<select name="lot_from" id="lot_from" ref="lot_from" class="select2 form-control">
 											<option></option>
-											<option v-for="entity of lot" v-bind:value="entity.lot_no">
-												{{ entity.lot_no }}
+											<option v-for="entity of lot" v-bind:value="entity.LOT_NO">
+												{{ entity.LOT_NO }}
 											</option>
 										</select>
 									</div>
@@ -48,8 +48,8 @@
 									<div class="col-md-7">
 										<select name="lot_to" id="lot_to" ref="lot_to" class="select2 form-control">
 											<option></option>
-											<option v-for="entity of lot" v-bind:value="entity.lot_no">
-												{{ entity.lot_no }}
+											<option v-for="entity of lot" v-bind:value="entity.LOT_NO">
+												{{ entity.LOT_NO }}
 											</option>
 										</select>
 									</div>
