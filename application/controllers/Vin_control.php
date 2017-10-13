@@ -126,4 +126,11 @@ class Vin_control extends CI_Controller {
 			echo json_encode($config);
 		}
 	}
+
+	/*public function run_migration()
+	{
+		echo '<pre>';
+		print_r($this->vin_control->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }

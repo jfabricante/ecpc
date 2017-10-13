@@ -3,27 +3,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cp_model extends CI_Model {
 
+	private $oracle;
+
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->database();
+		$this->oracle = $this->load->database('oracle', true);
 	}
 
 	public function browse(array $params = array('type' => 'object'))
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('cp_tbl')->result();	
+			return $this->oracle->get('CP')->result();	
 		}
 
-		return $this->db->get('cp_tbl')->result_array();
+		return $this->oracle->get('CP')->result_array();
 	}
 
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('cp_tbl', array('id' => $params['id']));
+			$query = $this->oracle->get_where('CP', array('ID' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -36,33 +38,42 @@ class Cp_model extends CI_Model {
 
 	public function store($params)
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		if ($id > 0)
 		{
-			$this->db->update('cp_tbl', $params, array('id' => $id));
+			$this->oracle->update('CP', $params, array('ID' => $id));
 		}
 		else
 		{
-			$this->db->insert('cp_tbl', $params);
+			$this->oracle->insert('CP', $params);
 		}
 
-		return $this;	
+		return $this;
 	}
 
 	public function delete()
 	{
-		$id = $this->input->post('id');
+		$id = $this->input->post('ID');
 
-		$this->db->delete('cp_tbl', array('id' => $id));
+		$this->oracle->delete('CP', array('ID' => $id));
 
 		return $this;
 	}
 
 	public function exist($params)
 	{
-		$query = $this->db->get_where('cp_tbl', array('product_model' => $params['product_model']));
+		$query = $this->oracle->get_where('CP', array('product_model' => $params['product_model']));
 
 		return $query->num_rows();
 	}
+
+	/*public function migrateItems()
+	{
+		$old_data = $this->browse(array('type' => 'array'));
+
+		$this->oracle->insert_batch('CP', $old_data);
+
+		return $old_data;
+	}*/
 }

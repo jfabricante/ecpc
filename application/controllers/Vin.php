@@ -154,4 +154,11 @@ class Vin extends CI_Controller {
 	{
 		echo json_encode(array_column($this->vin_model->browse(array('type' => 'array')), 'PRODUCT_MODEL'));
 	}
+
+	/*public function run_migration()
+	{
+		echo '<pre>';
+		print_r($this->vin_model->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }

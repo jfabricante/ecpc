@@ -86,4 +86,11 @@ class Serial extends CI_Controller {
 	{
 		echo json_encode($this->serial_model->browse(), true);
 	}
+
+	/*public function migrate_data()
+	{
+		echo '<pre>';
+		print_r($this->serial_model->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }

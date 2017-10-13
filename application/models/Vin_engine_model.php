@@ -3,28 +3,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Vin_engine_model extends CI_Model {
 
+	public $oracle;
+
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->database();
+		$this->oracle = $this->load->database('oracle', true);
 	}
 
 	public function browse(array $params = array('type' => 'object'))
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('vin_engine_tbl')->result();	
+			return $this->oracle->get('VIN_ENGINE')->result();	
 		}
 
-		return $this->db->get('vin_engine_tbl')->result_array();
+		return $this->oracle->get('VIN_ENGINE')->result_array();
 	}
 
 	public function fetchFields()
 	{
-		$fields = array('vin_no', 'engine_no');
+		$fields = array('VIN_NO', 'ENGINE_NO');
 
-		$query = $this->db->select($fields)
-				->from('vin_engine_tbl')
+		$query = $this->oracle->select($fields)
+				->from('VIN_ENGINE')
 				->get();
 
 		return $query->result_array();
@@ -34,7 +36,7 @@ class Vin_engine_model extends CI_Model {
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('vin_engine_tbl', array('id' => $params['id']));
+			$query = $this->oracle->get_where('VIN_ENGINE', array('id' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -51,11 +53,11 @@ class Vin_engine_model extends CI_Model {
 
 		if ($id > 0)
 		{
-			$this->db->update('vin_engine_tbl', $params, array('id' => $id));
+			$this->oracle->update('VIN_ENGINE', $params, array('id' => $id));
 		}
 		else
 		{
-			$this->db->insert('vin_engine_tbl', $params);
+			$this->oracle->insert('VIN_ENGINE', $params);
 		}
 
 		return $this;	
@@ -65,23 +67,23 @@ class Vin_engine_model extends CI_Model {
 	{
 		$id = $this->input->post('id');
 
-		$this->db->delete('vin_model_tbl', array('id' => $id));
+		$this->oracle->delete('VIN_MODEL', array('id' => $id));
 
 		return $this;
 	}
 
 	public function exist($params)
 	{
-		$query = $this->db->get_where('vin_model_tbl', array('product_model' => $params['product_model']));
+		$query = $this->oracle->get_where('VIN_MODEL', array('product_model' => $params['product_model']));
 
 		return $query->num_rows();
 	}
 
 	public function fetchInvoice()
 	{
-		$query = $this->db->select('invoice_no')
-				->from('vin_engine_tbl')
-				->distinct('invoice_no')
+		$query = $this->oracle->select('INVOICE_NO')
+				->from('VIN_ENGINE')
+				->distinct('INVOICE_NO')
 				->get();
 
 		return $query->result();
@@ -90,40 +92,40 @@ class Vin_engine_model extends CI_Model {
 	public function fetchInvoiceItem($params)
 	{
 		$fields = array(
-					'a.portcode',
-					'a.serial',
-					'a.entry_no',
-					'a.vin_no',
-					'a.engine_no',
-					'a.classification',
-					'a.lot_no',
-					'a.invoice_no',
-					'a.year',
-					'a.color',
-					'c.series',
-					'c.piston_displacement',
-					'c.body_type',
-					'c.year_model',
-					'c.gross_weight',
-					'c.net_weight',
-					'c.cylinder',
-					'c.fuel',
+					'a.PORTCODE',
+					'a.SERIAL',
+					'a.ENTRY_NO',
+					'a.VIN_NO',
+					'a.ENGINE_NO',
+					'a.CLASSIFICATION',
+					'a.LOT_NO',
+					'a.INVOICE_NO',
+					'a.YEAR',
+					'a.COLOR',
+					'c.SERIES',
+					'c.PISTON_DISPLACEMENT',
+					'c.BODY_TYPE',
+					'c.YEAR_MODEL',
+					'c.GROSS_WEIGHT',
+					'c.NET_WEIGHT',
+					'c.CYLINDER',
+					'c.FUEL',
 				);
 
 		// If the first query has no result
-		$query = $this->db->select($fields)
-				->from('vin_engine_tbl AS a')
-				->join('vin_model_tbl AS b', 'a.product_model = b.product_model', 'INNER')
-				->join('cp_tbl AS c', 'b.cp_id = c.id', 'INNER')
+		$query = $this->oracle->select($fields)
+				->from('VIN_ENGINE a')
+				->join('VIN_MODEL b', 'a.PRODUCT_MODEL = b.PRODUCT_MODEL', 'INNER')
+				->join('CP c', 'b.CP_ID = c.ID', 'LEFT')
 				->where($params)
 				->get();
 
 		// Generate query that directs to cp details model
 		if (!$query->num_rows())
 		{
-			$query = $this->db->select($fields)
-					->from('vin_engine_tbl AS a')
-					->join('cp_tbl AS c', 'a.product_model = c.model', 'INNER')
+			$query = $this->oracle->select($fields)
+					->from('VIN_ENGINE AS a')
+					->join('CP AS c', 'a.PRODUCT_MODEL = c.MODEL', 'INNER')
 					->where($params)
 					->get();
 		}
@@ -133,17 +135,17 @@ class Vin_engine_model extends CI_Model {
 
 	public function fetchInvoiceView($params)
 	{
-		$query = $this->db->get_where('vin_engine_tbl', $params);
+		$query = $this->oracle->get_where('VIN_ENGINE', $params);
 	
 		return $query->result();
 	}
 
 	public function fetchModelItems($params)
 	{
-		$clause = sprintf('lot_no BETWEEN %s AND %s', $params['lot_from'], $params['lot_to']);
+		$clause = sprintf('LOT_NO BETWEEN %s AND %s', $params['lot_from'], $params['lot_to']);
 
-		$query = $this->db->from('vin_engine_tbl')
-				->where('product_model', $params['product_model'])
+		$query = $this->oracle->from('VIN_ENGINE')
+				->where('PRODUCT_MODEL', $params['product_model'])
 				->where($clause)
 				->get();
 
@@ -152,26 +154,54 @@ class Vin_engine_model extends CI_Model {
 
 	public function store_batch(array $data)
 	{
-		$this->db->insert_batch('vin_engine_tbl', $data);
+		$this->oracle->insert_batch('VIN_ENGINE', $data);
 	}
 
 	public function fetchDistinctModel()
 	{
-		$query = $this->db->distinct('product_model')
-				->select('product_model')
-				->get('vin_engine_tbl');
+		$query = $this->oracle->distinct('PRODUCT_MODEL')
+				->select('PRODUCT_MODEL')
+				->get('VIN_ENGINE');
 
 		return $query->result();
 	}
 
 	public function fetchDistinctLot($params)
 	{
-		$query = $this->db->distinct('lot_no')
-				->select('lot_no')
-				->order_by('lot_no', 'ASC')
+		$query = $this->oracle->distinct('LOT_NO')
+				->select('LOT_NO')
+				->order_by('LOT_NO', 'ASC')
 				->where($params)
-				->get('vin_engine_tbl');
+				->get('VIN_ENGINE');
 
 		return $query->result();
+	}
+
+	/*public function fetchOracleClassification()
+	{
+		$fields = array('ID');
+
+		$query = $this->oracle->select($fields)
+				->get('CLASSIFICATION');
+
+		return $query->result();
+	}*/
+
+	public function migrateItems()
+	{
+		ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 7200);
+
+		$old_data = $this->browse(array('type' => 'array'));
+
+		for ($i = 0; $i < count($old_data); $i++)
+		{
+			$old_data[$i]['LAST_UPDATE'] = $old_data[$i]['LAST_UPDATE'] ? date('d-M-Y', strtotime($old_data[$i]['LAST_UPDATE'])) : '';
+			$old_data[$i]['PROCESS_DATE'] = $old_data[$i]['PROCESS_DATE'] ? date('d-M-Y', strtotime($old_data[$i]['PROCESS_DATE'])) : '';
+		}
+
+		$this->oracle->insert_batch('VIN_ENGINE', $old_data);
+
+		return $old_data;
 	}
 }

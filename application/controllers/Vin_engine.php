@@ -440,4 +440,11 @@ class Vin_engine extends CI_Controller {
 		echo json_encode($this->vin_engine_model->fetchDistinctLot($data), true);
 	}
 
+	/*public function run_migration()
+	{
+		echo '<pre>';
+		$this->vin_engine_model->migrateItems();
+		echo '</pre>'; die;
+	}*/
+
 }

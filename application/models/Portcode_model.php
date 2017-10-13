@@ -3,27 +3,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Portcode_model extends CI_Model {
 
+	private $oracle;
+
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->database();
+		$this->oracle = $this->load->database('oracle', true);
 	}
 
 	public function browse(array $params = array('type' => 'object'))
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('port_code_tbl')->result();	
+			return $this->oracle->get('PORTCODE')->result();	
 		}
 
-		return $this->db->get('port_code_tbl')->result_array();
+		return $this->oracle->get('PORTCODE')->result_array();
 	}
 
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('port_code_tbl', array('id' => $params['id']));
+			$query = $this->oracle->get_where('PORTCODE', array('ID' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -36,15 +38,15 @@ class Portcode_model extends CI_Model {
 
 	public function store($params)
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		if ($id > 0)
 		{
-			$this->db->update('port_code_tbl', $params, array('id' => $id));
+			$this->oracle->update('PORTCODE', $params, array('ID' => $id));
 		}
 		else
 		{
-			$this->db->insert('port_code_tbl', $params);
+			$this->oracle->insert('PORTCODE', $params);
 		}
 
 		return $this;	
@@ -52,17 +54,26 @@ class Portcode_model extends CI_Model {
 
 	public function delete()
 	{
-		$id = $this->input->post('id');
+		$id = $this->input->post('ID');
 
-		$this->db->delete('port_code_tbl', array('id' => $id));
+		$this->oracle->delete('PORTCODE', array('ID' => $id));
 
 		return $this;
 	}
 
 	public function exist($params)
 	{
-		$query = $this->db->get_where('port_code_tbl', array('product_model' => $params['product_model']));
+		$query = $this->oracle->get_where('PORTCODE', array('PRODUCT_MODEL' => $params['product_model']));
 
 		return $query->num_rows();
 	}
+
+	/*public function migrateItems()
+	{
+		$old_data = $this->browse(array('type' => 'array'));
+
+		$this->oracle->insert_batch('PORTCODE', $old_data);
+
+		return $old_data;
+	}*/
 }

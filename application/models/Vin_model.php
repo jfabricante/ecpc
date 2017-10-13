@@ -137,4 +137,13 @@ class Vin_model extends CI_Model {
 
 		return $this;
 	}
+
+	/*public function migrateItems()
+	{
+		$old_data = $this->browse(array('type' => 'array'));
+
+		$this->oracle->insert_batch('VIN_MODEL', $old_data);
+
+		return $old_data;
+	}*/
 }

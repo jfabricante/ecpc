@@ -86,4 +86,11 @@ class Portcode extends CI_Controller {
 	{
 		echo json_encode($this->portcode_model->browse(), true);
 	}
+
+	/*public function run_migration()
+	{
+		echo '<pre>';
+		print_r($this->portcode_model->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }

@@ -45,6 +45,8 @@ class Color extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
+		// print_r($config); die;
+
 		/*if ($this->vin_model->exist($config) && $id == 0)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
@@ -96,4 +98,11 @@ class Color extends CI_Controller {
 
 		echo json_encode($config, true);
 	}
+
+	/*public function migrate_data()
+	{
+		echo '<pre>';
+		print_r($this->color_model->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }

@@ -3,27 +3,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Vin_control_model extends CI_Model {
 
+	private $oracle;
+
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->database();
+		$this->oracle = $this->load->database('oracle', true);
 	}
 
 	public function browse(array $params = array('type' => 'object'))
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('vin_control_tbl')->result();	
+			return $this->oracle->get('VIN_CONTROL')->result();	
 		}
 
-		return $this->db->get('vin_control_tbl')->result_array();
+		return $this->oracle->get('VIN_CONTROL')->result_array();
 	}
 
 	public function read(array $params = array('type' => 'object'))
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('vin_control_tbl', array('id' => $params['id']));
+			$query = $this->oracle->get_where('VIN_CONTROL', array('ID' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -36,9 +38,26 @@ class Vin_control_model extends CI_Model {
 
 	public function readByProductModel($params)
 	{
-		$query = $this->db->order_by('lot_no', 'DESC')->get_where('vin_control_tbl', $params);
+		$query = $this->oracle->order_by('LOT_NO', 'DESC')->get_where('VIN_CONTROL', $params);
 
-		return $query->row();
+		return $query->row_array();
+	}
+
+	public function findGroupByProductModel($params)
+	{
+		$query = $this->oracle->like('MODELS', $params['PRODUCT_MODEL'])
+				->get('GROUP_MODEL');
+
+		return $query->row_array();
+	}
+
+	public function getLastEntryFromGroup($params)
+	{
+		$query = $this->oracle->order_by('ID', 'DESC')
+				->where_in('PRODUCT_MODEL', $params)
+				->get('VIN_CONTROL');
+
+		return $query->row_array();
 	}
 
 	public function store($params)
@@ -47,11 +66,11 @@ class Vin_control_model extends CI_Model {
 
 		if ($id > 0)
 		{
-			$this->db->update('vin_control_tbl', $params, array('id' => $id));
+			$this->oracle->update('VIN_CONTROL', $params, array('ID' => $id));
 		}
 		else
 		{
-			$this->db->insert('vin_control_tbl', $params);
+			$this->oracle->insert('VIN_CONTROL', $params);
 		}
 
 		return $this;
@@ -59,20 +78,43 @@ class Vin_control_model extends CI_Model {
 
 	public function delete()
 	{
-		$id = $this->input->post('id');
+		$id = $this->input->post('ID');
 
-		$this->db->delete('vin_control_tbl', array('id' => $id));
+		$this->oracle->delete('VIN_CONTROL', array('ID' => $id));
 
 		return $this;
 	}
 
 	public function fetchLot($params)
 	{
-		$query = $this->db->select('lot_no')
-				->from('vin_control_tbl')
+		$query = $this->oracle->select('LOT_NO')
+				->from('VIN_CONTROL')
 				->where($params)
 				->get();
 
 		return $query->result();
+	}
+
+	public function migrateItems()
+	{
+		$old_data = $this->browse(array('type' => 'array'));
+
+		$old_data = array_map(function($item) {
+
+			// Since the date format is enough and better solution 
+			/*$str = sprintf("SELECT TO_DATE(TO_DATE('%s','YYYY-MM-DD HH24:MI:SS'),'DD-MON-YYYY HH24:MI:SS') AS D FROM DUAL", $item['LAST_UPDATE']);
+
+			$date = $this->oracle->query($str);
+
+			$item['LAST_UPDATE'] = $date->result_array()[0]['D'];*/
+
+			$item['LAST_UPDATE'] = date('d-M-Y', strtotime($item['LAST_UPDATE']));
+
+			return $item;
+		}, $old_data);
+
+		$this->oracle->insert_batch('VIN_CONTROL', $old_data);
+
+		return $old_data;
 	}
 }

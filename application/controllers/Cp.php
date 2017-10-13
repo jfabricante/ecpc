@@ -99,4 +99,11 @@ class Cp extends CI_Controller {
 
 		echo json_encode($this->cp_model->read($data), true);
 	}
+
+	/*public function run_migration()
+	{
+		echo '<pre>';
+		print_r($this->cp_model->migrateItems());
+		echo '</pre>'; die;
+	}*/
 }
