@@ -86,6 +86,51 @@ class Vin extends CI_Controller {
 		redirect($this->agent->referrer());
 	}
 
+	public function group_list()
+	{
+		$data = array(
+				'title' => 'List of Model Group',
+				'content' => 'vin/group_list_view',
+				'entities' => $this->vin_model->browseGroup()
+			);
+
+		$this->load->view('include/template', $data);
+	}
+
+	public function group_form()
+	{
+		$id = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+
+		$data = array(
+				'title'   => $id ? 'Update Details' : 'Add Model Group',
+				'content' => 'vin/group_form_view',
+				'entity'  => $id ? $this->vin_model->readGroupEntity($id) : ''
+			);
+
+		$this->load->view('include/template', $data);
+	}
+
+	public function group_store()
+	{
+		$this->vin_model->storeGroup($this->input->post());
+
+		redirect(base_url('index.php/vin/group_list'));
+	}
+
+	public function group_notice()
+	{
+		$data['id'] = $this->uri->segment(3);
+
+		$this->load->view('vin/group_delete_view', $data);
+	}
+
+	public function group_delete()
+	{
+		$this->vin_model->deleteGroup();
+
+		redirect(base_url('index.php/vin/group_list'));	
+	}
+
 	public function ajax_model_list()
 	{
 		echo json_encode($this->vin_model->browse_with_cp(), true);
@@ -103,5 +148,10 @@ class Vin extends CI_Controller {
 		$lot = $this->vin_control_model->fetchLot($data);
 
 		echo $lot ?  json_encode($lot, true) : '';
+	}
+
+	public function ajax_model_name()
+	{
+		echo json_encode(array_column($this->vin_model->browse(array('type' => 'array')), 'PRODUCT_MODEL'));
 	}
 }
