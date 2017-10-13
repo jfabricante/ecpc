@@ -43,6 +43,8 @@
 
 			<li class="<?php echo $menu == 'vin/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/list_') ?>"><i class="fa fa-table"></i><span>Vin Model</span></a></li>
 
+			<li class="<?php echo $menu == 'vin/group_list' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/group_list') ?>"><i class="fa fa-table"></i><span>Model Group</span></a></li>
+
 			<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-table"></i><span>Vin Control</span></a></li>
 
 			<li class="<?php echo $menu == 'vin_engine/ckd' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/ckd') ?>"><i class="fa fa-table"></i><span>CKD</span></a></li>
