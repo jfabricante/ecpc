@@ -21,6 +21,7 @@
 						<thead>
 							<tr>
 								<th>#</th>
+								<th>ID</th>
 								<th>Code</th>
 								<th>Vin No.</th>
 								<th>Lot No.</th>
@@ -38,20 +39,21 @@
 							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $entity->code; ?></td>
-									<td><?php echo $entity->vin_no; ?></td>
-									<td><?php echo $entity->lot_no; ?></td>
-									<td><?php echo $entity->product_model; ?></td>
-									<td><?php echo $entity->model_name; ?></td>
-									<td><?php echo $entity->last_user; ?></td>
-									<td><?php echo $entity->last_update; ?></td>
+									<td><?php echo $entity->ID; ?></td>
+									<td><?php echo $entity->CODE; ?></td>
+									<td><?php echo $entity->VIN_NO; ?></td>
+									<td><?php echo $entity->LOT_NO; ?></td>
+									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
+									<td><?php echo $entity->MODEL_NAME; ?></td>
+									<td><?php echo $entity->LAST_USER; ?></td>
+									<td><?php echo $entity->LAST_UPDATE; ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/vin_control/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin_control/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/vin_control/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin_control/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>

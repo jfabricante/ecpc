@@ -30,8 +30,8 @@
 									<label for="portcode">Portcode</label>
 									<select name="portcode" id="portcode" ref="portcode" class="select2 form-control" >
 										<option></option>
-										<option v-for="option in portcode" v-bind:value="option.short_code">
-											{{ option.short_code }} - {{ option.description }}
+										<option v-for="option in portcode" v-bind:value="option.SHORT_CODE">
+											{{ option.SHORT_CODE }} - {{ option.DESCRIPTION }}
 										</option>
 									</select>
 								</div>
@@ -44,8 +44,8 @@
 									<label for="serial">Serial</label>
 									<select name="serial" id="serial" ref="serial" class="select2 form-control" >
 										<option></option>
-										<option v-for="option in serial" v-bind:value="option.short_code">
-											{{ option.short_code }} - {{ option.description }}
+										<option v-for="option in serial" v-bind:value="option.SHORT_CODE">
+											{{ option.SHORT_CODE }} - {{ option.DESCRIPTION }}
 										</option>
 									</select>
 								</div>
@@ -106,14 +106,14 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item, index) in items">
-								<td>{{ item.sequence }}</td>
-								<td>{{ item.product_model }}</td>
-								<td>{{ item.vin_no }}</td>
-								<td>{{ item.engine_no }}</td>
-								<td>{{ item.security_no }}</td>
-								<td>{{ item.lot_no = lotNo }}</td>
-								<td>{{ item.color }}</td>
-								<td>{{ item.invoice_no }}</td>
+								<td>{{ item.SEQUENCE }}</td>
+								<td>{{ item.PRODUCT_MODEL }}</td>
+								<td>{{ item.VIN_NO }}</td>
+								<td>{{ item.ENGINE_NO }}</td>
+								<td>{{ item.SECURITY_NO }}</td>
+								<td>{{ item.LOT_NO = lotNo }}</td>
+								<td>{{ item.COLOR }}</td>
+								<td>{{ item.INVOICE_NO }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -265,7 +265,7 @@
 					for (let model of wb.SheetNames)
 					{
 						// Implement a strict cheking of excel sheet
-						if (this.selected.product_model === model)
+						if (this.selected.PRODUCT_MODEL === model)
 						{
 							sheetName = model
 							break
@@ -330,34 +330,34 @@
 					this.cpEntity = this.getCpByModel(entity['MODEL NAME'])
 
 					var formattedData = {
-							sequence: index + 1,
-							product_model: entity['MODEL NAME'] || '',
-							vin_no: entity['VIN'] || '',
-							engine_no: (this.cpEntity.engine_pref || '') + entity['ENGINE NO.'],
-							security_no: '',
-							lot_no: '',
-							model_name: '',
-							invoice_no: entity['INVOICE NO.'],
-							color: this.color[Number(entity['COLOR'])] ? this.color[Number(entity['COLOR'])] : entity['COLOR'],
-							key_no: entity['KEY NO.']
+							SEQUENCE: index + 1,
+							PRODUCT_MODEL: entity['MODEL NAME'] || '',
+							VIN_NO: entity['VIN'] || '',
+							ENGINE_NO: (this.cpEntity.ENGINE_PREF || '') + entity['ENGINE NO.'],
+							SECURITY_NO: '',
+							LOT_NO: '',
+							MODEL_NAME: '',
+							INVOICE_NO: entity['INVOICE NO.'],
+							COLOR: this.color[Number(entity['COLOR'])] ? this.color[Number(entity['COLOR'])] : entity['COLOR'],
+							KEY_NO: entity['KEY NO.']
 						}
 
 					this.items.push(formattedData)
 
 					// Data for excel generation
 					var excelFormat = {
-							engine_no: (this.cpEntity.engine_pref || '') + entity['ENGINE NO.'],
-							chassis_no: entity['VIN'],
-							vin_no: entity['VIN'],
-							series: this.cpEntity.series,
-							color: this.color[Number(entity['COLOR'])],
-							piston_displacement: this.cpEntity.piston_displacement,
-							body_type: this.cpEntity.body_type,
-							year_model: this.cpEntity.year_model,
-							gross_weight: this.cpEntity.gross_weight,
-							net_weight: this.cpEntity.net_weight,
-							cylinder: this.cpEntity.cylinder,
-							fuel: _.toUpper(this.cpEntity.fuel)
+							ENGINE_NO: (this.cpEntity.ENGINE_PREF || '') + entity['ENGINE NO.'],
+							CHASSIS_NO: entity['VIN'],
+							VIN_NO: entity['VIN'],
+							SERIES: this.cpEntity.SERIES,
+							COLOR: this.color[Number(entity['COLOR'])],
+							PISTON_DISPLACEMENT: this.cpEntity.PISTON_DISPLACEMENT,
+							BODY_TYPE: this.cpEntity.BODY_TYPE,
+							YEAR_MODEL: this.cpEntity.YEAR_MODEL,
+							GROSS_WEIGHT: this.cpEntity.GROSS_WEIGHT,
+							NET_WEIGHT: this.cpEntity.NET_WEIGHT,
+							CYLINDER: this.cpEntity.CYLINDER,
+							FUEL: _.toUpper(this.cpEntity.FUEL)
 						}
 					
 					this.items2.push(excelFormat)
@@ -368,7 +368,7 @@
 			{
 				for (let [index, entity] of this.cpList.entries())
 				{
-					if (searchItem == entity.model)
+					if (searchItem == entity.MODEL)
 					{
 						return entity
 					}
@@ -383,10 +383,10 @@
 					method: 'post',
 					data: {
 						items: this.items,
-						portcode: this.portcode.selected,
-						serial: this.serial.selected,
-						classification: this.classification,
-						entry_no: this.entryNo,
+						PORTCODE: this.portcode.selected,
+						SERIAL: this.serial.selected,
+						CLASSIFICATION: this.classification,
+						ENTRY_NO: this.entryNo,
 						items2: this.items2
 					}
 				})

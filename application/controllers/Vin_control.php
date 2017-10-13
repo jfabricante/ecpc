@@ -42,20 +42,20 @@ class Vin_control extends CI_Controller {
 	{
 		$config = array_map('trim', $this->input->post());
 
-		$config['last_user']   = $this->session->userdata('fullname');
-		$config['last_update'] = date('Y-m-d H:i:s');
+		$config['LAST_USER']   = $this->session->userdata('fullname');
+		$config['LAST_UPDATE'] = date('d-M-Y');
 
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		$this->vin_control->store($config);
 
 		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been updated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Vin control has been updated!</div>');
 		}
 		else
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-success">Vin model has been added!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Vin control has been added!</div>');
 		}
 
 		redirect($this->agent->referrer());
@@ -81,6 +81,49 @@ class Vin_control extends CI_Controller {
 	{
 		$data = json_decode(file_get_contents("php://input"), true);
 
-		echo json_encode($this->vin_control->readByProductModel($data));
+		$group = $this->vin_control->findGroupByProductModel($data);
+
+		// Check the model if has a group
+		if ($group)
+		{
+			$models = explode(",", $group['MODELS']);
+
+			$recent = $this->vin_control->getLastEntryFromGroup($models);
+
+			$current = $this->vin_control->readByProductModel($data);
+
+			$config = array(
+					'CODE'          => $current['CODE'],
+					'VIN_NO'        => $recent['VIN_NO'],
+					'LOT_NO'        => $current['LOT_NO'],
+					'ENGINE'        => $current['ENGINE'],
+					'PRODUCT_MODEL' => $current['PRODUCT_MODEL'],
+					'MODEL_NAME'    => $current['MODEL_NAME'],
+					'LAST_USER'     => $current['LAST_USER'],
+					'LAST_UPDATE'   => $current['LAST_UPDATE'],
+					'LAST_MODEL'    => $recent['PRODUCT_MODEL']
+				);
+
+
+			echo json_encode($config);
+		}
+		else
+		{
+			$current = $this->vin_control->readByProductModel($data);
+			
+			$config = array(
+					'CODE'          => $current['CODE'],
+					'VIN_NO'        => $current['VIN_NO'],
+					'LOT_NO'        => $current['LOT_NO'],
+					'ENGINE'        => $current['ENGINE'],
+					'PRODUCT_MODEL' => $current['PRODUCT_MODEL'],
+					'MODEL_NAME'    => $current['MODEL_NAME'],
+					'LAST_USER'     => $current['LAST_USER'],
+					'LAST_UPDATE'   => $current['LAST_UPDATE'],
+					'LAST_MODEL'    => $current['PRODUCT_MODEL']
+				);
+
+			echo json_encode($config);
+		}
 	}
 }

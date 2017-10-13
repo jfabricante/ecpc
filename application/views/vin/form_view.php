@@ -9,37 +9,37 @@
 
 	<div class="modal-body">
 		<div class="form-group hidden">
-			<input type="number" class="form-control" id="id" name="id" value="<?php echo isset($entity->id) ? $entity->id : ''; ?>">
+			<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($entity->ID) ? $entity->ID : ''; ?>">
 		</div>
 
 		<div class="form-group">
 			<label for="product_model">Product Model</label>
-			<input type="text" class="form-control" id="product_model" name="product_model" value="<?php echo isset($entity->product_model) ? $entity->product_model : ''; ?>" required>
+			<input type="text" class="form-control" id="product_model" name="PRODUCT_MODEL" value="<?php echo isset($entity->PRODUCT_MODEL) ? $entity->PRODUCT_MODEL : ''; ?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="product_name">Product Year</label>
-			<input type="text" class="form-control" id="product_year" name="product_year" value="<?php echo isset($entity->product_year) ? $entity->product_year : ''; ?>" required>
+			<input type="text" class="form-control" id="product_year" name="PRODUCT_YEAR" value="<?php echo isset($entity->PRODUCT_YEAR) ? $entity->PRODUCT_YEAR : ''; ?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="description">Description</label>
-			<input type="text" class="form-control" id="description" name="description" value="<?php echo isset($entity->description) ? $entity->description : ''; ?>">
+			<input type="text" class="form-control" id="description" name="DESCRIPTION" value="<?php echo isset($entity->DESCRIPTION) ? $entity->DESCRIPTION : ''; ?>">
 		</div>
 
 		<div class="form-group">
 			<label for="lot_size">Lot Size</label>
-			<input type="number" class="form-control" id="lot_size" name="lot_size" value="<?php echo isset($entity->lot_size) ? $entity->lot_size : ''; ?>" required>
+			<input type="number" class="form-control" id="lot_size" name="LOT_SIZE" value="<?php echo isset($entity->LOT_SIZE) ? $entity->LOT_SIZE : ''; ?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="cp_id">CP</label>
-			<select name="cp_id" id="cp_id" class="form-control selectpicker" data-live-search="true">
+			<select name="CP_ID" id="cp_id" class="form-control selectpicker" data-live-search="true">
 				<option></option>
 
 				<?php foreach($cp_items as $row): ?>
-					<option value="<?php echo $row->id; ?>" <?php echo isset($entity->cp_id) ? $entity->cp_id == $row->id ? 'selected' : '' : ''; ?> >
-						<?php echo $row->model . ' - '. $row->year_model; ?>
+					<option value="<?php echo $row->ID; ?>" <?php echo isset($entity->CP_ID) ? $entity->CP_ID == $row->ID ? 'selected' : '' : ''; ?> >
+						<?php echo $row->MODEL . ' - '. $row->YEAR_MODEL; ?>
 					</option>
 				<?php endforeach; ?>
 			</select>

@@ -6,7 +6,7 @@
 
 	<div class="modal-body">
 		<div class="form-group hidden">
-			<input type="number" class="form-control" id="id" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+			<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($id) ? $id : ''; ?>">
 		</div>
 		<p class="text-center">Do you want to delete this item?</p>
 	</div>

@@ -43,7 +43,7 @@ class Vin_control_model extends CI_Model {
 
 	public function store($params)
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		if ($id > 0)
 		{

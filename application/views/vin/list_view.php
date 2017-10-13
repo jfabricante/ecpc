@@ -35,17 +35,17 @@
 							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $entity->product_model; ?></td>
-									<td><?php echo $entity->product_year; ?></td>
-									<td><?php echo $entity->description; ?></td>
-									<td><?php echo $entity->lot_size; ?></td>
+									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
+									<td><?php echo $entity->PRODUCT_YEAR; ?></td>
+									<td><?php echo $entity->DESCRIPTION; ?></td>
+									<td><?php echo $entity->LOT_SIZE; ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/vin/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/vin/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/vin/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>

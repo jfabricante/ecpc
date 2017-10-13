@@ -42,24 +42,24 @@
 							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $entity->model; ?></td>
-									<td><?php echo $entity->series; ?></td>
-									<td><?php echo $entity->engine_pref; ?></td>
-									<td><?php echo $entity->piston_displacement; ?></td>
-									<td><?php echo $entity->body_type; ?></td>
-									<td><?php echo $entity->year_model; ?></td>
-									<td><?php echo $entity->gross_weight; ?></td>
-									<td><?php echo $entity->net_weight; ?></td>
-									<td><?php echo $entity->cylinder; ?></td>
-									<td><?php echo $entity->fuel; ?></td>
-									<td><?php echo $entity->stamp; ?></td>
+									<td><?php echo $entity->MODEL; ?></td>
+									<td><?php echo $entity->SERIES; ?></td>
+									<td><?php echo $entity->ENGINE_PREF; ?></td>
+									<td><?php echo $entity->PISTON_DISPLACEMENT; ?></td>
+									<td><?php echo $entity->BODY_TYPE; ?></td>
+									<td><?php echo $entity->YEAR_MODEL; ?></td>
+									<td><?php echo $entity->GROSS_WEIGHT; ?></td>
+									<td><?php echo $entity->NET_WEIGHT; ?></td>
+									<td><?php echo $entity->CYLINDER; ?></td>
+									<td><?php echo $entity->FUEL; ?></td>
+									<td><?php echo $entity->STAMP; ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/cp/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/cp/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/cp/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/cp/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>

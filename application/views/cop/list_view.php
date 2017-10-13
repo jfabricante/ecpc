@@ -25,6 +25,7 @@
 								<th>Invoice No.</th>
 								<th>Last User</th>
 								<th>Last Update</th>
+								<th>Completion Date</th>
 								<th></th>
 								<th></th>
 							</tr>
@@ -35,17 +36,18 @@
 							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $entity->cp_no; ?></td>
-									<td><?php echo $entity->invoice_no; ?></td>
-									<td><?php echo $entity->last_user; ?></td>
-									<td><?php echo $entity->last_update; ?></td>
+									<td><?php echo $entity->CP_NO; ?></td>
+									<td><?php echo $entity->INVOICE_NO; ?></td>
+									<td><?php echo $entity->LAST_USER; ?></td>
+									<td><?php echo date('m/d/Y', strtotime($entity->LAST_UPDATE)); ?></td>
+									<td><?php echo date('m/d/Y', strtotime($entity->COMPLETION_DATE)); ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/cop/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/cop/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/cop/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/cop/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>

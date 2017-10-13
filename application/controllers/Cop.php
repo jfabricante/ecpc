@@ -43,14 +43,15 @@ class Cop extends CI_Controller {
 
 	public function store()
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		$config['last_user']   = $this->session->userdata('fullname');
-		$config['last_update'] = date('Y-m-d H:i:s');
-
+		$config['LAST_USER']       = $this->session->userdata('fullname');
+		$config['LAST_UPDATE']     = date('d-M-Y');
+		$config['COMPLETION_DATE'] = date('d-M-Y', strtotime($config['COMPLETION_DATE']));
+		
 		/*if ($this->vin_model->exist($config) && $id == 0)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');

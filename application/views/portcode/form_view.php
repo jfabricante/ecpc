@@ -9,17 +9,17 @@
 
 	<div class="modal-body">
 		<div class="form-group hidden">
-			<input type="number" class="form-control" id="id" name="id" value="<?php echo isset($entity->id) ? $entity->id : ''; ?>">
+			<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($entity->ID) ? $entity->ID : ''; ?>">
 		</div>
 
 		<div class="form-group">
 			<label for="short_code">Short Code</label>
-			<input type="text" class="form-control" id="short_code" name="short_code" value="<?php echo isset($entity->short_code) ? $entity->short_code : ''; ?>" required>
+			<input type="text" class="form-control" id="short_code" name="SHORT_CODE" value="<?php echo isset($entity->SHORT_CODE) ? $entity->SHORT_CODE : ''; ?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="description">Description</label>
-			<input type="text" class="form-control" id="description" name="description" value="<?php echo isset($entity->description) ? $entity->description : ''; ?>" required>
+			<input type="text" class="form-control" id="description" name="DESCRIPTION" value="<?php echo isset($entity->DESCRIPTION) ? $entity->DESCRIPTION : ''; ?>" required>
 		</div>
 
 	</div>
@@ -33,9 +33,3 @@
 	
 </form><!-- End Form -->
 <script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#cp_id').selectpicker({});
-	});
-</script>
-					

@@ -18,10 +18,10 @@
 								<div class="form-group">
 									<label for="invoice_no" class="col-md-4 col-form-label">Select Invoice No: </label>
 									<div class="col-md-8">
-										<select name="invoice_no" id="invoice_no" ref="invoice_no" class="select2 form-control">
+										<select name="INVOICE_NO" id="invoice_no" ref="invoice_no" class="select2 form-control">
 											<option></option>
 											<option v-for="entity of invoiceList">
-												{{ entity.invoice_no }}
+												{{ entity.INVOICE_NO }}
 											</option>
 										</select>
 									</div>
@@ -47,7 +47,7 @@
 								<th>Engine No.</th>
 								<th>Security No.</th>
 								<th>Lot No.</th>
-								<th>Product Model</th>
+								<th>Color</th>
 								<th>Invoice No.</th>
 							</tr>
 						</thead>
@@ -118,7 +118,7 @@
 					url: appUrl + '/vin_engine/ajax_fetch_invoice_items',
 					method: 'post',
 					data: {
-						invoice_no: this.invoice_no || ''
+						INVOICE_NO: this.invoice_no || ''
 					}
 				})
 				.then((response) => {
@@ -144,8 +144,8 @@
 				// Insert the new content
 				for (let entity of this.invoiceItems)
 				{
-					$table.row.add([ entity.product_model, entity.vin_no, entity.engine_no, entity.security_no, entity.lot_no,
-					entity.model_name, entity.invoice_no ]).draw().node();
+					$table.row.add([ entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					entity.COLOR, entity.INVOICE_NO ]).draw().node();
 				}
 			}
 		}

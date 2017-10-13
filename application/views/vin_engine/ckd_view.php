@@ -21,8 +21,8 @@
 									<label for="vin_model">Model Name</label>
 									<select name="vin_model" id="vin_model" ref="vin_model" class="select2 form-control" >
 										<option></option>
-										<option v-for="option in vinModel" v-bind:value="option.product_model">
-											{{ option.product_model }}
+										<option v-for="option in vinModel" v-bind:value="option.PRODUCT_MODEL">
+											{{ option.PRODUCT_MODEL }}
 										</option>
 									</select>
 								</div>
@@ -44,8 +44,8 @@
 									<label for="portcode">Portcode</label>
 									<select name="portcode" id="portcode" ref="portcode" class="select2 form-control" >
 										<option></option>
-										<option v-for="option in portcode" v-bind:value="option.short_code">
-											{{ option.short_code }} - {{ option.description }}
+										<option v-for="option in portcode" v-bind:value="option.SHORT_CODE">
+											{{ option.SHORT_CODE }} - {{ option.DESCRIPTION }}
 										</option>
 									</select>
 								</div>
@@ -58,8 +58,8 @@
 									<label for="serial">Serial</label>
 									<select name="serial" id="serial" ref="serial" class="select2 form-control" >
 										<option></option>
-										<option v-for="option in serial" v-bind:value="option.short_code">
-											{{ option.short_code }} - {{ option.description }}
+										<option v-for="option in serial" v-bind:value="option.SHORT_CODE">
+											{{ option.SHORT_CODE }} - {{ option.DESCRIPTION }}
 										</option>
 									</select>
 								</div>
@@ -77,6 +77,15 @@
 
 						<!-- row -->
 						<div class="row">
+							<!-- last model -->
+							<div class="col-md-2">
+								<div class="form-group">
+									<label>Last Model</label>
+									<p>{{ lastModel }}</p>
+								</div>
+							</div>
+							<!-- ./last vin -->
+
 							<!-- last vin -->
 							<div class="col-md-2">
 								<div class="form-group">
@@ -127,14 +136,14 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item, index) in items">
-								<td>{{ item.sequence }}</td>
-								<td>{{ item.product_model }}</td>
-								<td>{{ item.vin_no }}</td>
-								<td>{{ item.engine_no }}</td>
-								<td>{{ item.security_no }}</td>
-								<td>{{ item.lot_no }}</td>
-								<td>{{ item.color }}</td>
-								<td>{{ item.invoice_no }}</td>
+								<td>{{ item.SEQUENCE }}</td>
+								<td>{{ item.PRODUCT_MODEL }}</td>
+								<td>{{ item.VIN_NO }}</td>
+								<td>{{ item.ENGINE_NO }}</td>
+								<td>{{ item.SECURITY_NO }}</td>
+								<td>{{ item.LOT_NO }}</td>
+								<td>{{ item.COLOR }}</td>
+								<td>{{ item.INVOICE_NO }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -182,6 +191,7 @@
 			vinSuff: '',
 			lastVin: '',
 			lastLot: '',
+			lastModel: '',
 			separator: 0,
 			fileUpload: '',
 			excelObject: [],
@@ -208,6 +218,7 @@
 
 			$(this.$refs.vin_model).on('change', function() {
 				self.selected = self.getSelectedModel($(this).val())
+				//console.log(self.selected)
 			})
 
 			$(this.$refs.fileUpload).on('change', this.filePicked)
@@ -227,6 +238,7 @@
 				axios.get(appUrl + '/vin/ajax_model_list')
 				.then((response) => {
 					this.vinModel = response.data
+					console.log(this.vinModel)
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -261,7 +273,7 @@
 			{
 				for (let [index, value] of this.vinModel.entries())
 				{
-					if (searchItem == value.product_model)
+					if (searchItem == value.PRODUCT_MODEL)
 					{
 						return value
 					}
@@ -273,11 +285,11 @@
 			{
 				if (this.selected instanceof Object)
 				{
-					console.log(this.selected)
+					// console.log(this.selected)
 					// Clear items before populate
 					this.clearItems()
 
-					for (var i = 1; i <= this.selected.lot_size; i++)
+					for (var i = 1; i <= this.selected.LOT_SIZE; i++)
 					{
 						this.items.push(this.formatData(i))
 					}
@@ -292,18 +304,18 @@
 				this.vinSuff = _.padStart(this.vinSuff, this.calculatedLength, 0)
 
 				// Concatenate the prefix and suffix
-				this.vinControl.vin_no = this.vinPref + this.vinSuff
+				this.vinControl.VIN_NO = this.vinPref + this.vinSuff
 
 				var formattedData = {
-						sequence: count,
-						product_model: this.vinControl.product_model || '',
-						vin_no: this.vinControl.vin_no || '',
-						engine_no: this.selected.engine_pref || '',
-						security_no: '',
-						lot_no: Number(this.vinControl.lot_no) + 1 || '',
-						model_name: this.vinControl.model_name || '',
-						invoice_no: '',
-						color: 'NA'
+						SEQUENCE: count,
+						PRODUCT_MODEL: this.vinControl.PRODUCT_MODEL || '',
+						VIN_NO: this.vinControl.VIN_NO || '',
+						ENGINE_NO: this.selected.ENGINE_PREF || '',
+						SECURITY_NO: '',
+						LOT_NO: Number(this.vinControl.LOT_NO) + 1 || '',
+						MODEL_NAME: this.vinControl.MODEL_NAME || '',
+						INVOICE_NO: '',
+						COLOR: 'NA'
 					}
 
 				return formattedData
@@ -318,11 +330,12 @@
 					url: appUrl + '/vin_control/ajax_vin_control_entity',
 					method: 'post',
 					data: {
-						product_model: this.selected.product_model,
+						PRODUCT_MODEL: this.selected.PRODUCT_MODEL,
 					}
 				})
 				.then((response) => {
 					this.vinControl = response.data
+					console.log(response.data)
 
 					if (response.data !== null)
 					{
@@ -363,18 +376,19 @@
 			separateVin: function()
 			{
 				// Asign the last vin and last lot
-				this.lastVin = this.vinControl.vin_no
-				this.lastLot = this.vinControl.lot_no
+				this.lastVin   = this.vinControl.VIN_NO
+				this.lastLot   = this.vinControl.LOT_NO
+				this.lastModel = this.vinControl.LAST_MODEL
 
 				// Assign the point of reference
-				this.calculatedLength = this.occurenceOfNumber(this.vinControl.vin_no)
-				this.separator = this.vinControl.vin_no.length - this.calculatedLength
+				this.calculatedLength = this.occurenceOfNumber(this.vinControl.VIN_NO)
+				this.separator = this.vinControl.VIN_NO.length - this.calculatedLength
 
 				// Set the prefix from start to separator
-				this.vinPref = this.vinControl.vin_no.substr(0, this.separator)
+				this.vinPref = this.vinControl.VIN_NO.substr(0, this.separator)
 
 				// Set the vin suffix from separator until the end of the string
-				this.vinSuff =  this.vinControl.vin_no.substr(this.separator)
+				this.vinSuff =  this.vinControl.VIN_NO.substr(this.separator)
 			},
 			filePicked: function(oEvent) {
 				// Get The File From The Input
@@ -398,17 +412,17 @@
 					for (let model of wb.SheetNames)
 					{
 						// Implement a strict cheking of excel sheet
-						if (this.selected.product_model === model)
+						if (this.selected.PRODUCT_MODEL + '-' + (Number(this.lastLot) + 1) === model)
 						{
 							sheetName = model
 							break
 						}
 					}
-
+					console.log(sheetName)
 					if (sheetName === '')
 					{
 						alert('Cannot find sheet that match on the model.')
-						console.log(this.selected.product_model)
+						console.log(this.selected.PRODUCT_MODEL)
 					}
 					else
 					{
@@ -443,12 +457,13 @@
 				}
 				else
 				{
-					if (this.selected.lot_size == this.excelObject.length)
+					console.log(this.selected)
+					if (this.selected.LOT_SIZE == this.excelObject.length)
 					{
 						for(let [index, excel] of this.excelObject.entries())
 						{
-							this.items[index].engine_no += excel["Engine No."] + (this.selected.stamp || '')
-							this.items[index].invoice_no = excel["MC Invoice No."]
+							this.items[index].ENGINE_NO += excel["Engine No."] + (this.selected.STAMP || '')
+							this.items[index].INVOICE_NO = excel["Invoice No."]
 						}
 					}
 					else
@@ -465,11 +480,11 @@
 					data: {
 						items: this.items,
 						selected_model: this.selected,
-						portcode: this.portcode.selected,
-						serial: this.serial.selected,
-						classification: this.classification,
+						PORTCODE: this.portcode.selected,
+						SERIAL: this.serial.selected,
+						CLASSIFICATION: this.classification,
 						vin_control: this.vinControl,
-						entry_no: this.entryNo,
+						ENTRY_NO: this.entryNo,
 					}
 				})
 				.then((response) => {

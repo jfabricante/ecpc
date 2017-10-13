@@ -9,17 +9,17 @@
 
 	<div class="modal-body">
 		<div class="form-group hidden">
-			<input type="number" class="form-control" id="id" name="id" value="<?php echo isset($entity->id) ? $entity->id : ''; ?>">
+			<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($entity->ID) ? $entity->ID : ''; ?>">
 		</div>
 
 		<div class="form-group">
 			<label for="code">Color Code</label>
-			<input type="text" class="form-control" id="code" name="code" value="<?php echo isset($entity->code) ? $entity->code : ''; ?>" required>
+			<input type="text" class="form-control" id="code" name="CODE" value="<?php echo isset($entity->CODE) ? $entity->CODE : ''; ?>" required>
 		</div>
 
 		<div class="form-group">
 			<label for="name">Color Name</label>
-			<input type="text" class="form-control" id="name" name="name" value="<?php echo isset($entity->name) ? $entity->name : ''; ?>" required>
+			<input type="text" class="form-control" id="name" name="NAME" value="<?php echo isset($entity->NAME) ? $entity->NAME : ''; ?>" required>
 		</div>
 
 	</div>

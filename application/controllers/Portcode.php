@@ -40,7 +40,7 @@ class Portcode extends CI_Controller {
 
 	public function store()
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());

@@ -13,37 +13,37 @@
 			<!-- col-md-6 -->
 			<div class="col-md-6">
 				<div class="form-group hidden">
-					<input type="number" class="form-control" id="id" name="id" value="<?php echo isset($entity->id) ? $entity->id : ''; ?>">
+					<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($entity->ID) ? $entity->ID : ''; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="model">Model</label>
-					<input type="text" class="form-control" id="model" name="model" value="<?php echo isset($entity->model) ? $entity->model : ''; ?>" required>
+					<input type="text" class="form-control" id="model" name="MODEL" value="<?php echo isset($entity->MODEL) ? $entity->MODEL : ''; ?>" required>
 				</div>
 
 				<div class="form-group">
 					<label for="series">Series</label>
-					<input type="text" class="form-control" id="series" name="series" value="<?php echo isset($entity->series) ? $entity->series : ''; ?>" required>
+					<input type="text" class="form-control" id="series" name="SERIES" value="<?php echo isset($entity->SERIES) ? $entity->SERIES : ''; ?>" required>
 				</div>
 
 				<div class="form-group">
 					<label for="engine_pref">Engine</label>
-					<input type="text" class="form-control" id="engine_pref" name="engine_pref" value="<?php echo isset($entity->engine_pref) ? $entity->engine_pref : ''; ?>">
+					<input type="text" class="form-control" id="engine_pref" name="ENGINE_PREF" value="<?php echo isset($entity->ENGINE_PREF) ? $entity->ENGINE_PREF : ''; ?>">
 				</div>
 
 				<div class="form-group">
 					<label for="piston_displacement">Piston Displacement</label>
-					<input type="text" class="form-control" id="piston_displacement" name="piston_displacement" value="<?php echo isset($entity->piston_displacement) ? $entity->piston_displacement : ''; ?>" required>
+					<input type="text" class="form-control" id="piston_displacement" name="PISTON_DISPLACEMENT" value="<?php echo isset($entity->PISTON_DISPLACEMENT) ? $entity->PISTON_DISPLACEMENT : ''; ?>" required>
 				</div>
 
 				<div class="form-group">
 					<label for="body_type">Body Type</label>
-					<input type="text" class="form-control" id="body_type" name="body_type" value="<?php echo isset($entity->body_type) ? $entity->body_type : ''; ?>" required>
+					<input type="text" class="form-control" id="body_type" name="BODY_TYPE" value="<?php echo isset($entity->BODY_TYPE) ? $entity->BODY_TYPE : ''; ?>" required>
 				</div>
 
 				<div class="form-group">
 					<label for="year_model">Year Model</label>
-					<input type="text" class="form-control" id="year_model" name="year_model" value="<?php echo isset($entity->year_model) ? $entity->year_model : ''; ?>" required>
+					<input type="text" class="form-control" id="year_model" name="YEAR_MODEL" value="<?php echo isset($entity->YEAR_MODEL) ? $entity->YEAR_MODEL : ''; ?>" required>
 				</div>
 			</div>
 			<!-- ./col-md-6 -->
@@ -52,27 +52,27 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label for="gross_weight">Gross Weight</label>
-					<input type="text" class="form-control" id="gross_weight" name="gross_weight" value="<?php echo isset($entity->gross_weight) ? $entity->gross_weight : ''; ?>" required>
+					<input type="text" class="form-control" id="gross_weight" name="GROSS_WEIGHT" value="<?php echo isset($entity->GROSS_WEIGHT) ? $entity->GROSS_WEIGHT : ''; ?>" required>
 				</div>
 
 				<div class="form-group">
 					<label for="net_weight">Net Weight</label>
-					<input type="text" class="form-control" id="net_weight" name="net_weight" value="<?php echo isset($entity->net_weight) ? $entity->net_weight : ''; ?>" >
+					<input type="text" class="form-control" id="net_weight" name="NET_WEIGHT" value="<?php echo isset($entity->NET_WEIGHT) ? $entity->NET_WEIGHT : ''; ?>" >
 				</div>
 
 				<div class="form-group">
 					<label for="cylinder">Cylinder</label>
-					<input type="number" class="form-control" id="cylinder" name="cylinder" value="<?php echo isset($entity->cylinder) ? $entity->cylinder : ''; ?>" >
+					<input type="number" class="form-control" id="cylinder" name="CYLINDER" value="<?php echo isset($entity->CYLINDER) ? $entity->CYLINDER : ''; ?>" >
 				</div>
 
 				<div class="form-group">
 					<label for="fuel">Fuel</label>
-					<input type="text" class="form-control" id="fuel" name="fuel" value="<?php echo isset($entity->fuel) ? $entity->fuel : ''; ?>" >
+					<input type="text" class="form-control" id="fuel" name="FUEL" value="<?php echo isset($entity->FUEL) ? $entity->FUEL : ''; ?>" >
 				</div>
 
 				<div class="form-group">
 					<label for="stamp">Stamp</label>
-					<input type="text" class="form-control" id="stamp" name="stamp" value="<?php echo isset($entity->stamp) ? $entity->stamp : ''; ?>" >
+					<input type="text" class="form-control" id="stamp" name="STAMP" value="<?php echo isset($entity->STAMP) ? $entity->STAMP : ''; ?>" >
 				</div>
 
 			</div>

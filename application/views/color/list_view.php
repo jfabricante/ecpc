@@ -33,15 +33,15 @@
 							<?php foreach ($entities as $entity): ?>
 								<tr>
 									<td><?php echo $count; ?></td>
-									<td><?php echo $entity->code; ?></td>
-									<td><?php echo $entity->name; ?></td>
+									<td><?php echo $entity->CODE; ?></td>
+									<td><?php echo $entity->NAME; ?></td>
 									<td>
-										<a href="<?php echo base_url('index.php/color/form/' . $entity->id); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/color/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/color/notice/' . $entity->id); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+										<a href="<?php echo base_url('index.php/color/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</a>
 									</td>
