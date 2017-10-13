@@ -3,38 +3,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Vin_model extends CI_Model {
 
+	private $oracle;
+
 	public function __construct() {
 		parent::__construct();
 
-		$this->load->database();
+		$this->oracle = $this->load->database('oracle', true);
 	}
 
 	public function browse(array $params = array('type' => 'object'))
 	{
 		if ($params['type'] == 'object')
 		{
-			return $this->db->get('vin_model_tbl')->result();
+			return $this->oracle->get('VIN_MODEL')->result();
 		}
 
-		return $this->db->get('vin_model_tbl')->result_array();
+		return $this->oracle->get('VIN_MODEL')->result_array();
 	}
 
 	public function browse_with_cp()
 	{
 		$fields = array(
-				'a.id',
-				'a.product_model',
-				'a.product_year',
-				'a.description',
-				'a.lot_size',
-				'a.cp_id',
-				'b.engine_pref',
+				'a.ID',
+				'a.PRODUCT_MODEL',
+				'a.PRODUCT_YEAR',
+				'a.DESCRIPTION',
+				'a.LOT_SIZE',
+				'a.CP_ID',
+				'b.ENGINE_PREF',
+				'b.SERIES',
+				'b.PISTON_DISPLACEMENT',
+				'b.BODY_TYPE',
+				'b.YEAR_MODEL',
+				'b.GROSS_WEIGHT',
+				'b.CYLINDER',
+				'b.FUEL',
+				'b.STAMP'
 			);
 
-		$query = $this->db->select("*")
-				->from('vin_model_tbl AS a')
-				->join('cp_tbl AS b', 'a.cp_id = b.id', 'LEFT')
-				->order_by('a.product_model')
+		$query = $this->oracle->select($fields)
+				->from('VIN_MODEL a')
+				->join('CP b', 'a.CP_ID = b.ID', 'LEFT')
+				->order_by('a.PRODUCT_MODEL')
 				->get();
 
 		return $query->result();
@@ -44,7 +54,7 @@ class Vin_model extends CI_Model {
 	{
 		if ($params['id'] > 0)
 		{
-			$query = $this->db->get_where('vin_model_tbl', array('id' => $params['id']));
+			$query = $this->oracle->get_where('VIN_MODEL', array('ID' => $params['id']));
 
 			if ($params['type'] == 'object')
 			{
@@ -57,15 +67,15 @@ class Vin_model extends CI_Model {
 
 	public function store($params)
 	{
-		$id = $this->input->post('id') ? $this->input->post('id') : 0;
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
 		if ($id > 0)
 		{
-			$this->db->update('vin_model_tbl', $params, array('id' => $id));
+			$this->oracle->update('VIN_MODEL', $params, array('ID' => $id));
 		}
 		else
 		{
-			$this->db->insert('vin_model_tbl', $params);
+			$this->oracle->insert('VIN_MODEL', $params);
 		}
 
 		return $this;	
@@ -73,17 +83,58 @@ class Vin_model extends CI_Model {
 
 	public function delete()
 	{
-		$id = $this->input->post('id');
+		$id = $this->input->post('ID');
 
-		$this->db->delete('vin_model_tbl', array('id' => $id));
+		$this->oracle->delete('VIN_MODEL', array('ID' => $id));
 
 		return $this;
 	}
 
 	public function exist($params)
 	{
-		$query = $this->db->get_where('vin_model_tbl', array('product_model' => $params['product_model']));
+		$query = $this->oracle->get_where('VIN_MODEL', array('PRODUCT_MODEL' => $params['product_model']));
 
 		return $query->num_rows();
+	}
+
+	// Group model
+	public function browseGroup(array $params = array('type' => 'object'))
+	{
+		if ($params['type'] == 'object')
+		{
+			return $this->oracle->get('GROUP_MODEL')->result();
+		}
+
+		return $this->oracle->get('GROUP_MODEL')->result_array();
+	}
+
+	public function readGroupEntity($params)
+	{
+		$query = $this->oracle->get_where('GROUP_MODEL', array('ID' => $params));
+
+		return $query->row();
+	}
+
+	public function storeGroup($params)
+	{
+		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
+
+		if ($id > 0)
+		{
+			$this->oracle->update('GROUP_MODEL', $params, array('ID' => $id));
+		}
+		else
+		{
+			$this->oracle->insert('GROUP_MODEL', $params);
+		}
+	}
+
+	public function deleteGroup()
+	{
+		$id = $this->input->post('ID');
+
+		$this->oracle->delete('GROUP_MODEL', array('ID' => $id));
+
+		return $this;
 	}
 }
