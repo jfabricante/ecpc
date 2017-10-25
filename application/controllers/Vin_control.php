@@ -7,6 +7,8 @@ class Vin_control extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$this->load->model('vin_control_model', 'vin_control');
 	}
 
@@ -124,6 +126,16 @@ class Vin_control extends CI_Controller {
 				);
 
 			echo json_encode($config);
+		}
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
 		}
 	}
 
