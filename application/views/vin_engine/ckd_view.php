@@ -208,6 +208,7 @@
 		watch: {
 			selected: function() {
 				this.fetchVinControlEntity()
+				console.log(this.selected)
 			},
 			excelObject: function() {
 				this.assignValues()
@@ -308,7 +309,7 @@
 
 				var formattedData = {
 						SEQUENCE: count,
-						PRODUCT_MODEL: this.vinControl.PRODUCT_MODEL || '',
+						PRODUCT_MODEL: this.vinControl.PRODUCT_MODEL ? this.vinControl.PRODUCT_MODEL : this.selected.PRODUCT_MODEL,
 						VIN_NO: this.vinControl.VIN_NO || '',
 						ENGINE_NO: this.selected.ENGINE_PREF || '',
 						SECURITY_NO: '',
@@ -335,7 +336,7 @@
 				})
 				.then((response) => {
 					this.vinControl = response.data
-					console.log(response.data)
+					//console.log(response.data)
 
 					if (response.data !== null)
 					{
