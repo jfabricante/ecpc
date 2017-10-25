@@ -7,6 +7,8 @@ class Serial extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$this->load->model('serial_model');
 	}
 
@@ -45,23 +47,16 @@ class Serial extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		/*if ($this->vin_model->exist($config) && $id == 0)
+		$this->serial_model->store($config);
+
+		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Serial has been updated!</div>');
 		}
 		else
-		{*/
-			$this->serial_model->store($config);
-
-			if ($id > 0)
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Serial has been updated!</div>');
-			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Serial has been added!</div>');
-			}
-		//}
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Serial has been added!</div>');
+		}
 
 		redirect($this->agent->referrer());
 	}
@@ -85,6 +80,16 @@ class Serial extends CI_Controller {
 	public function ajax_serial_list()
 	{
 		echo json_encode($this->serial_model->browse(), true);
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 
 	/*public function migrate_data()
