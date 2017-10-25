@@ -3,7 +3,7 @@
 	<!-- row -->
 	<div class="row">
 		<!-- col-md-6 -->
-		<div class="col-md-6">
+		<div class="col-md-9">
 			<!-- Box danger -->
 			<?php echo $this->session->flashdata('message'); ?>
 
@@ -25,6 +25,7 @@
 								<th>Product Year</th>
 								<th>Description</th>
 								<th>Lot Size</th>
+								<th>QR</th>
 								<th></th>
 								<th></th>
 							</tr>
@@ -39,6 +40,7 @@
 									<td><?php echo $entity->PRODUCT_YEAR; ?></td>
 									<td><?php echo $entity->DESCRIPTION; ?></td>
 									<td><?php echo $entity->LOT_SIZE; ?></td>
+									<td><?php echo $entity->QR; ?></td>
 									<td>
 										<a href="<?php echo base_url('index.php/vin/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
