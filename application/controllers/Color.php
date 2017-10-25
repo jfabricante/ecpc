@@ -7,6 +7,8 @@ class Color extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$this->load->model('color_model');
 	}
 
@@ -45,25 +47,16 @@ class Color extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		// print_r($config); die;
+		$this->color_model->store($config);
 
-		/*if ($this->vin_model->exist($config) && $id == 0)
+		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Color has been updated!</div>');
 		}
 		else
-		{*/
-			$this->color_model->store($config);
-
-			if ($id > 0)
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Color has been updated!</div>');
-			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Color has been added!</div>');
-			}
-		//}
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Color has been added!</div>');
+		}
 
 		redirect($this->agent->referrer());
 	}
@@ -97,6 +90,16 @@ class Color extends CI_Controller {
 		}
 
 		echo json_encode($config, true);
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 
 	/*public function migrate_data()
