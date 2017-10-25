@@ -32,8 +32,28 @@
 		</div>
 
 		<div class="form-group">
-			<label for="completion_date">Completion Date</label>
-			<input type="text" class="form-control datepicker" id="completion_date" name="COMPLETION_DATE" value="<?php echo isset($entity->COMPLETION_DATE) ? date('m/d/Y',  strtotime($entity->COMPLETION_DATE)) : ''; ?>" required>
+			<label for="cp_date">CP Date</label>
+			<input type="text" class="form-control datepicker" id="cp_date" name="CP_DATE" value="<?php echo isset($entity->CP_DATE) ? date('m/d/Y',  strtotime($entity->CP_DATE)) : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="etd">ETD</label>
+			<input type="text" class="form-control datepicker" id="etd" name="ETD" value="<?php echo isset($entity->ETD) ? date('m/d/Y',  strtotime($entity->ETD)) : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="eta">ETA</label>
+			<input type="text" class="form-control datepicker" id="eta" name="ETA" value="<?php echo isset($entity->ETA) ? date('m/d/Y',  strtotime($entity->ETA)) : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="payment_date">Payment Date</label>
+			<input type="text" class="form-control datepicker" id="payment_date" name="PAYMENT_DATE" value="<?php echo isset($entity->PAYMENT_DATE) ? date('m/d/Y',  strtotime($entity->PAYMENT_DATE)) : ''; ?>" required>
+		</div>
+
+		<div class="form-group">
+			<label for="Transmittal_date">Transmittal Date</label>
+			<input type="text" class="form-control datepicker" id="transmittal_date" name="TRANSMITTAL_DATE" value="<?php echo isset($entity->TRANSMITTAL_DATE) ? date('m/d/Y',  strtotime($entity->TRANSMITTAL_DATE)) : ''; ?>" required>
 		</div>
 
 	</div>
@@ -52,7 +72,7 @@
 	$(document).ready(function() {
 		$('#invoice_no').selectpicker({});
 
-		$('#completion_date').datepicker({});
+		$('.datepicker').datepicker({});
 	});
 </script>
 					
