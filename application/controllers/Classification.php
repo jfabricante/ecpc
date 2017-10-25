@@ -6,6 +6,8 @@ class Classification extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		
+		$this->_redirect_unauthorized();
 
 		$this->load->model('classification_model');
 	}
@@ -45,23 +47,16 @@ class Classification extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		/*if ($this->vin_model->exist($config) && $id == 0)
+		$this->classification_model->store($config);
+
+		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Classification code has been updated!</div>');
 		}
 		else
-		{*/
-			$this->classification_model->store($config);
-
-			if ($id > 0)
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Classification code has been updated!</div>');
-			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">Classification code has been added!</div>');
-			}
-		//}
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-success">Classification code has been added!</div>');
+		}
 
 		redirect($this->agent->referrer());
 	}
@@ -85,5 +80,15 @@ class Classification extends CI_Controller {
 	public function ajax_classification_list()
 	{
 		echo json_encode($this->classification_model->browse(), true);
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 }
