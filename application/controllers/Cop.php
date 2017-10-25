@@ -7,6 +7,8 @@ class Cop extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$models = array('cop_model', 'vin_engine_model');
 
 		$this->load->model($models);
@@ -48,27 +50,24 @@ class Cop extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		$config['LAST_USER']       = $this->session->userdata('fullname');
-		$config['LAST_UPDATE']     = date('d-M-Y');
-		$config['COMPLETION_DATE'] = date('d-M-Y', strtotime($config['COMPLETION_DATE']));
+		$config['LAST_USER']        = $this->session->userdata('fullname');
+		$config['LAST_UPDATE']      = date('d-M-Y');
+		$config['CP_DATE']          = date('d-M-Y', strtotime($config['CP_DATE']));
+		$config['ETD']              = date('d-M-Y', strtotime($config['ETD']));
+		$config['ETA']              = date('d-M-Y', strtotime($config['ETA']));
+		$config['PAYMENT_DATE']     = date('d-M-Y', strtotime($config['PAYMENT_DATE']));
+		$config['TRANSMITTAL_DATE'] = date('d-M-Y', strtotime($config['TRANSMITTAL_DATE']));
 		
-		/*if ($this->vin_model->exist($config) && $id == 0)
+		$this->cop_model->store($config);
+
+		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">CP item has been updated!</div>');
 		}
 		else
-		{*/
-			$this->cop_model->store($config);
-
-			if ($id > 0)
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">CP item has been updated!</div>');
-			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">CP item has been added!</div>');
-			}
-		//}
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-success">CP item has been added!</div>');
+		}
 
 		redirect($this->agent->referrer());
 	}
@@ -92,5 +91,15 @@ class Cop extends CI_Controller {
 	public function ajax_cop_list()
 	{
 		echo json_encode($this->cop_model->browse(), true);
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 }
