@@ -7,6 +7,8 @@ class Cp extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$this->load->model('cp_model');
 	}
 
@@ -45,27 +47,16 @@ class Cp extends CI_Controller {
 		// Trim the post data
 		$config = array_map('trim', $this->input->post());
 
-		/*echo '<pre>';
-		print_r($config);
-		echo '</pre>'; die;*/
+		$this->cp_model->store($config);
 
-		/*if ($this->vin_model->exist($config))
+		if ($id > 0)
 		{
-			$this->session->set_flashdata('message', '<div class="alert alert-error">Product Model has been duplicated!</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been updated!</div>');
 		}
 		else
-		{*/
-			$this->cp_model->store($config);
-
-			if ($id > 0)
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been updated!</div>');
-			}
-			else
-			{
-				$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been added!</div>');
-			}
-		//}
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-success">CP details has been added!</div>');
+		}
 
 		redirect($this->agent->referrer());
 	}
@@ -98,6 +89,16 @@ class Cp extends CI_Controller {
 		$data['type'] = 'object';
 
 		echo json_encode($this->cp_model->read($data), true);
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 
 	/*public function run_migration()
