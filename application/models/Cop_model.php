@@ -13,12 +13,27 @@ class Cop_model extends CI_Model {
 
 	public function browse(array $params = array('type' => 'object'))
 	{
-		if ($params['type'] == 'object')
-		{
-			return $this->oracle->get('COP')->result();	
-		}
+		$fields = array(
+				'a.ID',
+				'a.CP_NO',
+				'a.INVOICE_NO',
+				'a.CP_DATE',
+				'b.LOT_NO',
+				'b.ENTRY_NO',
+				'b.PRODUCT_MODEL',
+				'a.ETD',
+				'a.ETA',
+				'a.PAYMENT_DATE',
+				'a.TRANSMITTAL_DATE',
+			);
 
-		return $this->oracle->get('COP')->result_array();
+		$query = $this->oracle->distinct('LOT_NO')
+				->select($fields)
+				->from('COP a')
+				->join('VIN_ENGINE b', 'a.INVOICE_NO = b.INVOICE_NO', 'INNER')
+				->get();
+
+		return $query->result();
 	}
 
 	public function read(array $params = array('type' => 'object'))
@@ -66,5 +81,15 @@ class Cop_model extends CI_Model {
 		$query = $this->oracle->get_where('COP', array('cop' => $params['cop']));
 
 		return $query->num_rows();
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 }
