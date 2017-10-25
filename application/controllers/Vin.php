@@ -7,6 +7,8 @@ class Vin extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		// Arrays of models
 		$models = array('vin_model', 'cp_model', 'vin_control_model');
 
@@ -153,6 +155,16 @@ class Vin extends CI_Controller {
 	public function ajax_model_name()
 	{
 		echo json_encode(array_column($this->vin_model->browse(array('type' => 'array')), 'PRODUCT_MODEL'));
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 
 	/*public function run_migration()
