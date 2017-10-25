@@ -3,7 +3,7 @@
 	<!-- row -->
 	<div class="row">
 		<!-- col-md-6 -->
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<!-- Box danger -->
 			<?php echo $this->session->flashdata('message'); ?>
 
@@ -22,10 +22,15 @@
 							<tr>
 								<th>#</th>
 								<th>CP No.</th>
+								<th>CP Date</th>
 								<th>Invoice No.</th>
-								<th>Last User</th>
-								<th>Last Update</th>
-								<th>Completion Date</th>
+								<th>Entry No.</th>
+								<th>Model</th>
+								<th>Lot No.</th>
+								<th>ETD</th>
+								<th>ETA</th>
+								<th>Payment Date</th>
+								<th>Transmittal Date</th>
 								<th></th>
 								<th></th>
 							</tr>
@@ -37,10 +42,16 @@
 								<tr>
 									<td><?php echo $count; ?></td>
 									<td><?php echo $entity->CP_NO; ?></td>
+									<td><?php echo date('m/d/Y', strtotime($entity->CP_DATE)); ?></td>
 									<td><?php echo $entity->INVOICE_NO; ?></td>
-									<td><?php echo $entity->LAST_USER; ?></td>
-									<td><?php echo date('m/d/Y', strtotime($entity->LAST_UPDATE)); ?></td>
-									<td><?php echo date('m/d/Y', strtotime($entity->COMPLETION_DATE)); ?></td>
+									<td><?php echo $entity->ENTRY_NO; ?></td>
+									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
+									<td><?php echo $entity->LOT_NO; ?></td>
+									<td><?php echo $entity->ETD ? date('m/d/Y', strtotime($entity->ETD)) : ''; ?></td>
+									<td><?php echo $entity->ETA ? date('m/d/Y', strtotime($entity->ETA)) : ''; ?></td>
+									<td><?php echo $entity->PAYMENT_DATE ? date('m/d/Y', strtotime($entity->PAYMENT_DATE)) : ''; ?></td>
+									<td><?php echo $entity->TRANSMITTAL_DATE ? date('m/d/Y', strtotime($entity->TRANSMITTAL_DATE)) : ''; ?></td>
+
 									<td>
 										<a href="<?php echo base_url('index.php/cop/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
