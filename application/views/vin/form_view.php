@@ -45,6 +45,11 @@
 			</select>
 		</div>
 
+		<div class="form-group">
+			<label for="qr">QR Images</label>
+			<input type="text" class="form-control" id="qr" name="QR" value="<?php echo isset($entity->QR) ? $entity->QR : ''; ?>" required>
+		</div>
+
 	</div>
 	
 	<div class="modal-footer">
