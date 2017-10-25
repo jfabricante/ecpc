@@ -38,7 +38,7 @@ class Login extends CI_Controller {
 	public function dashboard()
 	{
 		$data = array(
-			'title' => 'Dashboard',
+			'title'   => 'Dashboard',
 			'content' => 'dashboard_view',
 		);
 
