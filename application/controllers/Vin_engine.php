@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Load file
+// Load third party
 require_once APPPATH . '/third_party/PHPExcel/Classes/PHPExcel.php';
 
 class Vin_engine extends CI_Controller {
@@ -10,9 +10,11 @@ class Vin_engine extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->_redirect_unauthorized();
+
 		$this->load->helper('form');
 
-		$models = array('vin_model', 'portcode_model', 'classification_model', 'serial_model', 'vin_engine_model', 'vin_control_model');
+		$models = array('vin_model', 'portcode_model', 'classification_model', 'serial_model', 'vin_engine_model', 'vin_control_model', 'security_model');
 
 		$this->load->model($models);
 	}
@@ -409,6 +411,26 @@ class Vin_engine extends CI_Controller {
 		}
 	}
 
+	public function download_pdf()
+	{
+		$path = FCPATH . '/resources/download/report.pdf';
+
+		if (file_exists($path))
+		{
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename='.basename($path));
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($path));
+			ob_clean();
+			flush();
+			readfile($path);
+		}
+
+	}
+
 	public function ajax_fetch_invoice_list()
 	{
 		echo json_encode($this->vin_engine_model->fetchInvoice());
@@ -438,6 +460,176 @@ class Vin_engine extends CI_Controller {
 		$data = json_decode(file_get_contents("php://input"), true);
 
 		echo json_encode($this->vin_engine_model->fetchDistinctLot($data), true);
+	}
+
+	public function ajax_update_details()
+	{
+		ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 7200);
+
+		$data = json_decode(file_get_contents("php://input"), true);
+
+
+		if ($data['items'])
+		{
+			$this->vin_engine_model->update_batch($data['items']);
+			$this->_create_pdf($data['items']);
+		}
+
+		if ($data['security'])
+		{
+			$security = $data['security'];
+			
+			$security['LAST_USER']   = $this->session->userdata('fullname');
+			$security['LAST_UPDATE'] = date('d-M-Y');
+
+			$this->security_model->store($security);
+		}
+	}
+
+	protected function _create_pdf($params)
+	{
+		$this->load->library('pdf');
+
+		$pdf = new PDF();
+
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set some language-dependent strings (optional)
+		if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+		    require_once(dirname(__FILE__).'/lang/eng.php');
+		    $pdf->setLanguageArray($l);
+		}
+
+		// set font
+		$pdf->SetFont('helvetica', '', 25);
+
+		// add a page
+		$pdf->AddPage();
+
+		// -----------------------------------------------------------------------------
+
+		// $pdf->SetFont('helvetica', '', 10);
+
+		// define barcode style
+		$style = array(
+		    'position'     => '',
+		    'align'        => 'L',
+		    'stretch'      => false,
+		    'fitwidth'     => true,
+		    'cellfitalign' => '',
+		    'border'       => false,
+		    'hpadding'     => 'auto',
+		    'vpadding'     => 'auto',
+		    'fgcolor'      => array(0,0,0),
+		    'bgcolor'      => false,
+		    'text'         => true,
+		    'font'         => 'helvetica',  //array(255,255,255),
+		    'stretchtext'  => 4
+		);
+
+		// set counter
+		$counter = 1;
+
+		foreach ($params as $entity)
+		{
+			$style['fontsize'] = 20;
+			$pdf->Write(0, 'Model Name: ');
+			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+			$pdf->Ln(15);
+
+			$pdf->Write(0, 'Sequence Number: ' . $entity['SEQUENCE']);
+			$pdf->Ln(15);
+
+			$pdf->Write(0, 'Engine Number: ');
+			$pdf->write1DBarcode($entity['ENGINE_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$pdf->Write(0, 'Chassis Number: ');
+			$pdf->write1DBarcode($entity['VIN_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$style['fontsize'] = 0;
+			$pdf->Write(0, 'Security Number: ');
+			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			$pdf->Ln();
+			$pdf->writeHTML("<br />", true, false, false, false, '');
+
+			$pdf->writeHTML("<hr />", true, false, false, false, '');
+
+			$style['fontsize'] = 20;
+			$pdf->Write(0, 'Model Name: ');
+			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+			$pdf->Ln(15);
+
+			$pdf->Write(0, 'Sequence Number: ' . $entity['SEQUENCE']);
+			$pdf->Ln(15);
+
+			$pdf->Write(0, 'Engine Number: ');
+			$pdf->write1DBarcode($entity['ENGINE_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$pdf->Write(0, 'Chassis Number: ');
+			$pdf->write1DBarcode($entity['VIN_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			//$pdf->Ln();
+
+			$style['fontsize'] = 0;
+			$pdf->Write(0, 'Security Number: ');
+			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			$pdf->Ln();
+
+			if (count($params) == $counter)
+			{
+				break;
+			}
+
+			$pdf->AddPage();
+			$counter++;
+		}
+		
+		$name = FCPATH . '/resources/download/report.pdf';
+		$pdf->Output($name, 'F');
+
+		echo $pdf->Output('report.pdf', 'I');
+	}
+
+	protected function _showVars($vars)
+	{
+		echo '<pre>';
+		print_r($vars);
+		echo '</pre>';
+	}
+
+	protected function _redirect_unauthorized()
+	{
+		if (count($this->session->userdata) < 3)
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
+
+			redirect(base_url());
+		}
 	}
 
 	/*public function run_migration()
