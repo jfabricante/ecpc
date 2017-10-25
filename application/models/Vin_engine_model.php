@@ -142,11 +142,19 @@ class Vin_engine_model extends CI_Model {
 
 	public function fetchModelItems($params)
 	{
+		$fields = array(
+				'a.*',
+				'b.DESCRIPTION'
+			);
+
 		$clause = sprintf('LOT_NO BETWEEN %s AND %s', $params['lot_from'], $params['lot_to']);
 
-		$query = $this->oracle->from('VIN_ENGINE')
-				->where('PRODUCT_MODEL', $params['product_model'])
+		$query = $this->oracle->select($fields)
+				->from('VIN_ENGINE a')
+				->join('VIN_MODEL b', 'a.PRODUCT_MODEL = b.PRODUCT_MODEL', 'LEFT')
+				->where('a.PRODUCT_MODEL', $params['product_model'])
 				->where($clause)
+				->order_by('a.ID')
 				->get();
 
 		return $query->result();
@@ -155,6 +163,14 @@ class Vin_engine_model extends CI_Model {
 	public function store_batch(array $data)
 	{
 		$this->oracle->insert_batch('VIN_ENGINE', $data);
+	}
+
+	public function update_batch(array $data)
+	{
+		foreach ($data as $entity) 
+		{
+			$this->oracle->update('VIN_ENGINE', $entity, array('ID' => $entity['ID']));
+		}
 	}
 
 	public function fetchDistinctModel()
