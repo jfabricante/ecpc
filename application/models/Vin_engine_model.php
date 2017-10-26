@@ -144,7 +144,8 @@ class Vin_engine_model extends CI_Model {
 	{
 		$fields = array(
 				'a.*',
-				'b.DESCRIPTION'
+				'b.DESCRIPTION',
+				'b.QR'
 			);
 
 		$clause = sprintf('LOT_NO BETWEEN %s AND %s', $params['lot_from'], $params['lot_to']);
@@ -169,7 +170,12 @@ class Vin_engine_model extends CI_Model {
 	{
 		foreach ($data as $entity) 
 		{
-			$this->oracle->update('VIN_ENGINE', $entity, array('ID' => $entity['ID']));
+			$config = array(
+					'SECURITY_NO' => $entity['SECURITY_NO']
+				);
+
+			//$this->oracle->update('VIN_ENGINE', $entity, array('ID' => $entity['ID']));
+			$this->oracle->update('VIN_ENGINE', $config, array('ID' => $entity['ID']));
 		}
 	}
 
