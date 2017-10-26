@@ -265,7 +265,7 @@
 				})
 				.then((response) => {
 					$('#myModal').modal('hide')
-
+					window.open(appUrl + '/vin_engine/download_masterlist')
 					window.open(appUrl + '/vin_engine/download_pdf')
 				})
 				.catch((error) => {
