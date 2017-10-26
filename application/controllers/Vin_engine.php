@@ -440,7 +440,25 @@ class Vin_engine extends CI_Controller {
 			flush();
 			readfile($path);
 		}
+	}
 
+	public function download_masterlist()
+	{
+		$path = FCPATH . 'resources/download/masterlist.pdf';
+
+		if (file_exists($path))
+		{
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename='.basename($path));
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($path));
+			ob_clean();
+			flush();
+			readfile($path);
+		}
 	}
 
 	public function ajax_fetch_invoice_list()
