@@ -480,23 +480,23 @@ class Vin_engine extends CI_Controller {
         ini_set('max_execution_time', 7200);
 
 		$data = json_decode(file_get_contents("php://input"), true);
-
-
-		if ($data['items'])
+		
+		if ($data['items'] && count($data['security']))
 		{
 			$this->vin_engine_model->update_batch($data['items']);
-			$this->_create_pdf($data['items']);
-		}
 
-		if ($data['security'])
-		{
+			// Security
 			$security = $data['security'];
 			
 			$security['LAST_USER']   = $this->session->userdata('fullname');
 			$security['LAST_UPDATE'] = date('d-M-Y');
 
 			$this->security_model->store($security);
+			
 		}
+
+		$this->_createMasterList($data['items']);
+		$this->_create_pdf($data['items']);
 	}
 
 	protected function _create_pdf($params)
