@@ -662,53 +662,68 @@ class Vin_engine extends CI_Controller {
 			$style['fontsize'] = 20;
 			$pdf->Write(0, 'Model Name: ');
 			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
+
 
 			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+
+			$qr = $this->_hasChars($entity['QR'], ',');
+
+			if (count($qr) > 1)
+			{
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 30, 30, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 30, 30, '', '', '', false, 300, 'R', false, false, 1, false, false, false);
+			}
+			else
+			{
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr, '', '', 30, 30, '', '', 'T', false, 300, 'R', false, false, 1, false, false, false);
+			}
 			$pdf->Ln(15);
 
 			$pdf->Write(0, 'Sequence Number: ' . $entity['SEQUENCE']);
-			$pdf->Ln(15);
+			$pdf->Ln(20);
 
 			$pdf->Write(0, 'Engine Number: ');
 			$pdf->write1DBarcode($entity['ENGINE_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
 
 			$pdf->Write(0, 'Chassis Number: ');
 			$pdf->write1DBarcode($entity['VIN_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
 
 			$style['fontsize'] = 0;
 			$pdf->Write(0, 'Security Number: ');
-			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
+			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 10, 0.4, $style, 'N');
 			$pdf->Ln();
-			$pdf->writeHTML("<br />", true, false, false, false, '');
+			$pdf->writeHTML("<br /><br />", true, false, false, false, '');
 
 			$pdf->writeHTML("<hr />", true, false, false, false, '');
 
 			$style['fontsize'] = 20;
 			$pdf->Write(0, 'Model Name: ');
 			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
 
 			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+			if (count($qr) > 1)
+			{
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 30, 30, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 30, 30, '', '', '', false, 300, 'R', false, false, 1, false, false, false);
+			}
+			else
+			{
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr, '', '', 30, 30, '', '', 'T', false, 300, 'R', false, false, 1, false, false, false);
+			}
 			$pdf->Ln(15);
 
 			$pdf->Write(0, 'Sequence Number: ' . $entity['SEQUENCE']);
-			$pdf->Ln(15);
+			$pdf->Ln(20);
 
 			$pdf->Write(0, 'Engine Number: ');
 			$pdf->write1DBarcode($entity['ENGINE_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
 
 			$pdf->Write(0, 'Chassis Number: ');
 			$pdf->write1DBarcode($entity['VIN_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			//$pdf->Ln();
 
 			$style['fontsize'] = 0;
 			$pdf->Write(0, 'Security Number: ');
-			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 18, 0.4, $style, 'N');
-			$pdf->Ln();
+			$pdf->write1DBarcode($entity['SECURITY_NO'], 'C39', '', '', '', 10, 0.4, $style, 'N');
 
 			if (count($params) == $counter)
 			{
