@@ -499,6 +499,86 @@ class Vin_engine extends CI_Controller {
 		$this->_create_pdf($data['items']);
 	}
 
+	protected function _createMasterList($params)
+	{
+		// Load library
+		$this->load->library('pdf');
+
+		// Create pdf instance
+		$pdf = new PDF();
+
+		$pdf->SetTitle('Vin Engine List');
+		$pdf->SetSubject('Vin Engine List');
+		$pdf->SetHeaderData('', 0, 'VIN ENGINE');
+
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set some language-dependent strings (optional)
+		if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+		    require_once(dirname(__FILE__).'/lang/eng.php');
+		    $pdf->setLanguageArray($l);
+		}
+
+		// Set font
+		$pdf->SetFont('helvetica', 'B', 16);
+
+		// Add a page
+		$pdf->AddPage();
+
+		$pdf->Write(0, 'Model Name: ' . $params[0]['PRODUCT_MODEL'] . '	Lot No.: ' . $params[0]['LOT_NO']);
+		$pdf->Ln(10);
+
+		$pdf->SetFont('helvetica', '', 12);
+
+		$content = '';
+
+		foreach($params as $entity)
+		{
+			$content .= '<tr>
+							<td border="1">' . $entity['SEQUENCE'] . '</td>
+							<td border="1">' . $entity['VIN_NO'] . '</td>
+							<td border="1">' . $entity['ENGINE_NO'] . '</td>
+						</tr>';
+		}
+
+		$tbl = '<table cellspacing="0" style="text-align: center; font-weight: normal; padding: 4px 2px;">
+				<thead>
+					<tr >
+						<th border="1" style="width: 50px;">No.</th>
+						<th border="1">VIN</th>
+						<th border="1">Engine</th>
+					</tr>
+				<thead>
+				<tbody>
+					' . $content . '
+				</tbody>
+			</table>';
+
+		$pdf->writeHTML($tbl, true, false, false, false, '');
+
+		$name = FCPATH . '/resources/download/masterlist.pdf';
+		$pdf->Output($name, 'F');
+
+		$pdf->Output('masterlist.pdf', 'I');
+
+	}
+
 	protected function _create_pdf($params)
 	{
 		$this->load->library('pdf');
