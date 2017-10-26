@@ -627,6 +627,17 @@ class Vin_engine extends CI_Controller {
 		echo $pdf->Output('report.pdf', 'I');
 	}
 
+	// Return array else string
+	protected function _hasChars($string, $needle)
+	{
+		if (strpos($string, $needle))
+		{
+			return explode($needle, $string);
+		}
+
+		return $string;
+	}
+
 	protected function _showVars($vars)
 	{
 		echo '<pre>';
