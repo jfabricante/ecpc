@@ -340,6 +340,18 @@ class Vin_engine extends CI_Controller {
 
 			$excelActiveSheet->fromArray($params, NULL, 'A2');
 
+			$num_rows = $excelActiveSheet->getHighestRow();
+
+			// Change the format from general to number format
+			$excelActiveSheet->getStyle('D1:D' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+    		$excelActiveSheet->getStyle('Q1:Q' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
+    		$excelActiveSheet->getStyle('R1:R' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
 			// Apply background color on cell
 			$excelActiveSheet->getStyle('A1:T1')
 							->getFill()
