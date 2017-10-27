@@ -10,6 +10,8 @@ class Vin_engine extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->load->library('session');
+
 		$this->_redirect_unauthorized();
 
 		$this->load->helper('form');
@@ -340,17 +342,116 @@ class Vin_engine extends CI_Controller {
 
 			$excelActiveSheet->fromArray($params, NULL, 'A2');
 
+			// Number of row count
 			$num_rows = $excelActiveSheet->getHighestRow();
 
 			// Change the format from general to number format
+			$excelActiveSheet->getStyle('A1:A' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('B1:B' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('C1:C' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
 			$excelActiveSheet->getStyle('D1:D' . $num_rows)->getNumberFormat()
     				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+    		$excelActiveSheet->getStyle('E1:E' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('F1:F' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('G1:G' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('H1:H' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('I1:I' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('J1:J' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('K1:K' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('L1:L' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('M1:M' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('N1:N' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('O1:O' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('P1:P' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 
     		$excelActiveSheet->getStyle('Q1:Q' . $num_rows)->getNumberFormat()
     				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 
     		$excelActiveSheet->getStyle('R1:R' . $num_rows)->getNumberFormat()
     				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
+    		$excelActiveSheet->getStyle('S1:S' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+    		$excelActiveSheet->getStyle('T1:T' . $num_rows)->getNumberFormat()
+    				->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+
+    		$items = 31;
+
+    		// Setup items per page
+    		for($i = 1; $i <= $num_rows; $i++)
+    		{
+    			// Page break
+    			if (($i % $items) == 0)
+    			{
+    				if (floor($i / 31) == 1)
+    				{
+    					$excelActiveSheet->setBreak('A' . $items, PHPExcel_Worksheet::BREAK_ROW);
+    				}
+    				else
+    				{
+    					$excelActiveSheet->setBreak('A' . $i, PHPExcel_Worksheet::BREAK_ROW);
+    				}
+
+    				$items = $items + 30;
+    			}
+    		}
+
+    		// Paper Orientation
+    		$excelActiveSheet->getPageSetup()
+				    ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+			// Paper Size
+			$excelActiveSheet->getPageSetup()
+    			->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+
+    		// Set margins
+    		$excelActiveSheet->getPageMargins()->setTop(0.25);
+    		$excelActiveSheet->getPageMargins()->setRight(0.25);
+    		$excelActiveSheet->getPageMargins()->setLeft(0.25);
+    		$excelActiveSheet->getPageMargins()->setBottom(0.25);
+
+    		// Apply the column title on every pages
+    		$excelActiveSheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1,1);
+
+    		// Fit the content to page
+    		$excelActiveSheet->getPageSetup()->setFitToWidth(1);    
+    		$excelActiveSheet->getPageSetup()->setFitToHeight(0);
+
+    		// Set the footer details and pagination
+    		$excelActiveSheet->getHeaderFooter()
+    			->setOddFooter('&L&D &T' . $excelObj->getProperties()->getTitle() . '&RPage &P of &N');
 
 			// Apply background color on cell
 			$excelActiveSheet->getStyle('A1:T1')
@@ -760,7 +861,7 @@ class Vin_engine extends CI_Controller {
 
 	protected function _redirect_unauthorized()
 	{
-		if (count($this->session->userdata) < 3)
+		if (count($this->session->userdata()) < 3)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
 
