@@ -6,6 +6,8 @@ class Classification extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+		$this->load->library('session');
 		
 		$this->_redirect_unauthorized();
 
@@ -84,7 +86,7 @@ class Classification extends CI_Controller {
 
 	protected function _redirect_unauthorized()
 	{
-		if (count($this->session->userdata) < 3)
+		if (count($this->session->userdata()) < 3)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
 
