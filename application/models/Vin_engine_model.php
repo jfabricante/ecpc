@@ -124,8 +124,8 @@ class Vin_engine_model extends CI_Model {
 		if (!$query->num_rows())
 		{
 			$query = $this->oracle->select($fields)
-					->from('VIN_ENGINE AS a')
-					->join('CP AS c', 'a.PRODUCT_MODEL = c.MODEL', 'INNER')
+					->from('VIN_ENGINE a')
+					->join('CP c', 'a.PRODUCT_MODEL = c.MODEL', 'INNER')
 					->where($params)
 					->get();
 		}
