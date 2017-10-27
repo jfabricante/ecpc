@@ -204,12 +204,19 @@ class Session
      * @param   string  element key
      * @return object element value
      */
-    public function userdata($value)
+    public function userdata($value = '')
     {
-        if (isset($this->store[$value])) {
-            return $this->store[$value];
-        } else {
-            return false;
+        if ($value != '')
+        {
+            if (isset($this->store[$value])) {
+                return $this->store[$value];
+            } else {
+                return false;
+            }   
+        }
+        else
+        {
+            return $this->store;
         }
     }
 
