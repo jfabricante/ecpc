@@ -7,6 +7,8 @@ class Vin_control extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->load->library('session');
+
 		$this->_redirect_unauthorized();
 
 		$this->load->model('vin_control_model', 'vin_control');
@@ -131,7 +133,7 @@ class Vin_control extends CI_Controller {
 
 	protected function _redirect_unauthorized()
 	{
-		if (count($this->session->userdata) < 3)
+		if (count($this->session->userdata()) < 3)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
 

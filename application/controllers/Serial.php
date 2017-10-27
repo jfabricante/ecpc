@@ -7,6 +7,8 @@ class Serial extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->load->library('session');
+
 		$this->_redirect_unauthorized();
 
 		$this->load->model('serial_model');
@@ -84,7 +86,7 @@ class Serial extends CI_Controller {
 
 	protected function _redirect_unauthorized()
 	{
-		if (count($this->session->userdata) < 3)
+		if (count($this->session->userdata()) < 3)
 		{
 			$this->session->set_flashdata('message', '<div class="alert alert-warning">Login first!</div>');
 
