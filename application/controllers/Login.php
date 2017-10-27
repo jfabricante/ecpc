@@ -10,28 +10,43 @@ class Login extends CI_Controller {
 		$helpers = array('form');
 
 		$this->load->helper($helpers);
+
+		$this->load->library('session');
 	}
 
 	public function index()
 	{
-		$this->load->view('login_view');
+		$this->authenticate();
 	}
 
 	public function authenticate()
 	{
-		$user_data = $this->_user_exist();
+		// Clear the session in case the user click the system unconsciously
+		$this->session->sess_destroy();
 
-		if ($this->_validate_input() && is_array($user_data))
+		$user_data = $_SESSION['user_data'];
+
+		// Create a new session variables
+		$config = array(
+				'employee_id' => $user_data['employee_id'],
+				'employee_no' => $user_data['employee_no'],
+				'nickname'    => $user_data['nickname'],
+				'fullname'    => $user_data['full_name'],
+				'fullname2'   => $user_data['full_name2'],
+				'section'     => $user_data['section'],
+				'department'  => $user_data['department'],
+				'division'    => $user_data['division'],
+				'user_access' => $user_data['user_access']
+			);
+
+
+		if (count($user_data) > 3)
 		{
-
-			$this->session->set_userdata($user_data);
-
+			$this->session->set_userdata($config);
 			redirect('/vin/list_');
 		}
 
-		$data['message'] = '<span class="col-sm-12 alert alert-warning">You have no rights to access this system.</span>';
-
-		$this->load->view('login_view', $data);
+		redirect('http://172.16.1.34/ipc_central');
 
 	}
 
@@ -49,7 +64,11 @@ class Login extends CI_Controller {
 	{
 		$this->session->sess_destroy();
 
-		redirect('login');
+		// Cast native session
+		session_start();
+		session_destroy();
+		
+		redirect('http://172.16.1.34/ipc_central');
 	}
 
 	protected function _validate_input()
