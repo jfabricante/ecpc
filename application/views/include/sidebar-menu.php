@@ -42,46 +42,63 @@
 				);
 			?>
 
-			<li class="treeview <?php echo in_array($menu, $group_menu) ? 'active' : '' ?>">
-				<a href="#">
-					<i class="fa fa-newspaper-o"></i> <span>Data Entry</span>
-					<span class="pull-right-container">
-						<i class="fa fa-angle-left pull-right"></i>
-					</span>
-				</a>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="treeview <?php echo in_array($menu, $group_menu) ? 'active' : '' ?>">
+					<a href="#">
+						<i class="fa fa-newspaper-o"></i> <span>Data Entry</span>
+						<span class="pull-right-container">
+							<i class="fa fa-angle-left pull-right"></i>
+						</span>
+					</a>
 
-				<!-- group menu items -->
-				<ul class="treeview-menu">
-					<li class="<?php echo $menu == 'color/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/color/list_') ?>"><i class="fa fa-circle-o"></i><span>Color</span></a></li>
+					<!-- group menu items -->
+					<ul class="treeview-menu">
+						<li class="<?php echo $menu == 'color/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/color/list_') ?>"><i class="fa fa-circle-o"></i><span>Color</span></a></li>
 
-					<li class="<?php echo $menu == 'classification/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/classification/list_') ?>"><i class="fa fa-circle-o"></i><span>Classification</span></a></li>
+						<li class="<?php echo $menu == 'classification/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/classification/list_') ?>"><i class="fa fa-circle-o"></i><span>Classification</span></a></li>
 
-					<li class="<?php echo $menu == 'serial/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/serial/list_') ?>"><i class="fa fa-circle-o"></i><span>Serial</span></a></li>
+						<li class="<?php echo $menu == 'serial/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/serial/list_') ?>"><i class="fa fa-circle-o"></i><span>Serial</span></a></li>
 
-					<li class="<?php echo $menu == 'security/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/security/list_') ?>"><i class="fa fa-circle-o"></i><span>Security</span></a></li>
+						<li class="<?php echo $menu == 'security/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/security/list_') ?>"><i class="fa fa-circle-o"></i><span>Security</span></a></li>
 
-					<li class="<?php echo $menu == 'portcode/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/portcode/list_') ?>"><i class="fa fa-circle-o"></i><span>Port Code</span></a></li>
+						<li class="<?php echo $menu == 'portcode/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/portcode/list_') ?>"><i class="fa fa-circle-o"></i><span>Port Code</span></a></li>
 
-					<li class="<?php echo $menu == 'cp/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cp/list_') ?>"><i class="fa fa-circle-o"></i><span>CP Details</span></a></li>
-				</ul>
-			</li>
-			
+						<li class="<?php echo $menu == 'cp/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cp/list_') ?>"><i class="fa fa-circle-o"></i><span>CP Details</span></a></li>
+					</ul>
+				</li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/list_') ?>"><i class="fa fa-table"></i><span>Vin Model</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'vin/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/list_') ?>"><i class="fa fa-table"></i><span>Vin Model</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin/group_list' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/group_list') ?>"><i class="fa fa-object-group"></i><span>Model Group</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'vin/group_list' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin/group_list') ?>"><i class="fa fa-object-group"></i><span>Model Group</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-gamepad"></i><span>Vin Control</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'vin_control/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_control/list_') ?>"><i class="fa fa-gamepad"></i><span>Vin Control</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin_engine/ckd' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/ckd') ?>"><i class="fa fa-tasks"></i><span>CKD</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'vin_engine/ckd' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/ckd') ?>"><i class="fa fa-tasks"></i><span>CKD</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin_engine/cbu' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/cbu') ?>"><i class="fa fa-tasks"></i><span>CBU</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'vin_engine/cbu' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/cbu') ?>"><i class="fa fa-tasks"></i><span>CBU</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-bar-chart"></i><span>Invoice Report</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'ReadOnly'))): ?>
+				<li class="<?php echo $menu == 'vin_engine/invoice' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/invoice') ?>"><i class="fa fa-bar-chart"></i><span>Invoice Report</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'vin_engine/model_view' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/model_view') ?>"><i class="fa fa-pie-chart"></i><span>Model View</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'Regular'))): ?>
+				<li class="<?php echo $menu == 'vin_engine/model_view' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/model_view') ?>"><i class="fa fa-pie-chart"></i><span>Model View</span></a></li>
+			<?php endif ?>
 
-			<li class="<?php echo $menu == 'cop/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cop/list_') ?>"><i class="fa fa-database"></i><span>CP Entry</span></a></li>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'ReadOnly'))): ?>
+				<li class="<?php echo $menu == 'cop/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cop/list_') ?>"><i class="fa fa-database"></i><span>CP Entry</span></a></li>
+			<?php endif ?>
 
 		</ul><!-- /.sidebar-menu -->
 
