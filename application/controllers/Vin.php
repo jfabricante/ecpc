@@ -159,6 +159,11 @@ class Vin extends CI_Controller {
 		echo json_encode(array_column($this->vin_model->browse(array('type' => 'array')), 'PRODUCT_MODEL'));
 	}
 
+	public function ajax_update_state()
+	{
+		$this->vin_model->updateStatus($this->input->post());
+	}
+
 	protected function _redirect_unauthorized()
 	{
 		if (count($this->session->userdata()) < 3)
