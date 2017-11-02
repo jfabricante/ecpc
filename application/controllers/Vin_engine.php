@@ -53,7 +53,9 @@ class Vin_engine extends CI_Controller {
 
 	public function invoice_process()
 	{
-		$entities = $this->vin_engine_model->fetchInvoiceItem($this->input->post());
+		$config = array('INVOICE_NO' => $this->input->post('INVOICE_NO'));
+
+		$entities = $this->vin_engine_model->fetchInvoiceItem($config);
 		
 		$config = array();
 
@@ -619,6 +621,13 @@ class Vin_engine extends CI_Controller {
 
 		$this->_createMasterList($data['items']);
 		$this->_create_pdf($data['items']);
+	}
+
+	public function update_cbu_security()
+	{
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		echo json_encode($this->vin_engine_model->update_batch($data['items']));
 	}
 
 	protected function _createMasterList($params)
