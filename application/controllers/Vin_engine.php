@@ -316,6 +316,9 @@ class Vin_engine extends CI_Controller {
 			// Set the Active sheet
 			$excelObj->setActiveSheetIndex(0);
 
+			// Set alignment
+			$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
 			// Add header to the excel
 			$excelActiveSheet->setCellValue('A1', 'Port Code')
 							->setCellValue('B1', 'Year')
