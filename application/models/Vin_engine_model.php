@@ -92,6 +92,7 @@ class Vin_engine_model extends CI_Model {
 	public function fetchInvoiceItem($params)
 	{
 		$fields = array(
+					'a.SEQUENCE',
 					'a.PORTCODE',
 					'a.SERIAL',
 					'a.ENTRY_NO',
@@ -174,7 +175,6 @@ class Vin_engine_model extends CI_Model {
 					'SECURITY_NO' => $entity['SECURITY_NO']
 				);
 
-			//$this->oracle->update('VIN_ENGINE', $entity, array('ID' => $entity['ID']));
 			$this->oracle->update('VIN_ENGINE', $config, array('ID' => $entity['ID']));
 		}
 	}
@@ -182,8 +182,11 @@ class Vin_engine_model extends CI_Model {
 	public function fetchDistinctModel()
 	{
 		$query = $this->oracle->distinct('PRODUCT_MODEL')
-				->select('PRODUCT_MODEL')
-				->get('VIN_ENGINE');
+				->select('a.PRODUCT_MODEL')
+				->from('VIN_ENGINE a')
+				->join('VIN_MODEL b', 'a.PRODUCT_MODEL = b.PRODUCT_MODEL', 'INNER')
+				->where('b.STATUS = 1')
+				->get();
 
 		return $query->result();
 	}
