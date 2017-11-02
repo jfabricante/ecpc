@@ -10,14 +10,17 @@
 
 			<div class="box box-danger">
 				<!-- Content -->
-				<div class="box-body">
+				<div class="box-header">
+
+					<!-- form -->
 					<form action="<?php echo base_url('index.php/vin_engine/invoice_process') ?>" method="post">
 						<div class="row">
 
-							<div class="col-md-6">
+							<div class="col-md-3">
 								<div class="form-group">
-									<label for="invoice_no" class="col-md-4 col-form-label">Select Invoice No: </label>
-									<div class="col-md-8">
+									<label for="invoice_no">Select Invoice No: </label>
+									
+									<div>
 										<select name="INVOICE_NO" id="invoice_no" ref="invoice_no" class="select2 form-control">
 											<option></option>
 											<option v-for="entity of invoiceList">
@@ -30,11 +33,32 @@
 							
 							<!-- submit -->
 							<div class="col-md-2">
+								<br />
 								<button type="submit" class="btn btn-flat btn-danger">Create Report</button>
 							</div>
 							<!-- ./submit -->
+
+							<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+								<!-- file-upload -->
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="file-upload">Upload Spreadsheet</label>
+										<input type="file" name="file-upload" v-model="fileUpload" ref="fileUpload" id="file-upload" accept=".xlsx, .xls, .csv">
+									</div>
+								</div>
+								<!-- ./file-upload -->
+							
+								<!-- submit -->
+								<div class="col-md-2">
+									<br />
+									<button type="button" class="btn btn-flat btn-danger" v-on:click="updateSecurityCode">Update Security Code</button>
+								</div>
+								<!-- ./submit -->
+							<?php endif ?>
 						</div>
 					</form>
+					<!-- ./form -->
+
 				</div>
 
 				<div class="box-body">
@@ -42,6 +66,7 @@
 					<table class="table table-condensed table-striped table-bordered" id="table">
 						<thead>
 							<tr>
+								<th>#</th>
 								<th>Model Name</th>
 								<th>Vin No.</th>
 								<th>Engine No.</th>
@@ -65,27 +90,36 @@
 	</div>
 	<!-- End of row -->
 </section>
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-	...
-    </div>
-  </div>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="myModal">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
 </div>
 <script src="<?php echo base_url('resources/plugins/select2/js/select2.min.js');?>"></script>
 <script src="<?php echo base_url('resources/js/axios/axios.min.js') ?>"></script>
 <script src="<?php echo base_url('resources/js/vue/vue.min.js') ?>"></script>
 <script src="<?php echo base_url('resources/js/lodash/lodash.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/cpexcel.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/xlsx.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/jszip.js') ?>"></script>
+<script src="<?php echo base_url('resources/js/js-xlsx/xlsx.full.min.js') ?>"></script>
 <script type="text/javascript">
 	// Vue Script
-	const appUrl = '<?php echo base_url('index.php') ?>';
+	var appUrl = '<?php echo base_url('index.php') ?>';
+	var tmUrl  = '<?php echo base_url('resources/images/') ?>';
 
-	const app = new Vue({
+	var app = new Vue({
 		el: '#app',
 		data: {
 			invoiceItems: [],
 			invoiceList: [],
 			invoice_no: '',
+			fileUpload: '',
+			excelObject: []
 		},
 		created() {
 			this.fetchInvoiceNo()
@@ -93,6 +127,11 @@
 		watch: {
 			invoice_no: function() {
 				this.fetchInvoiceItem()
+			},
+			excelObject: function() {
+				this.findSecurityCode()
+
+				this.drawTableContent()
 			}
 		},
 		mounted() {
@@ -100,7 +139,10 @@
 
 			$(this.$refs.invoice_no).on('change', function() {
 				self.invoice_no = $(this).val()
+				self.showModal()
 			});
+
+			$(this.$refs.fileUpload).on('change', this.filePicked)
 		},
 		methods: {
 			fetchInvoiceNo: function() {
@@ -124,6 +166,8 @@
 				.then((response) => {
 					this.invoiceItems = response.data
 
+					$('#myModal').modal('hide')
+					console.log(response.data)
 					if (response.data !== null)
 					{
 						this.drawTableContent()
@@ -136,18 +180,108 @@
 			},
 			// Add rows using datatables method
 			drawTableContent: function() {
-				let $table = $('#table').DataTable();
+				var $table = $('#table').DataTable();
 
 				// Empty the row before inserting the new content
 				$table.clear().draw();
 
+				var i = 1;
+
 				// Insert the new content
-				for (let entity of this.invoiceItems)
+				for (var entity of this.invoiceItems)
 				{
-					$table.row.add([ entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					$table.row.add([i, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
 					entity.COLOR, entity.INVOICE_NO ]).draw().node();
+
+					i++
 				}
-			}
+			},
+			filePicked: function(oEvent) {
+				// Get The File From The Input
+				var oFile = oEvent.target.files[0];
+
+				// Create A File Reader HTML5
+				var reader = new FileReader();
+
+				// Ready The Event For When A File Gets Selected
+				reader.onload = (e) => {
+					var data = e.target.result;
+					var wb = XLSX.read(data, {type: 'binary'});
+
+					// Assume that the first sheet has its value
+					var sheetName = wb.SheetNames[0]
+
+					// Reset the element of excel object
+					this.excelObject.splice(0, this.excelObject.length)
+
+					// Assign the json values to excelObject
+					this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
+
+					// Convert it to linear form
+					this.excelObject = _.flatten(this.excelObject)
+
+					console.log(this.excelObject)
+				};
+
+				// Tell JS To Start Reading The File.. You could delay this if desired
+				reader.readAsBinaryString(oFile);
+			},
+			findSecurityCode: function() {
+				if (this.invoiceItems.length > 0)
+				{
+					for (entity of this.invoiceItems)
+					{
+						for (excel of this.excelObject)
+						{
+							if (entity.VIN_NO == excel.VIN)
+							{
+								entity.SECURITY_NO = excel['IMMOBILIZER CODE']
+							}
+						}
+					}
+				}
+			},
+			updateSecurityCode: function () {
+				this.showModal()
+
+				axios({
+					url: appUrl + '/vin_engine/update_cbu_security',
+					method: 'post',
+					data: {
+						items: this.invoiceItems,
+					}
+				})
+				.then((response) => {
+					// Close the modal
+					$('#myModal').modal('hide')
+
+					console.log(response.data)
+					/*if (typeof response.data == 'string')
+					{
+						window.open(appUrl + '/vin_engine/download')
+					}
+					else
+					{
+						let objectValues = _.values(response.data)
+
+						alert('Values existed on the resouce ' + objectValues.join(', '))
+					}*/
+					
+				})
+				.catch((error) => {
+					$('#myModal').modal('hide')
+					alert('There was no data to process.')
+					// your action on error success
+					console.log(error)
+				});
+			},
+			showModal: function() {
+				$("#myModal").modal({backdrop: 'static', keyboard: false})
+
+				$('#myModal').on('shown.bs.modal', function() {
+					$(this).find('.modal-body').html('<img src="' + tmUrl + 'loading.gif" class="img-responsive"/>')
+				});
+			},
 		}
 	})
 
