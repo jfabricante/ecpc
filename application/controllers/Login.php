@@ -12,6 +12,8 @@ class Login extends CI_Controller {
 		$this->load->helper($helpers);
 
 		$this->load->library('session');
+
+		$this->load->model('user_model');
 	}
 
 	public function index()
@@ -26,28 +28,46 @@ class Login extends CI_Controller {
 
 		$user_data = $_SESSION['user_data'];
 
-		// Create a new session variables
-		$config = array(
-				'employee_id' => $user_data['employee_id'],
-				'employee_no' => $user_data['employee_no'],
-				'nickname'    => $user_data['nickname'],
-				'fullname'    => $user_data['full_name'],
-				'fullname2'   => $user_data['full_name2'],
-				'section'     => $user_data['section'],
-				'department'  => $user_data['department'],
-				'division'    => $user_data['division'],
-				'user_access' => $user_data['user_access']
-			);
+		// Fetch the user access
+		$user_access = $this->user_model->access($user_data['employee_id']);
 
-
-		if (count($user_data) > 3)
+		// Verify if the user has right to access this system
+		if (is_array($user_access))
 		{
-			$this->session->set_userdata($config);
-			redirect('/vin/list_');
+			// Create a new session variables
+			$config = array(
+					'employee_id'    => $user_data['employee_id'],
+					'employee_no'    => $user_data['employee_no'],
+					'nickname'       => $user_data['nickname'],
+					'fullname'       => $user_data['full_name'],
+					'fullname2'      => $user_data['full_name2'],
+					'section'        => $user_data['section'],
+					'department'     => $user_data['department'],
+					'division'       => $user_data['division'],
+					'user_access'    => $user_access['user_type'],
+					'user_access_id' => $user_access['id']
+				);
+
+			if (count($user_data) > 3)
+			{
+				$this->session->set_userdata($config);
+
+				if ($this->session->userdata('user_access') == 'Administrator')
+				{
+					redirect('/vin/list_');
+				}
+				else if ($this->session->userdata('user_access') == 'Regular')
+				{
+					redirect('/vin_engine/model_view');
+				}
+				else
+				{
+					redirect('/cop/list_');
+				}
+			}
 		}
 
 		redirect('http://172.16.1.34/ipc_central');
-
 	}
 
 	public function dashboard()
