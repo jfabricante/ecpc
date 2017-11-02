@@ -10,7 +10,7 @@
 
 			<div class="box box-danger">
 				<!-- Content -->
-				<div class="box-body">
+				<div class="box-header">
 					<form v-on:submit.prevent="fetchModelItems" method="post">
 						<div class="row">
 
@@ -70,7 +70,7 @@
 
 							<!-- Set security number -->
 							<div class="col-md-1">
-								<button type="button" class="btn btn-flat btn-success" v-on:click="updateDetails">Update Details</button>
+								<button type="button" class="btn btn-flat btn-success" v-on:click="updateDetails">Create Report</button>
 							</div>
 							<!-- ./Set security number -->
 
@@ -84,11 +84,13 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Sequence</th>
+								<th>Seq.</th>
 								<th>Model Name</th>
 								<th>Vin No.</th>
 								<th>Engine No.</th>
-								<th>Security No.</th>
+								<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+									<th>Security No.</th>
+								<?php endif ?>
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
@@ -311,7 +313,12 @@
 				let i = 1;
 				for (let entity of this.vinModelItems)
 				{
-					$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					<?php if($this->session->userdata('user_access') == 'Administrator'): ?>
+						$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					<?php else: ?>
+						$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.LOT_NO,
+					<?php endif ?>
+					
 					entity.COLOR, entity.INVOICE_NO ]).draw().node();
 					i++
 				}
