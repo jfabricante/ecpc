@@ -45,6 +45,7 @@ class Vin_model extends CI_Model {
 				->from('VIN_MODEL a')
 				->join('CP b', 'a.CP_ID = b.ID', 'LEFT')
 				->order_by('a.PRODUCT_MODEL')
+				->where('a.STATUS = 1')
 				->get();
 
 		return $query->result();
@@ -136,6 +137,11 @@ class Vin_model extends CI_Model {
 		$this->oracle->delete('GROUP_MODEL', array('ID' => $id));
 
 		return $this;
+	}
+
+	public function updateStatus($params)
+	{
+		$this->oracle->update('VIN_MODEL', $params, array('ID' => $params['ID']));
 	}
 
 	/*public function migrateItems()
