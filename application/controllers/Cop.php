@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Load third party
+require_once APPPATH . '/third_party/PHPExcel/Classes/PHPExcel.php';
+
 class Cop extends CI_Controller {
 
 	public function __construct()
