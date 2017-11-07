@@ -60,6 +60,26 @@ class Vin_control_model extends CI_Model {
 		return $query->row_array();
 	}
 
+	public function fetchLastLot($params)
+	{
+		$config = array();
+
+		foreach ($params as $entity)
+		{
+			$query = $this->oracle->distinct('PRODUCT_MODEL')
+					->order_by('ID', 'DESC')
+					->where('PRODUCT_MODEL', $entity)
+					->get('VIN_CONTROL');
+
+			if ($query->num_rows())
+			{
+				array_push($config, $query->row_array());
+			}
+		}
+
+		return count($config) ? $config : '';
+	}
+
 	public function store($params)
 	{
 		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
