@@ -873,6 +873,11 @@ class Vin_engine extends CI_Controller {
 		return $string;
 	}
 
+	public function update_entity()
+	{
+		echo json_encode($this->vin_engine_model->update_entity($this->input->post()));
+	}
+
 	protected function _showVars($vars)
 	{
 		echo '<pre>';
