@@ -184,6 +184,36 @@ class Vin extends CI_Controller {
 		}
 	}
 
+	protected function _fetchLatestDetails()
+	{
+		$entities = $this->vin_model->browseGroup();
+			
+		$config = array();
+
+		foreach ($entities as $entity)
+		{
+			$models = explode(',', $entity->MODELS);
+
+			$data = $this->vin_control_model->fetchLastLot($models);
+
+			$lastVin = $this->vin_control_model->getLastEntryFromGroup($models);
+
+			if (is_array($data))
+			{
+				foreach ($data as $row)
+				{
+					$config[] = array(
+							'NAME'   => $entity->NAME,
+							'MODEL'  => $row['PRODUCT_MODEL'],
+							'LOT_NO' => $row['LOT_NO'],
+							'VIN_NO' => $lastVin['VIN_NO']
+						);
+				}
+			}
+			
+		}
+
+		return $config;
 	}
 
 	protected function _redirect_unauthorized()
