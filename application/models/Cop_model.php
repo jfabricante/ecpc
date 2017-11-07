@@ -25,6 +25,7 @@ class Cop_model extends CI_Model {
 				'a.ETA',
 				'a.PAYMENT_DATE',
 				'a.TRANSMITTAL_DATE',
+				'COUNT(LOT_NO) OVER(PARTITION BY PRODUCT_MODEL, LOT_NO) AS QTY',
 			);
 
 		$query = $this->oracle->distinct('LOT_NO')
@@ -81,6 +82,35 @@ class Cop_model extends CI_Model {
 		$query = $this->oracle->get_where('COP', array('cop' => $params['cop']));
 
 		return $query->num_rows();
+	}
+
+	public function fetchRange($params)
+	{
+		$clause = sprintf("%s BETWEEN TO_DATE('%s', 'MM/DD/YYYY') AND TO_DATE('%s', 'MM/DD/YYYY')", $params['field'], $params['from'], $params['to']);
+
+		$fields = array(
+				'a.CP_NO',
+				'a.CP_DATE',
+				'a.INVOICE_NO',
+				'b.ENTRY_NO',
+				'b.PRODUCT_MODEL',
+				'b.LOT_NO',
+				'COUNT(LOT_NO) OVER(PARTITION BY PRODUCT_MODEL, LOT_NO) AS QTY',
+				'a.ETD',
+				'a.ETA',
+				'a.PAYMENT_DATE',
+				'a.TRANSMITTAL_DATE',
+			);
+		
+		$query = $this->oracle->distinct('LOT_NO')
+				->select($fields)
+				->from('COP a')
+				->join('VIN_ENGINE b', 'a.INVOICE_NO = b.INVOICE_NO', 'INNER')
+				->where($clause)
+				->get();
+
+
+		return $query->result_array();
 	}
 
 	protected function _redirect_unauthorized()
