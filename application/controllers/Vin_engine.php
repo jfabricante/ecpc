@@ -304,7 +304,7 @@ class Vin_engine extends CI_Controller {
 		return $this->upload;
 	}
 
-	protected function _excel_report($params)
+	protected function _excel_report($params, $invoice)
 	{
 		if (count($params))
 		{
@@ -454,9 +454,10 @@ class Vin_engine extends CI_Controller {
     		$excelActiveSheet->getPageSetup()->setFitToWidth(1);    
     		$excelActiveSheet->getPageSetup()->setFitToHeight(0);
 
+    		$sheetName = $params[0]['SERIAL'] . $params[0]['ENTRY_NO'] . $invoice;
+
     		// Set the footer details and pagination
-    		$excelActiveSheet->getHeaderFooter()
-    			->setOddFooter('&L&D &T' . $excelObj->getProperties()->getTitle() . '&RPage &P of &N');
+    		$excelActiveSheet->getHeaderFooter()->setOddFooter('&L' . $sheetName . ' &D &T &RPage &P of &N');
 
 			// Apply background color on cell
 			$excelActiveSheet->getStyle('A1:T1')
@@ -615,8 +616,11 @@ class Vin_engine extends CI_Controller {
 			$security['LAST_USER']   = $this->session->userdata('fullname');
 			$security['LAST_UPDATE'] = date('d-M-Y');
 
-			$this->security_model->store($security);
-			
+			$this->security_model->store($security);			
+		}
+		else if ($data['items'])
+		{
+			$this->vin_engine_model->update_batch($data['items']);
 		}
 
 		$this->_createMasterList($data['items']);
@@ -656,7 +660,7 @@ class Vin_engine extends CI_Controller {
 
 		// set auto page breaks
 		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
+   
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
@@ -784,7 +788,12 @@ class Vin_engine extends CI_Controller {
 			if (count($qr) > 1)
 			{
 				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 30, 30, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
-				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 30, 30, '', '', '', false, 300, 'R', false, false, 1, false, false, false);
+
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 30, 30, '', '', 'T', false, 300, 'R', false, false, 1, false, false, false);
+
+				/*$pdf->SetXY(135, 80);
+				$pdf->Write(0, '1');
+				$pdf->Cell(0, 0, 'One', 0, $ln=0, 'C', 0, 'C', 0, false, 'B', 'B');*/
 			}
 			else
 			{
