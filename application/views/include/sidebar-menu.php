@@ -15,9 +15,9 @@
 		</div>
 
 		<!-- Seach form -->
-		<form action="#" method="get" class="sidebar-form">
+		<form action="<?php echo base_url('index.php/vin_engine/search_field'); ?>" method="post" class="sidebar-form">
 			<div class="input-group">
-				<input type="text" name="q" class="form-control" placeholder="Search...">
+				<input type="text" name="search_string" class="form-control" placeholder="Search...">
 				<span class="input-group-btn">
 					<button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
 					</button>
