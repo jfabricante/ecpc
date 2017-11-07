@@ -199,6 +199,7 @@
 			serial: [],
 			classification: '003',
 			entryNo: '',
+			modelLot: ''
 		},            
 		created() {
 			this.fetchVinModel()
@@ -336,7 +337,7 @@
 				})
 				.then((response) => {
 					this.vinControl = response.data
-					//console.log(response.data)
+					console.log(response.data)
 
 					if (response.data !== null)
 					{
@@ -376,9 +377,10 @@
 			// Separate vin into two parts as prefix and suffix
 			separateVin: function()
 			{
-				// Asign the last vin and last lot
+				// Assign the last vin and last lot
+				this.modelLot  = this.vinControl.LOT_NO
 				this.lastVin   = this.vinControl.VIN_NO
-				this.lastLot   = this.vinControl.LOT_NO
+				this.lastLot   = this.vinControl.LAST_LOT
 				this.lastModel = this.vinControl.LAST_MODEL
 
 				// Assign the point of reference
@@ -389,7 +391,7 @@
 				this.vinPref = this.vinControl.VIN_NO.substr(0, this.separator)
 
 				// Set the vin suffix from separator until the end of the string
-				this.vinSuff =  this.vinControl.VIN_NO.substr(this.separator)
+				this.vinSuff = this.vinControl.VIN_NO.substr(this.separator)
 			},
 			filePicked: function(oEvent) {
 				// Get The File From The Input
@@ -413,7 +415,7 @@
 					for (let model of wb.SheetNames)
 					{
 						// Implement a strict cheking of excel sheet
-						if (this.selected.PRODUCT_MODEL + '-' + (Number(this.lastLot) + 1) === model)
+						if (this.selected.PRODUCT_MODEL + '-' + (Number(this.modelLot) + 1) === model)
 						{
 							sheetName = model
 							break
