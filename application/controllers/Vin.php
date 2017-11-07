@@ -168,6 +168,24 @@ class Vin extends CI_Controller {
 		$this->vin_model->updateStatus($this->input->post());
 	}
 
+	public function handle_excel_report()
+	{
+		$data = $this->_fetchLatestDetails();
+
+		if (count($data))
+		{
+			$this->_excelReport($data);
+		}
+		else
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">No Data!</div>');
+
+			redirect($this->agent->referrer());
+		}
+	}
+
+	}
+
 	protected function _redirect_unauthorized()
 	{
 		if (count($this->session->userdata()) < 3)
