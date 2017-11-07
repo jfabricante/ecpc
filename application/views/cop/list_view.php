@@ -1,3 +1,5 @@
+<link href="<?php echo base_url('resources/plugins/datepicker/css/bootstrap-datepicker.min.css');?>" rel="stylesheet" >
+<link href="<?php echo base_url('resources/plugins/select/css/bootstrap-select.min.css');?>" rel="stylesheet" >
 <!-- Items block -->
 <section class="content vin_control">
 	<!-- row -->
@@ -10,9 +12,37 @@
 			<div class="box box-danger">
 				<!-- Content -->
 				<div class="box-header with-border">
-					<a href="<?php echo base_url('index.php/cop/form') ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
-						<button class="btn btn-flat btn-success pull-right">Add CP <i class="fa fw fa-plus" aria-hidden="true"></i></button>
-					</a>
+					<form class="form-inline" action="<?php echo base_url('index.php/cop/handle_excel_report'); ?>" method="post">
+						<div class="form-group">
+							<label for="from">Date Covered From:</label>
+							<input type="text" class="form-control datepicker" name="from" id="from" required>
+						</div>
+
+						<div class="form-group">
+							<label for="to">To:</label>
+							<input type="text" class="form-control datepicker" name="to" id="to" required />
+						</div>
+
+						<div class="form-group">
+							<select name="field" id="field" class="form-control selectpicker" data-live-search="true" required>
+								<option></option>
+								<option value="CP_DATE">CP DATE</option>
+								<option value="ETD">ETD</option>
+								<option value="ETA">ETA</option>
+								<option value="PAYMENT_DATE">PAYMENT DATE</option>
+								<option value="TRANSMITTAL_DATE">TRANSMITTAL DATE</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<input type="submit" class="btn btn-flat btn-danger" value="Create Report" />
+						</div>
+
+						<a href="<?php echo base_url('index.php/cop/form') ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+							<button class="btn btn-flat btn-success pull-right">Add CP <i class="fa fw fa-plus" aria-hidden="true"></i></button>
+						</a>
+					</form>
+
 				</div>
 
 				<div class="box-body">
@@ -27,6 +57,7 @@
 								<th>Entry No.</th>
 								<th>Model</th>
 								<th>Lot No.</th>
+								<th>Qty.</th>
 								<th>ETD</th>
 								<th>ETA</th>
 								<th>Payment Date</th>
@@ -47,6 +78,7 @@
 									<td><?php echo $entity->ENTRY_NO; ?></td>
 									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
 									<td><?php echo $entity->LOT_NO; ?></td>
+									<td><?php echo $entity->QTY; ?></td>
 									<td><?php echo $entity->ETD ? date('m/d/Y', strtotime($entity->ETD)) : ''; ?></td>
 									<td><?php echo $entity->ETA ? date('m/d/Y', strtotime($entity->ETA)) : ''; ?></td>
 									<td><?php echo $entity->PAYMENT_DATE ? date('m/d/Y', strtotime($entity->PAYMENT_DATE)) : ''; ?></td>
@@ -78,15 +110,19 @@
 	<!-- End of row -->
 </section>
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			...
+		</div>
+	</div>
 </div>
+<script src="<?php echo base_url('resources/plugins/datepicker/js/bootstrap-datepicker.min.js');?>"></script>
+<script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.table').DataTable();
+		$('#from, #to').datepicker();
+		$('#field').selectpicker();
 	});
 
 	// Detroy modal
