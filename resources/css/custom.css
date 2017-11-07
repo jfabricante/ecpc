@@ -24,7 +24,7 @@ table thead{
 
 table.dataTable,
 table.table.table-condensed.table-striped.table-bordered {
-	font-size: 90%;
+	font-size: 85%;
 }
 
 .back-to-top {
@@ -181,4 +181,9 @@ body.modal-open {
 
 div.dropdown-menu.open{
 	z-index: 1031 !important;
+}
+
+/* table content style */
+tr .form-control {
+	font-size: inherit;
 }
