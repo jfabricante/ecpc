@@ -107,4 +107,21 @@ class Cop extends CI_Controller {
 			redirect(base_url());
 		}
 	}
+
+	public function handle_excel_report()
+	{
+		$config = $this->cop_model->fetchRange($this->input->post());
+
+		if (count($config))
+		{
+			$this->_excelReport($config);
+		}
+		else
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">No items on particular dates!</div>');
+
+			redirect($this->agent->referrer());
+		}
+	}	
+
 }
