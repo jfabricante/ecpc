@@ -105,7 +105,8 @@ class Vin_control extends CI_Controller {
 					'MODEL_NAME'    => $current['MODEL_NAME'],
 					'LAST_USER'     => $current['LAST_USER'],
 					'LAST_UPDATE'   => $current['LAST_UPDATE'],
-					'LAST_MODEL'    => $recent['PRODUCT_MODEL']
+					'LAST_MODEL'    => $recent['PRODUCT_MODEL'],
+					'LAST_LOT'      => $recent['LOT_NO']
 				);
 
 
@@ -124,7 +125,8 @@ class Vin_control extends CI_Controller {
 					'MODEL_NAME'    => $current['MODEL_NAME'],
 					'LAST_USER'     => $current['LAST_USER'],
 					'LAST_UPDATE'   => $current['LAST_UPDATE'],
-					'LAST_MODEL'    => $current['PRODUCT_MODEL']
+					'LAST_MODEL'    => $current['PRODUCT_MODEL'],
+					'LAST_LOT'      => $current['LOT_NO']
 				);
 
 			echo json_encode($config);
