@@ -184,6 +184,141 @@ class Vin extends CI_Controller {
 		}
 	}
 
+	protected function _excelReport($params)
+	{
+		if (count($params))
+		{
+			// Create an instance of PHPExcel
+			$excelObj          = new PHPExcel();
+			$excelActiveSheet  = $excelObj->getActiveSheet();
+			$excelDefaultStyle = $excelObj->getDefaultStyle();
+
+			$excelDefaultStyle->getFont()->setSize(10)->setName('Times New Roman');
+
+			// Set the Active sheet
+			$excelObj->setActiveSheetIndex(0);
+
+			// Set alignment
+			$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			// Merge cell
+			$excelActiveSheet->mergeCells('A1:B1');
+
+			// Add header to the excel
+			$excelActiveSheet->setCellValue('A1', 'MODEL')
+							->setCellValue('C1', 'LOT NO')
+							->setCellValue('D1', 'LAST CHASSIS NOS. ASSIGNED');
+
+			$excelActiveSheet->getStyle('A1:D1')->getAlignment()->setWrapText(true); 
+
+			//$excelActiveSheet->fromArray($params, NULL, 'A2');
+
+			$currentRow = 2;
+
+			$prevGroup = '';
+
+			$prevRow = 0;
+
+			foreach ($params as $row)
+			{
+				
+				if ($prevGroup == $row['NAME'])
+				{
+					// Mark the occurence of same group
+					if ($prevRow == 0)
+					{
+						$prevRow = $currentRow - 1;
+					}
+					
+					$excelActiveSheet->setCellValue('B' . $currentRow, $row['MODEL']);
+					$excelActiveSheet->setCellValue('C' . $currentRow, $row['LOT_NO']);	
+				}
+				else
+				{
+					if ($prevRow > 0)
+					{
+						$excelActiveSheet->mergeCells('A' . $prevRow . ':A' . ($currentRow - 1));
+						$excelActiveSheet->mergeCells('D' . $prevRow . ':D' . ($currentRow - 1));
+
+						$prevRow = 0;
+					}
+
+					$excelActiveSheet->setCellValue('A' . $currentRow, $row['NAME']);
+					$excelActiveSheet->setCellValue('B' . $currentRow, $row['MODEL']);
+					$excelActiveSheet->setCellValue('C' . $currentRow, $row['LOT_NO']);
+					$excelActiveSheet->setCellValue('D' . $currentRow, $row['VIN_NO']);	
+				}
+
+				$prevGroup = $row['NAME'];
+				
+				$currentRow++;
+			}
+
+			// Paper Orientation
+			$excelActiveSheet->getPageSetup()
+				    ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+			// Paper Size
+			$excelActiveSheet->getPageSetup()
+				->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+
+			// Set margins
+			$excelActiveSheet->getPageMargins()->setTop(0.25);
+			$excelActiveSheet->getPageMargins()->setRight(0.25);
+			$excelActiveSheet->getPageMargins()->setLeft(0.25);
+			$excelActiveSheet->getPageMargins()->setBottom(0.25);
+
+			// Apply the column title on every pages
+			$excelActiveSheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1,1);
+
+			// Fit the content to page
+			$excelActiveSheet->getPageSetup()->setFitToWidth(1);    
+			$excelActiveSheet->getPageSetup()->setFitToHeight(0);
+
+
+			// Apply background color on cell
+			$excelActiveSheet->getStyle('A1:D1')
+							->getFill()
+							->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+							->getStartColor()
+							->setRGB('ffff99');
+
+			// Set the alignment for the whole document
+			$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			$excelDefaultStyle->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+			$style = array(
+				        'borders' => array(
+				            'allborders' => array(
+				                'style' => PHPExcel_Style_Border::BORDER_THIN,
+				                'color' => array('rgb' => '000000')
+				            )
+				        ),
+				        'alignment' => array(
+				        	'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+							'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER
+				        ),
+				    );
+
+			// Apply header style
+			$excelActiveSheet->getStyle("A1:D1")->applyFromArray($style);
+
+			// Excel filename
+			$filename = 'group-model.xlsx';
+
+			// Content header information
+			header('Content-Type: application/vnd.ms-excel'); //mine type
+			header('Content-Disposition: attachment; filename="' . $filename . '"');
+			header('Cached-Control: max-age=0');
+
+			// Generate excel version using Excel 2017
+			$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel2007');
+
+			$objWriter->save('php://output');
+		}
+	}
+
 	protected function _fetchLatestDetails()
 	{
 		$entities = $this->vin_model->browseGroup();
