@@ -97,8 +97,8 @@ class Vin extends CI_Controller {
 	public function group_list()
 	{
 		$data = array(
-				'title' => 'List of Model Group',
-				'content' => 'vin/group_list_view',
+				'title'    => 'List of Model Group',
+				'content'  => 'vin/group_list_view',
 				'entities' => $this->vin_model->browseGroup()
 			);
 
