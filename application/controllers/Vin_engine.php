@@ -895,6 +895,21 @@ class Vin_engine extends CI_Controller {
 		}
 	}
 
+	public function search_field()
+	{
+		$entities = $this->vin_engine_model->searchField(trim($this->input->post('search_string')));
+
+		$data = array(
+				'title'    => $entities ? 'Result(s)' : 'Result not found',
+				'content'  => 'vin_engine/search_field_view',
+				'entities' => $entities
+			);
+
+		$this->load->view('include/template', $data);
+	}
+
+	}
+
 	/*public function run_migration()
 	{
 		echo '<pre>';
