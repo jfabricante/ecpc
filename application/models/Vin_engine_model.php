@@ -172,12 +172,21 @@ class Vin_engine_model extends CI_Model {
 		foreach ($data as $entity) 
 		{
 			$config = array(
-					'SECURITY_NO' => $entity['SECURITY_NO']
+					'VIN_NO'      => $entity['VIN_NO'],
+					'ENGINE_NO'   => $entity['ENGINE_NO'],
+					'SECURITY_NO' => $entity['SECURITY_NO'],
 				);
 
 			$this->oracle->update('VIN_ENGINE', $config, array('ID' => $entity['ID']));
 		}
 	}
+
+	public function update_entity($params)
+	{
+		$this->oracle->update('VIN_ENGINE', $params, array('ID' => $params['ID']));
+
+		return $this->oracle->last_query();
+	}	
 
 	public function fetchDistinctModel()
 	{
@@ -202,15 +211,49 @@ class Vin_engine_model extends CI_Model {
 		return $query->result();
 	}
 
-	/*public function fetchOracleClassification()
+	public function searchField($params)
 	{
-		$fields = array('ID');
+		if ($params)
+		{
+			$fields = array(
+					'a.ID',
+					'a.SEQUENCE',
+					'a.PRODUCT_MODEL',
+					'a.VIN_NO',
+					'a.ENGINE_NO',
+					'a.LOT_NO',
+					'a.INVOICE_NO',
+					'a.SECURITY_NO',
+					'a.PORTCODE',
+					'a.SERIAL',
+					'a.CLASSIFICATION',
+					'a.ENTRY_NO',
+					'a.COLOR',
+					'a.KEY_NO',
+					'b.CP_NO',
+					'c.SERIES',
+					'c.PISTON_DISPLACEMENT',
+					'c.BODY_TYPE',
+					'c.YEAR_MODEL',
+					'c.GROSS_WEIGHT',
+					'c.CYLINDER',
+					'c.YEAR_MODEL'
+				);
+			$query = $this->oracle->select($fields)
+					->from('VIN_ENGINE a')
+					->join('COP b', 'a.INVOICE_NO = b.INVOICE_NO', 'LEFT')
+					->join('CP c', 'a.PRODUCT_MODEL = c.MODEL', 'LEFT')
+					->like('a.VIN_NO', $params)
+					->or_like('a.ENGINE_NO', $params)
+					->or_like('a.INVOICE_NO', $params)
+					->get();
 
-		$query = $this->oracle->select($fields)
-				->get('CLASSIFICATION');
+			return $query->result();
+		}
 
-		return $query->result();
-	}*/
+		return false;
+	}
+
 
 	public function migrateItems()
 	{
