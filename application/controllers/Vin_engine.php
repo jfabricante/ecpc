@@ -85,7 +85,7 @@ class Vin_engine extends CI_Controller {
 				);
 		}
 
-		$this->_excel_report($config);
+		$this->_excel_report($config, $this->input->post('INVOICE_NO'));
 	}
 
 	public function model_view()
@@ -195,7 +195,7 @@ class Vin_engine extends CI_Controller {
 			$this->vin_control_model->store($formatData);
 
 			// Create excel file
-			$this->_excel_report($config);
+			$this->_excel_report($config, $items[0]['INVOICE_NO']);
 		}
 	}
 
@@ -281,7 +281,7 @@ class Vin_engine extends CI_Controller {
 					);
 			}
 
-			$this->_excel_report($config);
+			$this->_excel_report($config, $items[0]['INVOICE_NO']);
 		}
 	}
 
