@@ -81,7 +81,7 @@
 
 				<div class="box-body">
 					<!-- Item table -->
-					<table class="table table-condensed table-striped table-bordered" id="table">
+					<table class="table table-condensed table-striped table-bordered" id="table" ref="table">
 						<thead>
 							<tr>
 								<th>#</th>
@@ -99,6 +99,27 @@
 						</thead>
 
 						<tbody>
+							<tr v-for="(item, index) in vinModelItems">
+								<td>{{ index + 1 }}</td>
+								<td>{{ item.SEQUENCE }}</td>
+								<td>{{ item.PRODUCT_MODEL }}</td>
+								<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+									<td><input type="text" v-model="item.VIN_NO" class="form-control"/></td>
+								<?php else: ?>
+									<td>{{ item.VIN_NO }}</td>
+								<?php endif ?>
+								<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+									<td><input type="text" v-model="item.ENGINE_NO" class="form-control"/></td>
+								<?php else: ?>
+									<td>{{ item.ENGINE_NO }}</td>
+								<?php endif ?>
+								<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+									<td><input type="text" v-model="item.SECURITY_NO" class="form-control"/></td>
+								<?php endif ?>
+								<td>{{ item.LOT_NO }}</td>
+								<td>{{ item.COLOR }}</td>
+								<td>{{ item.INVOICE_NO }}</td>
+							</tr>
 						</tbody>
 					</table>
 					<!-- End of table -->
@@ -178,6 +199,7 @@
 			$(this.$refs.lot_to).on('change', function() {
 				self.lot_to = $(this).val()
 			});
+			
 		},
 		methods: {
 			fetchVinModel: function() {
@@ -247,7 +269,7 @@
 
 					if (response.data !== null)
 					{
-						this.drawTableContent()
+						// this.drawTableContent()
 					}
 				})
 				.catch((error) => {
@@ -287,7 +309,7 @@
 					}
 
 					// Re-render the table data
-					this.drawTableContent()
+					// this.drawTableContent()
 				}
 			},
 			securitySequence: function()
@@ -312,10 +334,10 @@
 
 				// Insert the new content
 				let i = 1;
-				for (let entity of this.vinModelItems)
+				for (let [index, entity] of this.vinModelItems.entries())
 				{
 					<?php if($this->session->userdata('user_access') == 'Administrator'): ?>
-						$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+						$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, '<input type="text" class="form-control" v-model="vinModelItems[index].VIN_NO">', entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
 					<?php else: ?>
 						$table.row.add([i, entity.SEQUENCE, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.LOT_NO,
 					<?php endif ?>
@@ -337,7 +359,6 @@
 	// JQuery Script
 	$(document).ready(function() {
 		$('select').select2({})
-
 	});
 
 	// Detroy modal
