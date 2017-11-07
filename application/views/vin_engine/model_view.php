@@ -61,12 +61,13 @@
 								<button type="submit" class="btn btn-flat btn-danger">Filter Data</button>
 							</div>
 							<!-- ./submit -->
-
-							<!-- Set security number -->
-							<div class="col-md-1">
-								<button type="button" class="btn btn-flat btn-info" v-on:click="fetchLastNumber">Set Security</button>
-							</div>
-							<!-- ./Set security number -->
+							<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
+								<!-- Set security number -->
+								<div class="col-md-1">
+									<button type="button" class="btn btn-flat btn-info" v-on:click="fetchLastNumber">Set Security</button>
+								</div>
+								<!-- ./Set security number -->
+							<?php endif ?>
 
 							<!-- Set security number -->
 							<div class="col-md-1">
