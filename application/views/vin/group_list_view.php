@@ -10,6 +10,10 @@
 			<div class="box box-danger">
 				<!-- Content -->
 				<div class="box-header with-border">
+					<a href="<?php echo base_url('index.php/vin/handle_excel_report') ?>">
+						<button class="btn btn-flat btn-danger"><i class="fa fw fa-file-excel-o" aria-hidden="true"></i></button>
+					</a>
+
 					<a href="<?php echo base_url('index.php/vin/group_form') ?>">
 						<button class="btn btn-flat btn-success pull-right">Add New Group <i class="fa fw fa-plus" aria-hidden="true"></i></button>
 					</a>
