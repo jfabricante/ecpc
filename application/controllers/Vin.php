@@ -36,6 +36,11 @@ class Vin extends CI_Controller {
 	{
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
 
+		// Load helper
+		$this->load->helper('directory');
+
+		$images = directory_map(FCPATH . '/resources/images/qr/');
+
 		$config = array(
 				'id'   => $id,
 				'type' => 'object'
@@ -44,7 +49,8 @@ class Vin extends CI_Controller {
 		$data = array(
 				'title'    => $id ? 'Update Details' : 'Add Vin Model',
 				'entity'   => $id ? $this->vin_model->read($config) : '',
-				'cp_items' => $this->cp_model->browse()
+				'cp_items' => $this->cp_model->browse(),
+				'images'   => $images
 			);
 
 		$this->load->view('vin/form_view', $data);
