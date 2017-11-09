@@ -60,8 +60,18 @@ class Vin extends CI_Controller {
 	{
 		$id = $this->input->post('ID') ? $this->input->post('ID') : 0;
 
+		$config = array(
+				'ID'            => $this->input->post('ID'),
+				'PRODUCT_MODEL' => $this->input->post('PRODUCT_MODEL'),
+				'PRODUCT_YEAR'  => $this->input->post('PRODUCT_YEAR'),
+				'DESCRIPTION'   => $this->input->post('DESCRIPTION'),
+				'LOT_SIZE'      => $this->input->post('LOT_SIZE'),
+				'CP_ID'         => $this->input->post('CP_ID'),
+				'QR'            => implode(',', $this->input->post('QR'))
+			);
+
 		// Trim the post data
-		$config = array_map('trim', $this->input->post());
+		$config = array_map('trim', $config);
 
 		if ($this->vin_model->exist($config) && $id == 0)
 		{
