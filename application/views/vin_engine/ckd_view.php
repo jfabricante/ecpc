@@ -215,10 +215,12 @@
 		watch: {
 			selected: function() {
 				this.fetchVinControlEntity()
-				console.log(this.selected)
 			},
 			excelObject: function() {
 				this.assignValues()
+			},
+			security: function() {
+				this.updateItems()
 			}
 		},
 		mounted() {
