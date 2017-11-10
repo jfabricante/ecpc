@@ -71,6 +71,7 @@ class Security_model extends CI_Model {
 	public function fetchLastSecurity()
 	{
 		$query = $this->oracle->order_by('ID', 'DESC')
+				->where('SECURITY_NO IS NOT NULL')
 				->get('SECURITY');
 
 		return $query->row();
