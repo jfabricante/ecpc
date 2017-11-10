@@ -312,6 +312,19 @@
 					}
 				}
 			},
+			securitySequence: function()
+			{
+				// Array of restriction
+				const excep = ['0000', '1111', '2222', '3333', '4444', '5555', '6666', '7777', '8888', '9999']
+
+				this.security.SECURITY_NO = Number(this.security.SECURITY_NO) + 1
+
+				// Increment by 1 if the value is in excep array
+				if (_.includes(excep, this.security.SECURITY_NO.toString()))
+				{
+					this.security.SECURITY_NO = Number(this.security.SECURITY_NO) + 1
+				}
+			},
 			populateItems: function()
 			{
 				if (this.selected instanceof Object)
