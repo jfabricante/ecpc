@@ -45,10 +45,13 @@ class Vin_control_model extends CI_Model {
 
 	public function findGroupByProductModel($params)
 	{
-		$query = $this->oracle->like('MODELS', $params['PRODUCT_MODEL'])
-				->get('GROUP_MODEL');
+		if (isset($params['PRODUCT_MODEL']))
+		{
+			$query = $this->oracle->like('MODELS', $params['PRODUCT_MODEL'])
+					->get('GROUP_MODEL');
 
-		return $query->row_array();
+			return $query->row_array();
+		}
 	}
 
 	public function getLastEntryFromGroup($params)
