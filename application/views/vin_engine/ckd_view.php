@@ -548,15 +548,21 @@
 						CLASSIFICATION: this.classification,
 						vin_control: this.vinControl,
 						ENTRY_NO: this.entryNo,
+						security: this.security || '',
 					}
 				})
 				.then((response) => {
 					// Close the modal
 					$('#myModal').modal('hide')
 
+					console.log(response.data)
+
 					if (typeof response.data == 'string')
 					{
-						window.open(appUrl + '/vin_engine/download')
+						// window.open(appUrl + '/vin_engine/download')
+						console.log(response.data)
+						alert('Process Completed!')
+						location.reload()
 					}
 					else
 					{
