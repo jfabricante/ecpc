@@ -16,7 +16,7 @@ class Cop_model extends CI_Model {
 		$fields = array(
 				'a.ID',
 				'a.CP_NO',
-				'a.INVOICE_NO',
+				'b.INVOICE_NO',
 				'a.CP_DATE',
 				'b.LOT_NO',
 				'b.ENTRY_NO',
@@ -31,7 +31,8 @@ class Cop_model extends CI_Model {
 		$query = $this->oracle->distinct('LOT_NO')
 				->select($fields)
 				->from('COP a')
-				->join('VIN_ENGINE b', 'a.INVOICE_NO = b.INVOICE_NO', 'INNER')
+				->join('VIN_ENGINE b', 'a.INVOICE_NO = b.INVOICE_NO', 'RIGHT')
+				->where('b.LAST_UPDATE >=', '05-OCT-17')
 				->get();
 
 		return $query->result();
