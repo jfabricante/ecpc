@@ -73,7 +73,7 @@
 								<tr>
 									<td><?php echo $count; ?></td>
 									<td><?php echo $entity->CP_NO; ?></td>
-									<td><?php echo date('m/d/Y', strtotime($entity->CP_DATE)); ?></td>
+									<td><?php echo $entity->CP_DATE ? date('m/d/Y', strtotime($entity->CP_DATE)) : ''; ?></td>
 									<td><?php echo $entity->INVOICE_NO; ?></td>
 									<td><?php echo $entity->ENTRY_NO; ?></td>
 									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
@@ -85,14 +85,18 @@
 									<td><?php echo $entity->TRANSMITTAL_DATE ? date('m/d/Y', strtotime($entity->TRANSMITTAL_DATE)) : ''; ?></td>
 
 									<td>
-										<a href="<?php echo base_url('index.php/cop/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
-											<i class="fa fa-pencil" aria-hidden="true"></i>
-										</a>
+										<?php if ($entity->ID): ?>
+											<a href="<?php echo base_url('index.php/cop/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
+												<i class="fa fa-pencil" aria-hidden="true"></i>
+											</a>
+										<?php endif ?>
 									</td>
 									<td>
-										<a href="<?php echo base_url('index.php/cop/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
-											<i class="fa fa-trash" aria-hidden="true"></i>
-										</a>
+										<?php if ($entity->ID): ?>
+											<a href="<?php echo base_url('index.php/cop/notice/' . $entity->ID); ?>" data-toggle="modal" data-target=".bs-example-modal-sm">
+												<i class="fa fa-trash" aria-hidden="true"></i>
+											</a>
+										<?php endif ?>
 									</td>
 								</tr>
 								<?php $count++; ?>
