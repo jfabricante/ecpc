@@ -1,4 +1,5 @@
 <link href="<?php echo base_url('resources/plugins/select/css/bootstrap-select.min.css');?>" rel="stylesheet" >
+<link href="<?php echo base_url('resources/plugins/select2/css/select2.min.css');?>" rel="stylesheet" >
 <form action="<?php echo base_url('index.php/vin/store'); ?>" method="post">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -46,8 +47,13 @@
 		</div>
 
 		<div class="form-group">
-			<label for="qr">QR Images</label>
-			<input type="text" class="form-control" id="qr" name="QR" value="<?php echo isset($entity->QR) ? $entity->QR : ''; ?>" >
+			<select class="form-control select2" id="qr" multiple="multiple" name="QR[]">
+				<option></option>
+				<?php $selected = explode(',', $entity->QR); ?>
+				<?php foreach ($images as $image): ?>
+					<option value="<?php echo $image; ?>" <?php echo in_array($image, $selected) ? 'selected' : ''; ?> ><?php echo $image ?></option>
+				<?php endforeach ?>
+			</select>
 		</div>
 
 	</div>
@@ -61,9 +67,12 @@
 	
 </form><!-- End Form -->
 <script src="<?php echo base_url('resources/plugins/select/js/bootstrap-select.min.js');?>"></script>
+<script src="<?php echo base_url('resources/plugins/select2/js/select2.min.js');?>"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#cp_id').selectpicker({});
+
+		$('#qr').select2();
 	});
 </script>
 					
