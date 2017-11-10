@@ -204,7 +204,8 @@
 			serial: [],
 			classification: '003',
 			entryNo: '',
-			modelLot: ''
+			modelLot: '',
+			security: {},
 		},            
 		created() {
 			this.fetchVinModel()
