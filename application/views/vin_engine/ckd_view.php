@@ -112,6 +112,11 @@
 								</div>
 							</div>
 							<!-- ./last lot -->
+
+							<div class="col-md-2">
+								<label for=""></label>
+								<button type="button" class="btn btn-flat btn-block btn-info" v-on:click="fetchLastNumber">Set Security</button>
+							</div>
 						</div>
 						<!-- ./row -->
 					</form>
