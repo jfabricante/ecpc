@@ -301,6 +301,17 @@
 					console.log(err.message);
 				});
 			},
+			updateItems: function()
+			{
+				if (this.items.length > 0)
+				{
+					for (let entity of this.items)
+					{
+						this.securitySequence()
+						entity.SECURITY_NO = this.security.SECURITY_NO
+					}
+				}
+			},
 			populateItems: function()
 			{
 				if (this.selected instanceof Object)
