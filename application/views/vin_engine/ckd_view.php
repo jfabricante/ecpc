@@ -329,7 +329,6 @@
 			{
 				if (this.selected instanceof Object)
 				{
-					// console.log(this.selected)
 					// Clear items before populate
 					this.clearItems()
 
@@ -493,29 +492,48 @@
 				// Get the key
 				let keys = _.keys(result)
 
-				// Verify if has duplicate
-				let hasDuplicate = keys.map((key) => { return result[key] > 1 })
-
-				if (_.includes(hasDuplicate, true))
+				if (!this.excelObject[0].hasOwnProperty('Engine No.'))
 				{
-					alert('Engine No. has duplicate.')
+					alert('Engine No. column is missing.')
+				}
+				else if (!this.excelObject[0].hasOwnProperty('Invoice No.'))
+				{
+					alert('Invoice No. column is missing')
 				}
 				else
 				{
-					console.log(this.selected)
-					if (this.selected.LOT_SIZE == this.excelObject.length)
+					// Verify if has duplicate
+					let hasDuplicate = keys.map((key) => { return result[key] > 1 ? key : false})
+
+					hasDuplicate = _.filter(hasDuplicate, (o) => { return o || o })
+
+					if (hasDuplicate.length > 0)
 					{
-						for(let [index, excel] of this.excelObject.entries())
-						{
-							this.items[index].ENGINE_NO += excel["Engine No."] + (this.selected.STAMP || '')
-							this.items[index].INVOICE_NO = excel["Invoice No."]
-						}
+						alert('Engine No. ' + _.join(hasDuplicate, ', ') + ' has been duplicated')
 					}
 					else
 					{
-						alert('Lot Size and Excel Sheet content does not match in terms of items.')
+						console.log(this.selected.LOT_SIZE)
+						console.log(this.excelObject.length)
+
+						if ((this.items.length != undefined) && (this.excelObject.length != undefined))
+						{
+							if (this.items.length == this.excelObject.length)
+							{
+								for(let [index, excel] of this.excelObject.entries())
+								{
+									this.items[index].ENGINE_NO += excel["Engine No."] + (this.selected.STAMP || '')
+									this.items[index].INVOICE_NO = excel["Invoice No."]
+								}
+							}
+							else
+							{
+								alert('Lot Size and Excel Sheet content does not match in terms of items.')
+							}
+						}
 					}
 				}
+				
 			},
 			storeResource: function()
 			{
