@@ -291,6 +291,16 @@
 
 				return false
 			},
+			fetchLastNumber: function() {
+				axios.get(appUrl + '/security/get_last_number')
+				.then((response) => {
+					this.security = response.data
+					console.log(this.security)
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
 			populateItems: function()
 			{
 				if (this.selected instanceof Object)
