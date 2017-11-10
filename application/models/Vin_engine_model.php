@@ -92,6 +92,7 @@ class Vin_engine_model extends CI_Model {
 	public function fetchInvoiceItem($params)
 	{
 		$fields = array(
+					'a.ID',
 					'a.SEQUENCE',
 					'a.PORTCODE',
 					'a.SERIAL',
@@ -103,6 +104,8 @@ class Vin_engine_model extends CI_Model {
 					'a.INVOICE_NO',
 					'a.YEAR',
 					'a.COLOR',
+					'a.SECURITY_NO',
+					'a.PRODUCT_MODEL',
 					'c.SERIES',
 					'c.PISTON_DISPLACEMENT',
 					'c.BODY_TYPE',
@@ -119,6 +122,7 @@ class Vin_engine_model extends CI_Model {
 				->join('VIN_MODEL b', 'a.PRODUCT_MODEL = b.PRODUCT_MODEL', 'INNER')
 				->join('CP c', 'b.CP_ID = c.ID', 'LEFT')
 				->where($params)
+				->order_by('a.ID')
 				->get();
 
 		// Generate query that directs to cp details model
@@ -128,6 +132,7 @@ class Vin_engine_model extends CI_Model {
 					->from('VIN_ENGINE a')
 					->join('CP c', 'a.PRODUCT_MODEL = c.MODEL', 'INNER')
 					->where($params)
+					->order_by('a.ID')
 					->get();
 		}
 
@@ -136,7 +141,7 @@ class Vin_engine_model extends CI_Model {
 
 	public function fetchInvoiceView($params)
 	{
-		$query = $this->oracle->get_where('VIN_ENGINE', $params);
+		$query = $this->oracle->order_by('ID')->get_where('VIN_ENGINE', $params);
 	
 		return $query->result();
 	}
