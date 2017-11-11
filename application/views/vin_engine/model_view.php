@@ -42,10 +42,10 @@
 								</div>
 							</div>
 
-							<div class="col-md-2">
+							<div class="col-md-3">
 								<div class="form-group">
-									<label for="lot_to" class="col-md-2 col-form-label">to: </label>
-									<div class="col-md-10">
+									<label for="lot_to" class="col-md-3 col-form-label">to: </label>
+									<div class="col-md-9">
 										<select name="lot_to" id="lot_to" ref="lot_to" class="select2 form-control">
 											<option></option>
 											<option v-for="entity of lot" v-bind:value="entity.LOT_NO">
@@ -63,9 +63,9 @@
 							<!-- ./submit -->
 							<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
 								<!-- Set security number -->
-								<div class="col-md-1">
+								<!-- <div class="col-md-1">
 									<button type="button" class="btn btn-flat btn-info" v-on:click="fetchLastNumber">Set Security</button>
-								</div>
+								</div> -->
 								<!-- ./Set security number -->
 							<?php endif ?>
 
@@ -308,8 +308,6 @@
 						entity.SECURITY_NO = this.security.SECURITY_NO
 					}
 
-					// Re-render the table data
-					// this.drawTableContent()
 				}
 			},
 			securitySequence: function()
