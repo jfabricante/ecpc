@@ -282,16 +282,19 @@
 				let vin_keys    = _.keys(vin)
 
 				// Verify if has duplicate
-				let enginehasDuplicate = engine_keys.map((key) => { return engine[key] > 1 })
-				let vinHasDuplicate = vin_keys.map((key) => { return vin[key] > 1 })
+				let enginehasDuplicate = engine_keys.map((key) => { return engine[key] > 1 ? key : false })
+				let vinHasDuplicate = vin_keys.map((key) => { return vin[key] > 1 ? key : false })
 
-				if (_.includes(enginehasDuplicate, true))
+				enginehasDuplicate = _.filter(enginehasDuplicate, (o) => { return o || o })
+				vinHasDuplicate = _.filter(vinHasDuplicate, (o) => { return o || o })
+
+				if (enginehasDuplicate.length > 0)
 				{
-					alert('Engine No. has duplicate entry.')
+					alert('Engine No. ' + _.join(enginehasDuplicate, ', ') + ' has been duplicated')
 				}
-				else if (_.includes(vinHasDuplicate, true))
+				else if (vinHasDuplicate.length > 0)
 				{
-					alert('Vin has duplicate entry.')
+					alert('Vin No. ' + _.join(vinHasDuplicate, ', ') + ' has been duplicated')
 				}
 				else
 				{
@@ -375,6 +378,7 @@
 					if (typeof response.data == 'string')
 					{
 						window.open(appUrl + '/vin_engine/download')
+						location.reload()
 					}
 					else
 					{
