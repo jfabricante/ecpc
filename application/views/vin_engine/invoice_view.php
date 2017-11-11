@@ -220,6 +220,16 @@
 					// Assume that the first sheet has its value
 					var sheetName = wb.SheetNames[0]
 
+					for (let sheet of wb.SheetNames)
+					{
+						// Implement a strict cheking of excel sheet
+						if (this.invoice_no === sheet)
+						{
+							sheetName = sheet
+							break
+						}
+					}
+
 					// Reset the element of excel object
 					this.excelObject.splice(0, this.excelObject.length)
 
@@ -265,16 +275,6 @@
 					$('#myModal').modal('hide')
 
 					console.log(response.data)
-					/*if (typeof response.data == 'string')
-					{
-						window.open(appUrl + '/vin_engine/download')
-					}
-					else
-					{
-						let objectValues = _.values(response.data)
-
-						alert('Values existed on the resouce ' + objectValues.join(', '))
-					}*/
 					
 				})
 				.catch((error) => {
