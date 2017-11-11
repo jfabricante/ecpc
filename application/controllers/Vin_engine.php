@@ -49,43 +49,53 @@ class Vin_engine extends CI_Controller {
 			);
 
 		$this->load->view('include/template', $data);
-	}
+	} 
 
 	public function invoice_process()
 	{
 		$config = array('INVOICE_NO' => $this->input->post('INVOICE_NO'));
 
 		$entities = $this->vin_engine_model->fetchInvoiceItem($config);
-		
-		$config = array();
 
-		foreach ($entities as $entity)
+		if ($this->input->post('ecpc'))
 		{
-			$config[] = array(
-					'PORTCODE'       => $entity->PORTCODE,
-					'YEAR'           => $entity->YEAR,
-					'SERIAL'         => $entity->SERIAL,
-					'ENTRY_NO'       => $entity->ENTRY_NO,
-					'MVDP'           => 'Y',
-					'ENGINE_NO'      => $entity->ENGINE_NO,
-					'CHASSIS_NO'     => $entity->VIN_NO,
-					'CLASSIFICATION' => $entity->CLASSIFICATION,
-					'VIN_NO'         => $entity->VIN_NO,
-					'MAKE'           => 'ISUZU',
-					'SERIES'         => $entity->SERIES,
-					'COLOR'          => $entity->COLOR,
-					'PISTON'         => strtoupper($entity->PISTON_DISPLACEMENT),
-					'BODY_TYPE'      => $entity->BODY_TYPE,
-					'MANUFACTURER'   => 'ISUZUPHILIPPINESCORPORATION',
-					'YEAR_MODEL'     => $entity->YEAR_MODEL,
-					'GROSS_WEIGHT'   => number_format($entity->GROSS_WEIGHT, 2),
-					'NET_WEIGHT'     => $entity->NET_WEIGHT,
-					'CYLINDER'       => $entity->CYLINDER,
-					'FUEL'           => strtoupper($entity->FUEL)
-				);
-		}
+			$config = array();
 
-		$this->_excel_report($config, $this->input->post('INVOICE_NO'));
+			foreach ($entities as $entity)
+			{
+				$config[] = array(
+						'PORTCODE'       => $entity->PORTCODE,
+						'YEAR'           => $entity->YEAR,
+						'SERIAL'         => $entity->SERIAL,
+						'ENTRY_NO'       => $entity->ENTRY_NO,
+						'MVDP'           => 'Y',
+						'ENGINE_NO'      => $entity->ENGINE_NO,
+						'CHASSIS_NO'     => $entity->VIN_NO,
+						'CLASSIFICATION' => $entity->CLASSIFICATION,
+						'VIN_NO'         => $entity->VIN_NO,
+						'MAKE'           => 'ISUZU',
+						'SERIES'         => $entity->SERIES,
+						'COLOR'          => $entity->COLOR,
+						'PISTON'         => strtoupper($entity->PISTON_DISPLACEMENT),
+						'BODY_TYPE'      => $entity->BODY_TYPE,
+						'MANUFACTURER'   => 'ISUZUPHILIPPINESCORPORATION',
+						'YEAR_MODEL'     => $entity->YEAR_MODEL,
+						'GROSS_WEIGHT'   => $entity->GROSS_WEIGHT,
+						'NET_WEIGHT'     => $entity->NET_WEIGHT,
+						'CYLINDER'       => $entity->CYLINDER,
+						'FUEL'           => strtoupper($entity->FUEL)
+					);
+			}
+
+			$this->_excel_report($config, $this->input->post('INVOICE_NO'));
+		}
+		else
+		{
+			$entitiesArray = array_map(function($e) { return (array)$e; }, $entities);
+		
+			$this->_excelSummary($entitiesArray);
+		}
+		
 	}
 
 	public function model_view()
