@@ -74,6 +74,7 @@
 						<thead>
 							<tr>
 								<th>#</th>
+								<th>Seq.</th>
 								<th>Model Name</th>
 								<th>Vin No.</th>
 								<th>Engine No.</th>
@@ -134,6 +135,7 @@
 		watch: {
 			invoice_no: function() {
 				this.fetchInvoiceItem()
+				console.log(this.invoice_no)
 			},
 			excelObject: function() {
 				this.findSecurityCode()
@@ -197,7 +199,7 @@
 				// Insert the new content
 				for (var entity of this.invoiceItems)
 				{
-					$table.row.add([i, entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
+					$table.row.add([i, entity.SEQUENCE,  entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
 					entity.COLOR, entity.INVOICE_NO ]).draw().node();
 
 					i++
