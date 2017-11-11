@@ -506,9 +506,91 @@ class Vin_engine extends CI_Controller {
 
 	}
 
+	protected function _excelSummary($params)
+	{
+		if (count($params))
+		{
+			// Create an instance of PHPExcel
+			$excelObj          = new PHPExcel();
+			$excelActiveSheet  = $excelObj->getActiveSheet();
+			$excelDefaultStyle = $excelObj->getDefaultStyle();
+
+			$excelDefaultStyle->getAlignment()->setWrapText(true);
+			$excelDefaultStyle->getFont()->setSize(12)->setName('Tahoma');
+
+			// Add cell value
+			$excelActiveSheet->mergeCells('A4:C4');
+			$excelActiveSheet->setCellValue('A4','Engine and Chassis Report');
+
+
+			$excelActiveSheet->mergeCells('A7:C7');
+			$excelActiveSheet->mergeCells('E7:F7');
+			$excelActiveSheet->mergeCells('I7:J7');
+			$excelActiveSheet->setCellValue('A7','INVOICE NO.: ' . $params[0]['INVOICE_NO'])
+							->setCellValue('E7','SERIES: ' . $params[0]['SERIES'])
+							->setCellValue('I7','PORT: ' . $params[0]['PORTCODE']);
+
+			$excelActiveSheet->mergeCells('A8:B8');
+			$excelActiveSheet->mergeCells('E8:G8');
+			$excelActiveSheet->setCellValue('A8','ENTRY NO.: ' . $params[0]['SERIAL'] . $params[0]['ENTRY_NO'])
+							->setCellValue('E8','CLASS/TYPE: ' . $params[0]['BODY_TYPE']);
+
+			$currentRowCell = 12;
+
+			foreach ($params as $entity)
+			{
+				if ($entity['SEQUENCE'] == 1)
+				{
+					$excelActiveSheet->mergeCells('A' . $currentRowCell . ':C' . $currentRowCell);
+					$excelActiveSheet->setCellValue('A' . $currentRowCell, 'YEAR MODEL: ' . $entity['YEAR_MODEL']);
+					$currentRowCell++;
+
+					$excelActiveSheet->mergeCells('A' . $currentRowCell . ':C' . $currentRowCell);
+					$excelActiveSheet->setCellValue('A' . $currentRowCell, 'Model Name: ' . $entity['PRODUCT_MODEL']);
+					$currentRowCell++;
+
+					$excelActiveSheet->mergeCells('A' . $currentRowCell . ':C' . $currentRowCell);
+					$excelActiveSheet->setCellValue('A' . $currentRowCell, 'Lot: ' . $entity['LOT_NO']);
+					$currentRowCell+=2;
+
+					$excelActiveSheet->mergeCells('C' . $currentRowCell . ':D' . $currentRowCell);
+					$excelActiveSheet->setCellValue('C' . $currentRowCell, 'VIN Number');
+					$excelActiveSheet->mergeCells('E' . $currentRowCell . ':F' . $currentRowCell);
+					$excelActiveSheet->setCellValue('E' . $currentRowCell, 'Engine Number');
+					$excelActiveSheet->setCellValue('G' . $currentRowCell, 'Security');
+
+					$currentRowCell+=2;
+				}
+
+				$excelActiveSheet->setCellValue('B' . $currentRowCell, $entity['SEQUENCE']);
+				$excelActiveSheet->mergeCells('C' . $currentRowCell . ':D' . $currentRowCell);
+				$excelActiveSheet->setCellValue('C' . $currentRowCell, $entity['VIN_NO']);
+				$excelActiveSheet->mergeCells('E' . $currentRowCell . ':F' . $currentRowCell);
+				$excelActiveSheet->setCellValue('E' . $currentRowCell, $entity['ENGINE_NO']);
+				$excelActiveSheet->setCellValue('G' . $currentRowCell, $entity['SECURITY_NO']);
+				$currentRowCell++;
+
+			}
+
+
+			// Excel filename
+			$filename = 'summary.xls';
+
+			// Content header information
+			header('Content-Type: application/vnd.ms-excel'); //mine type
+			header('Content-Disposition: attachment; filename="' . $filename . '"');
+			header('Cached-Control: max-age=0');
+
+			// Generate excel version using Excel 2017
+			$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel5');
+
+			$objWriter->save('php://output');
+		}
+	}
+
 	public function download()
 	{
-		$path = './resources/download/ecpc.xlsx';
+		$path = './resources/download/ecpc.xls';
 
 		if (file_exists($path))
 		{
@@ -618,8 +700,9 @@ class Vin_engine extends CI_Controller {
 			$this->vin_engine_model->update_batch($data['items']);
 		}
 
-		$this->_createMasterList($data['items']);
+
 		$this->_create_pdf($data['items']);
+		$this->_createMasterList($data['items']);
 	}
 
 	public function update_cbu_security()
@@ -633,6 +716,8 @@ class Vin_engine extends CI_Controller {
 	{
 		// Load library
 		$this->load->library('pdf');
+
+		$lots = array_values(array_unique(array_column($params, 'LOT_NO')));
 
 		// Create pdf instance
 		$pdf = new PDF();
