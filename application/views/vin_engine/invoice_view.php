@@ -31,12 +31,19 @@
 								</div>
 							</div>
 							
-							<!-- submit -->
+							<!-- Generate ECPC -->
 							<div class="col-md-2">
 								<br />
-								<button type="submit" class="btn btn-flat btn-danger">Create Report</button>
+								<button type="submit" class="btn btn-flat btn-danger" name="ecpc" value="1">Create Report</button>
 							</div>
-							<!-- ./submit -->
+							<!-- ./Generate ECPC -->
+
+							<!-- Generate ECPC -->
+							<div class="col-md-2">
+								<br />
+								<button type="submit" class="btn btn-flat btn-info" name="summary" value="1">Summary Report</button>
+							</div>
+							<!-- ./Generate ECPC -->
 
 							<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
 								<!-- file-upload -->
