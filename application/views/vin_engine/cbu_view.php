@@ -255,39 +255,17 @@
 					var data = e.target.result;
 					var wb = XLSX.read(data, {type: 'binary'});
 
-					// Assume that the first sheet has its value
-					var sheetName = wb.SheetNames[0]
+					// Get the last sheet on the excel file
+					var sheetName = wb.SheetNames[wb.SheetNames.length -1]
 
-					// Set the initial value of sheet
-					//var sheetName = ''
+					// Reset the element of excel object
+					this.excelObject.splice(0, this.excelObject.length)
 
-					// Look for possible sheet in a smarter way
-					for (let model of wb.SheetNames)
-					{
-						// Implement a strict cheking of excel sheet
-						if (this.selected.PRODUCT_MODEL === model)
-						{
-							sheetName = model
-							break
-						}
-					}
+					// Assign the json values to excelObject
+					this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
 
-					if (sheetName === '')
-					{
-						alert('Cannot find sheet that match on the model.')
-						console.log(this.selected.product_model)
-					}
-					else
-					{
-						// Reset the element of excel object
-						this.excelObject.splice(0, this.excelObject.length)
-
-						// Assign the json values to excelObject
-						this.excelObject.push(XLSX.utils.sheet_to_json(wb.Sheets[sheetName]))
-
-						// Convert it to linear form
-						this.excelObject = _.flatten(this.excelObject)	
-					}
+					// Convert it to linear form
+					this.excelObject = _.flatten(this.excelObject)	
 				};
 
 				// Tell JS To Start Reading The File.. You could delay this if desired
