@@ -149,42 +149,17 @@ class Vin_engine extends CI_Controller {
 			$classification = $data['CLASSIFICATION'];
 			$entry_no       = $data['ENTRY_NO'];
 
-			$config = array();
-
 			// Format for batch insertion
 			for ($i = 0; $i < count($items); $i++)
 			{
 				$items[$i]['LAST_UPDATE']    = $current_date;
 				$items[$i]['LAST_USER']      = $fullname;
-				$items[$i]['SECURITY_NO']    = '';
 				$items[$i]['PORTCODE']       = $portcode;
 				$items[$i]['SERIAL']         = $serial;
 				$items[$i]['CLASSIFICATION'] = $classification;
 				$items[$i]['ENTRY_NO']       = $entry_no;
 				$items[$i]['YEAR']           = date('Y');
 
-				$config[] = array(
-						'PORTCODE'       => $portcode,
-						'YEAR'           => date('Y'),
-						'SERIAL'         => $serial,
-						'ENTRY_NO'       => $entry_no,
-						'MVDP'           => 'Y',
-						'ENGINE_NO'      => $items[$i]['ENGINE_NO'],
-						'CHASSIS_NO'     => $items[$i]['VIN_NO'],
-						'CLASSIFICATION' => str_pad($classification, 3, '0', STR_PAD_LEFT),
-						'VIN_NO'         => $items[$i]['VIN_NO'],
-						'MAKE'           => 'ISUZU',
-						'SERIES'         => $model['SERIES'],
-						'COLOR'          => $items[$i]['COLOR'],
-						'PISTON'         => strtoupper($model['PISTON_DISPLACEMENT']),
-						'BODY_TYPE'      => $model['BODY_TYPE'],
-						'MANUFACTURER'   => 'ISUZUPHILIPPINESCORPORATION',
-						'YEAR_MODEL'     => $model['YEAR_MODEL'],
-						'GROSS_WEIGHT'   => number_format($model['GROSS_WEIGHT'], 2),
-						'NET_WEIGHT'     => '',
-						'CYLINDER'       => $model['CYLINDER'],
-						'FUEL'           => strtoupper($model['FUEL'])
-					);
 			}
 
 			// Perform batch insert
@@ -204,8 +179,18 @@ class Vin_engine extends CI_Controller {
 
 			$this->vin_control_model->store($formatData);
 
-			// Create excel file
-			$this->_excel_report($config, $items[0]['INVOICE_NO']);
+			// Security
+			if ($data['security'] != '')
+			{
+				$security = $data['security'];
+				
+				$security['LAST_USER']   = $this->session->userdata('fullname');
+				$security['LAST_UPDATE'] = date('d-M-Y');
+
+				$this->security_model->store($security);
+			}
+
+			echo 'Transaction has been completed!';
 		}
 	}
 
