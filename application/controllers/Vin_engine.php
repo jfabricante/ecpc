@@ -496,7 +496,7 @@ class Vin_engine extends CI_Controller {
 			$excelActiveSheet->getStyle("A1:T1")->applyFromArray($style);
 
 			// Excel filename
-			$filename = 'ecpc.xlsx';
+			$filename = 'ecpc.xls';
 
 			// Content header information
 			header('Content-Type: application/vnd.ms-excel'); //mine type
@@ -504,11 +504,11 @@ class Vin_engine extends CI_Controller {
 			header('Cached-Control: max-age=0');
 
 			// Generate excel version using Excel 2017
-			$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel2007');
+			$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel5');
 
 			$objWriter->save('php://output');
 
-			$name = './resources/download/ecpc.xlsx';
+			$name = './resources/download/ecpc.xls';
 			$objWriter->save($name);
 
 			return $objWriter;
