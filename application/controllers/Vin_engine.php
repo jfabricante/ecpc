@@ -680,42 +680,56 @@ class Vin_engine extends CI_Controller {
 		    $pdf->setLanguageArray($l);
 		}
 
-		// Set font
-		$pdf->SetFont('helvetica', 'B', 16);
+		$currentRow = 0;
 
-		// Add a page
-		$pdf->AddPage();
-
-		$pdf->Write(0, 'Model Name: ' . $params[0]['PRODUCT_MODEL'] . '	Lot No.: ' . $params[0]['LOT_NO']);
-		$pdf->Ln(10);
-
-		$pdf->SetFont('helvetica', '', 12);
-
-		$content = '';
-
-		foreach($params as $entity)
+		foreach ($lots as $lot)
 		{
-			$content .= '<tr>
-							<td border="1">' . $entity['SEQUENCE'] . '</td>
-							<td border="1">' . $entity['VIN_NO'] . '</td>
-							<td border="1">' . $entity['ENGINE_NO'] . '</td>
-						</tr>';
+			// Set font
+			$pdf->SetFont('helvetica', 'B', 16);
+
+			// Add a page
+			$pdf->AddPage();
+
+			$pdf->Write(0, 'Model Name: ' . $params[0]['PRODUCT_MODEL'] . '	Lot No.: ' . $lot);
+			$pdf->Ln(10);
+
+			$pdf->SetFont('helvetica', '', 12);
+
+			$content = '';
+
+			for ($i = $currentRow; $i < $params ; $i++)
+			{ 
+				if ($lot == $params[$i]['LOT_NO'])
+				{
+					$content .= '<tr>
+									<td border="1">' . $params[$i]['SEQUENCE'] . '</td>
+									<td border="1">' . $params[$i]['VIN_NO'] . '</td>
+									<td border="1">' . $params[$i]['ENGINE_NO'] . '</td>
+								</tr>';
+				}
+				else
+				{
+					$currentRow = $i;
+					break;
+				}
+			}
+
+			$tbl = '<table cellspacing="0" style="text-align: center; font-weight: normal; padding: 4px 2px;">
+					<thead>
+						<tr >
+							<th border="1" style="width: 50px;">No.</th>
+							<th border="1">VIN</th>
+							<th border="1">Engine</th>
+						</tr>
+					<thead>
+					<tbody>
+						' . $content . '
+					</tbody>
+				</table>';
+
+			$pdf->writeHTML($tbl, true, false, false, false, '');
 		}
-
-		$tbl = '<table cellspacing="0" style="text-align: center; font-weight: normal; padding: 4px 2px;">
-				<thead>
-					<tr >
-						<th border="1" style="width: 50px;">No.</th>
-						<th border="1">VIN</th>
-						<th border="1">Engine</th>
-					</tr>
-				<thead>
-				<tbody>
-					' . $content . '
-				</tbody>
-			</table>';
-
-		$pdf->writeHTML($tbl, true, false, false, false, '');
+		
 
 		$name = FCPATH . '/resources/download/masterlist.pdf';
 		$pdf->Output($name, 'F');
@@ -832,12 +846,12 @@ class Vin_engine extends CI_Controller {
 			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
 			if (count($qr) > 1)
 			{
-				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 30, 30, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
-				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 30, 30, '', '', '', false, 300, 'R', false, false, 1, false, false, false);
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 31, 31, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[1], '', '', 31, 31, '', '', '', false, 300, 'R', false, false, 1, false, false, false);
 			}
 			else
 			{
-				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr, '', '', 30, 30, '', '', 'T', false, 300, 'R', false, false, 1, false, false, false);
+				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr, '', '', 31, 31, '', '', 'T', false, 300, 'R', false, false, 1, false, false, false);
 			}
 			$pdf->Ln(15);
 
