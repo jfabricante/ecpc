@@ -40,12 +40,12 @@
 								<tr>
 									<td><?php echo $count; ?></td>
 									<td><?php echo $entity->ID; ?></td>
-									<td><?php echo $entity->CODE; ?></td>
+									<td><?php echo isset($entity->GROUP) ? $entity->GROUP : ''; ?></td>
 									<td><?php echo $entity->VIN_NO; ?></td>
 									<td><?php echo $entity->LOT_NO; ?></td>
 									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
 									<td><?php echo $entity->MODEL_NAME; ?></td>
-									<td><?php echo $entity->LAST_USER; ?></td>
+									<td><?php echo ucwords(strtolower($entity->LAST_USER)); ?></td>
 									<td><?php echo $entity->LAST_UPDATE; ?></td>
 									<td>
 										<a href="<?php echo base_url('index.php/vin_control/form/' . $entity->ID); ?>"  data-toggle="modal" data-target=".bs-example-modal-sm">
