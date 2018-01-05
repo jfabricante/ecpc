@@ -152,7 +152,7 @@ class Vin_engine extends CI_Controller {
 			$this->vin_control_model->store($formatData);
 
 			// Security
-			if ($data['security'] != '')
+			if (count($data['security']) > 0)
 			{
 				$security = $data['security'];
 				
@@ -248,7 +248,7 @@ class Vin_engine extends CI_Controller {
 					);
 			}
 
-			$this->_excel_report($config, $items[0]['INVOICE_NO']);
+			$this->_excel_report2($config, $items[0]['INVOICE_NO']);
 		}
 	}
 
@@ -312,7 +312,66 @@ class Vin_engine extends CI_Controller {
 
 			$excelActiveSheet->getStyle('A1:T1')->getAlignment()->setWrapText(true); 
 
-			$excelActiveSheet->fromArray($params, NULL, 'A2');
+			$currentRow = 2;
+			$counter = 1;
+			$lotSize = isset($params[0]['LOT_SIZE']) ? $params[0]['LOT_SIZE'] : '';
+
+			foreach ($params as $row)
+			{
+				// Add cell value
+				$excelActiveSheet->setCellValue('A' . $currentRow, $row['PORTCODE'])
+								->setCellValue('B' . $currentRow, $row['YEAR'])
+								->setCellValue('C' . $currentRow, $row['SERIAL'])
+								->setCellValue('D' . $currentRow, $row['ENTRY_NO'])
+								->setCellValue('E' . $currentRow, 'Y')
+								->setCellValue('F' . $currentRow, $row['ENGINE_NO'])
+								->setCellValue('G' . $currentRow, $row['VIN_NO'])
+								->setCellValue('H' . $currentRow, $row['CLASSIFICATION'])
+								->setCellValue('I' . $currentRow, $row['VIN_NO'])
+								->setCellValue('J' . $currentRow, 'ISUZU')
+								->setCellValue('K' . $currentRow, $row['SERIES'])
+								->setCellValue('L' . $currentRow, $row['COLOR'])
+								->setCellValue('M' . $currentRow, strtoupper($row['PISTON_DISPLACEMENT']))
+								->setCellValue('N' . $currentRow, $row['BODY_TYPE'])
+								->setCellValue('O' . $currentRow, 'ISUZUPHILIPPINESCORPORATION')
+								->setCellValue('P' . $currentRow, $row['YEAR_MODEL'])
+								->setCellValue('Q' . $currentRow, $row['GROSS_WEIGHT'])
+								->setCellValue('R' . $currentRow, $row['NET_WEIGHT'])
+								->setCellValue('S' . $currentRow, $row['CYLINDER'])
+								->setCellValue('T' . $currentRow, strtoupper($row['FUEL']));
+
+				if ($lotSize != '')
+				{
+					if ($counter == $lotSize)
+					{
+			    		// Border style
+						$borderStyle = array(
+							'borders' => array(
+								'bottom' => array(
+									'style' => PHPExcel_Style_Border::BORDER_THIN
+								)
+							)
+						);
+
+						$excelActiveSheet->getStyle('A' . $currentRow . ':T' . $currentRow)->applyFromArray($borderStyle);
+						$counter = 1;
+						$lotSize = $row['LOT_SIZE'];
+					}
+					else
+					{
+						$counter++;
+					}
+				}
+
+				$currentRow++;
+			}
+
+
+			// Apply row height on the excel content
+			$excelActiveSheet->getDefaultRowDimension()->setRowHeight(20);
+
+			// Define the first row to auto-height
+			$excelActiveSheet->getRowDimension('1')->setRowHeight(-1);
 
 			// Number of row count
 			$num_rows = $excelActiveSheet->getHighestRow();
@@ -868,24 +927,11 @@ class Vin_engine extends CI_Controller {
         ini_set('max_execution_time', 7200);
 
 		$data = json_decode(file_get_contents("php://input"), true);
-		
-		if ($data['items'] && count($data['security']))
+
+		if ($this->session->userdata('user_access') == 'Administrator')
 		{
-			$this->vin_engine_model->update_batch($data['items']);
-
-			// Security
-			$security = $data['security'];
-			
-			$security['LAST_USER']   = $this->session->userdata('fullname');
-			$security['LAST_UPDATE'] = date('d-M-Y');
-
-			$this->security_model->store($security);			
+			$this->vin_engine_model->update_batch($data['items']);	
 		}
-		else if ($data['items'])
-		{
-			$this->vin_engine_model->update_batch($data['items']);
-		}
-
 
 		$this->_create_pdf($data['items']);
 		$this->_createMasterList($data['items']);
