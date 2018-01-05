@@ -114,6 +114,7 @@ class Vin_engine_model extends CI_Model {
 					'c.NET_WEIGHT',
 					'c.CYLINDER',
 					'c.FUEL',
+					'b.LOT_SIZE'
 				);
 
 		// If the first query has no result
@@ -128,6 +129,8 @@ class Vin_engine_model extends CI_Model {
 		// Generate query that directs to cp details model
 		if (!$query->num_rows())
 		{
+			array_pop($fields);
+			
 			$query = $this->oracle->select($fields)
 					->from('VIN_ENGINE a')
 					->join('CP c', 'a.PRODUCT_MODEL = c.MODEL', 'INNER')
@@ -251,6 +254,7 @@ class Vin_engine_model extends CI_Model {
 					->like('a.VIN_NO', $params)
 					->or_like('a.ENGINE_NO', $params)
 					->or_like('a.INVOICE_NO', $params)
+					->or_like('b.CP_NO', $params)
 					->get();
 
 			return $query->result();
