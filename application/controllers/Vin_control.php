@@ -12,15 +12,29 @@ class Vin_control extends CI_Controller {
 		$this->_redirect_unauthorized();
 
 		$this->load->model('vin_control_model', 'vin_control');
+		$this->load->model('vin_model');
 	}
 
 	public function list_()
 	{
+		$entities = $this->vin_control->browse();
+
+		foreach ($entities as &$entity)
+		{
+			$group = $this->vin_model->getGroup($entity->PRODUCT_MODEL);
+
+			if (count($group))
+			{
+				$entity->GROUP = $group->NAME;
+			}
+		}
+
 		$data = array(
 				'title'    => 'List of Vin Control',
 				'content'  => 'vin_control/list_view',
-				'entities' => $this->vin_control->browse()
+				'entities' => $entities
 			);
+
 
 		$this->load->view('include/template', $data);
 	}
