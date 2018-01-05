@@ -506,6 +506,220 @@ class Vin_engine extends CI_Controller {
 
 	}
 
+	protected function _excel_report2($params)
+	{
+
+		if (count($params))
+		{
+			// Create an instance of PHPExcel
+			$excelObj          = new PHPExcel();
+			$excelActiveSheet  = $excelObj->getActiveSheet();
+			$excelDefaultStyle = $excelObj->getDefaultStyle();
+
+			$excelDefaultStyle->getFont()->setSize(10)->setName('Times New Roman');
+
+			// Set the Active sheet
+			$excelObj->setActiveSheetIndex(0);
+
+			// Set alignment
+			$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			// Add header to the excel
+			$excelActiveSheet->setCellValue('A1', 'Port Code')
+							->setCellValue('B1', 'Year')
+							->setCellValue('C1', 'Entry Serial')
+							->setCellValue('D1', 'Entry No.')
+							->setCellValue('E1', 'MVDP Member')
+							->setCellValue('F1', 'Engine Number')
+							->setCellValue('G1', 'Chassis Number')
+							->setCellValue('H1', 'Classification Code')
+							->setCellValue('I1', 'VIN No.')
+							->setCellValue('J1', 'Vehicle Make')
+							->setCellValue('K1', 'Series')
+							->setCellValue('L1', 'Color')
+							->setCellValue('M1', 'Piston Displacement')
+							->setCellValue('N1', 'Body Type')
+							->setCellValue('O1', 'Manufacturer')
+							->setCellValue('P1', 'Year Model')
+							->setCellValue('Q1', 'Gross Wt')
+							->setCellValue('R1', 'Net Wt')
+							->setCellValue('S1', 'No Cylinder')
+							->setCellValue('T1', 'Fuel');
+
+			$excelActiveSheet->getStyle('A1:T1')->getAlignment()->setWrapText(true); 
+
+			$excelActiveSheet->fromArray($params, NULL, 'A2');
+
+			// Apply row height on the excel content
+			$excelActiveSheet->getDefaultRowDimension()->setRowHeight(20);
+
+			// Define the first row to auto-height
+			$excelActiveSheet->getRowDimension('1')->setRowHeight(-1);
+
+			// Number of row count
+			$num_rows = $excelActiveSheet->getHighestRow();
+
+			// Change the format from general to number format
+			$excelActiveSheet->getStyle('A1:A' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('B1:B' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('C1:C' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('D1:D' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+			$excelActiveSheet->getStyle('E1:E' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('F1:F' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('G1:G' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('H1:H' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('I1:I' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('J1:J' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('K1:K' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('L1:L' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('M1:M' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('N1:N' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('O1:O' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('P1:P' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('Q1:Q' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
+			$excelActiveSheet->getStyle('R1:R' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+
+			$excelActiveSheet->getStyle('S1:S' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+			$excelActiveSheet->getStyle('T1:T' . $num_rows)->getNumberFormat()
+					->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+
+
+			$items = 31;
+
+			// Setup items per page
+			for($i = 1; $i <= $num_rows; $i++)
+			{
+				// Page break
+				if (($i % $items) == 0)
+				{
+					if (floor($i / 31) == 1)
+					{
+						$excelActiveSheet->setBreak('A' . $items, PHPExcel_Worksheet::BREAK_ROW);
+					}
+					else
+					{
+						$excelActiveSheet->setBreak('A' . $i, PHPExcel_Worksheet::BREAK_ROW);
+					}
+
+					$items = $items + 30;
+				}
+			}
+
+			// Paper Orientation
+			$excelActiveSheet->getPageSetup()
+				    ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+			// Paper Size
+			$excelActiveSheet->getPageSetup()
+				->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+
+			// Set margins
+			$excelActiveSheet->getPageMargins()->setTop(0.25);
+			$excelActiveSheet->getPageMargins()->setRight(0.25);
+			$excelActiveSheet->getPageMargins()->setLeft(0.25);
+			$excelActiveSheet->getPageMargins()->setBottom(0.25);
+
+			// Apply the column title on every pages
+			$excelActiveSheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1,1);
+
+			// Fit the content to page
+			$excelActiveSheet->getPageSetup()->setFitToWidth(1);    
+			$excelActiveSheet->getPageSetup()->setFitToHeight(0);
+
+			$sheetName = $params[0]['SERIAL'] . $params[0]['ENTRY_NO'] . $invoice;
+
+			// Set the footer details and pagination
+			$excelActiveSheet->getHeaderFooter()->setOddFooter('&L' . $sheetName . ' &D &T &RPage &P of &N');
+
+			// Apply background color on cell
+			$excelActiveSheet->getStyle('A1:T1')
+							->getFill()
+							->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+							->getStartColor()
+							->setRGB('ffff99');
+
+			// Set the alignment for the whole document
+			$excelDefaultStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+			$style = array(
+				        'borders' => array(
+				            'allborders' => array(
+				                'style' => PHPExcel_Style_Border::BORDER_THIN,
+				                'color' => array('rgb' => '000000')
+				            )
+				        ),
+				        'alignment' => array(
+				        	'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+							'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER
+				        ),
+				    );
+
+			// Apply header style
+			$excelActiveSheet->getStyle("A1:T1")->applyFromArray($style);
+
+			// Excel filename
+			$filename = 'ecpc.xls';
+
+			// Content header information
+			header('Content-Type: application/vnd.ms-excel'); //mine type
+			header('Content-Disposition: attachment; filename="' . $filename . '"');
+			header('Cached-Control: max-age=0');
+
+			// Generate excel version using Excel 2017
+			$objWriter = PHPExcel_IOFactory::createWriter($excelObj, 'Excel5');
+
+			$objWriter->save('php://output');
+
+			$name = './resources/download/ecpc.xls';
+			$objWriter->save($name);
+
+			return $objWriter;
+		}
+		else
+		{
+			$this->session->set_flashdata('message', '<div class="alert alert-warning">There was no data to process.</div>');
+			redirect($this->agent->referrer());
+		}
+
+	}
+
 	protected function _excelSummary($params)
 	{
 		if (count($params))
