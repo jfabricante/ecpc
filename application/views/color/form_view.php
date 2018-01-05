@@ -38,4 +38,3 @@
 		$('#cp_id').selectpicker({});
 	});
 </script>
-					

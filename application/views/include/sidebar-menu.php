@@ -96,7 +96,7 @@
 				<li class="<?php echo $menu == 'vin_engine/model_view' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/vin_engine/model_view') ?>"><i class="fa fa-pie-chart"></i><span>Model View</span></a></li>
 			<?php endif ?>
 
-			<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'ReadOnly'))): ?>
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'ReadOnly', 'CPOnly'))): ?>
 				<li class="<?php echo $menu == 'cop/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cop/list_') ?>"><i class="fa fa-database"></i><span>CP Entry</span></a></li>
 			<?php endif ?>
 
