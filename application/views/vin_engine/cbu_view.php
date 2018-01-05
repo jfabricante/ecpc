@@ -39,7 +39,7 @@
 							<!-- ./portcode-picker -->
 
 							<!-- serial picker -->
-							<div class="col-md-2">
+							<!-- <div class="col-md-2">
 								<div class="form-group">
 									<label for="serial">Serial</label>
 									<select name="serial" id="serial" ref="serial" class="select2 form-control" >
@@ -49,7 +49,7 @@
 										</option>
 									</select>
 								</div>
-							</div>
+							</div> -->
 							<!-- ./serial-picker -->
 
 							<!-- entry no -->
@@ -94,7 +94,7 @@
 					<table class="table table-condensed table-striped table-bordered">
 						<thead>
 							<tr>
-								<th>Sequence</th>
+								<th>#</th>
 								<th>Model Name</th>
 								<th>Vin No.</th>
 								<th>Engine No.</th>
@@ -102,6 +102,7 @@
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
+								<th>Key No.</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -114,6 +115,7 @@
 								<td>{{ item.LOT_NO = lotNo }}</td>
 								<td>{{ item.COLOR }}</td>
 								<td>{{ item.INVOICE_NO }}</td>
+								<td>{{ item.KEY_NO }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -168,7 +170,7 @@
 		},            
 		created() {
 			this.fetchPortcode()
-			this.fetchSerial()
+			// this.fetchSerial()
 			this.fetchColor()
 			this.fetchCPList()
 		},
@@ -186,9 +188,9 @@
 				self.$set(self.portcode, 'selected', $(this).val())
 			})
 
-			$(this.$refs.serial).on('change', function() {
+			/*$(this.$refs.serial).on('change', function() {
 				self.$set(self.serial, 'selected', $(this).val())
-			})
+			})*/
 
 			$(this.$refs.process).on('click', this.showModal)
 		},
@@ -202,7 +204,7 @@
 					console.log(err.message);
 				});
 			},
-			fetchSerial: function() {
+			/*fetchSerial: function() {
 				axios.get(appUrl + '/serial/ajax_serial_list')
 				.then((response) => {
 					this.serial = response.data
@@ -210,7 +212,7 @@
 				.catch((err) => {
 					console.log(err.message);
 				});
-			},
+			},*/
 			fetchColor: function() {
 				axios.get(appUrl + '/color/ajax_color_list')
 				.then((response) => {
@@ -357,43 +359,68 @@
 			},
 			storeResource: function()
 			{
+				let verifyVin = _.filter(this.items, (o) => { return o.VIN_NO.length > 0 })
 
-				//console.log(this.items2)
-				axios({
-					url: appUrl + '/vin_engine/store_cbu_resource',
-					method: 'post',
-					data: {
-						items: this.items,
-						PORTCODE: this.portcode.selected,
-						SERIAL: this.serial.selected,
-						CLASSIFICATION: this.classification,
-						ENTRY_NO: this.entryNo,
-						items2: this.items2
-					}
-				})
-				.then((response) => {
-					// Close the modal
+				let verifyEngine = _.filter(this.items, (o) => { return o.ENGINE_NO.length > 6 })
+
+				let verifyInvoice = _.filter(this.items, (o) => { return o.INVOICE_NO.length > 0 })
+
+				if (verifyVin.length == 0)
+				{
 					$('#myModal').modal('hide')
-
-					if (typeof response.data == 'string')
-					{
-						window.open(appUrl + '/vin_engine/download')
-						location.reload()
-					}
-					else
-					{
-						let objectValues = _.values(response.data)
-
-						alert('Values existed on the resouce ' + objectValues.join(', '))
-					}
-					
-				})
-				.catch((error) => {
+					alert('Vin No. column does not have sufficient data to process!')
+				}
+				else if (verifyEngine.length == 0)
+				{
 					$('#myModal').modal('hide')
-					alert('There was no data to process.')
-					// your action on error success
-					console.log(error)
-				});
+					alert('Engine No. column does not have sufficient data to process!')
+				}
+				else if (verifyInvoice.length == 0)
+				{
+					$('#myModal').modal('hide')
+					alert('Invoice No. column does not have sufficient data to process!')
+				}
+				else
+				{
+					axios({
+						url: appUrl + '/vin_engine/store_cbu_resource',
+						method: 'post',
+						data: {
+							items: this.items,
+							PORTCODE: this.portcode.selected,
+							SERIAL: 'C',
+							CLASSIFICATION: this.classification,
+							ENTRY_NO: this.entryNo,
+							items2: this.items2
+						}
+					})
+					.then((response) => {
+						// Close the modal
+						$('#myModal').modal('hide')
+						console.log(response.data)
+
+						if (typeof response.data == 'string')
+						{
+							window.open(appUrl + '/vin_engine/download')
+							location.reload()
+						}
+						else
+						{
+							let objectValues = _.values(response.data)
+
+							alert('Values existed on the resouce ' + objectValues.join(', '))
+						}
+						
+					})
+					.catch((error) => {
+						$('#myModal').modal('hide')
+						alert('There was no data to process.')
+						// your action on error success
+						console.log(error)
+					});
+				}
+
+
 			},
 		},
 	});

@@ -11,7 +11,7 @@
 			<input type="number" class="form-control" id="id" name="ID" value="<?php echo isset($entity->ID) ? $entity->ID : 0; ?>">
 		</div>
 
-		<div class="form-group">
+		<div class="form-group hidden">
 			<label for="code">Code</label>
 			<input type="text" class="form-control" id="code" name="CODE" value="<?php echo isset($entity->CODE) ? $entity->CODE : ''; ?>">
 		</div>

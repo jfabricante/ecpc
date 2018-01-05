@@ -22,7 +22,7 @@
 							<tr>
 								<th>#</th>
 								<th>ID</th>
-								<th>Code</th>
+								<th>Group</th>
 								<th>Vin No.</th>
 								<th>Lot No.</th>
 								<th>Model</th>
