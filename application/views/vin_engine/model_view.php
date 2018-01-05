@@ -60,20 +60,12 @@
 							<div class="col-md-1">
 								<button type="submit" class="btn btn-flat btn-danger">Filter Data</button>
 							</div>
-							<!-- ./submit -->
-							<?php if ($this->session->userdata('user_access') == 'Administrator'): ?>
-								<!-- Set security number -->
-								<!-- <div class="col-md-1">
-									<button type="button" class="btn btn-flat btn-info" v-on:click="fetchLastNumber">Set Security</button>
-								</div> -->
-								<!-- ./Set security number -->
-							<?php endif ?>
 
-							<!-- Set security number -->
+							<!-- create report -->
 							<div class="col-md-1">
 								<button type="button" class="btn btn-flat btn-success" v-on:click="updateDetails">Create Report</button>
 							</div>
-							<!-- ./Set security number -->
+							<!-- ./create report -->
 
 						</div>
 					</form>
