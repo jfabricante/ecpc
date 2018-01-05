@@ -144,6 +144,14 @@ class Vin_model extends CI_Model {
 		$this->oracle->update('VIN_MODEL', $params, array('ID' => $params['ID']));
 	}
 
+	public function getGroup($params)
+	{
+		$query = $this->oracle->like('MODELS', $params)
+			->get('GROUP_MODEL');
+
+		return $query->row();
+	}
+
 	/*public function migrateItems()
 	{
 		$old_data = $this->browse(array('type' => 'array'));
