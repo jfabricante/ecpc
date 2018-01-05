@@ -82,6 +82,7 @@
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
+								<th>Key No.</th>
 							</tr>
 						</thead>
 
@@ -200,7 +201,7 @@
 				for (var entity of this.invoiceItems)
 				{
 					$table.row.add([i, entity.SEQUENCE,  entity.PRODUCT_MODEL, entity.VIN_NO, entity.ENGINE_NO, entity.SECURITY_NO, entity.LOT_NO,
-					entity.COLOR, entity.INVOICE_NO ]).draw().node();
+					entity.COLOR, entity.INVOICE_NO, entity.KEY_NO ]).draw().node();
 
 					i++
 				}
