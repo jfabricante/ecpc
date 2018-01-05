@@ -151,7 +151,6 @@
 			lot: [],
 			lot_from: '',
 			lot_to: '',
-			security: {},
 		},
 		created() {
 			this.fetchVinModel()
@@ -163,9 +162,6 @@
 			vinSelected: function() {
 				this.fetchVinLot()
 			},
-			security: function() {
-				this.updateItems()
-			}
 		},
 		mounted() {
 			var self = this
@@ -177,7 +173,6 @@
 			$(this.$refs.vin_model).on('change', function() {
 				self.vinSelected = $(this).val()
 				console.log(self.vinSelected)
-				self.security = {}
 			});
 
 			$(this.$refs.lot_from).on('change', function() {
@@ -234,16 +229,6 @@
 					console.log(err.message);
 				});
 			},
-			fetchLastNumber: function() {
-				axios.get(appUrl + '/security/get_last_number')
-				.then((response) => {
-					this.security = response.data
-					console.log(this.security)
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-			},
 			fetchModelItems: function() {
 				axios({
 					url: appUrl + '/vin_engine/ajax_fetch_model_items',
@@ -277,7 +262,6 @@
 					contentType: "application/xml; charset=utf-8",
 					data: {
 						items: this.vinModelItems || '',
-						security: this.security || '',
 					}
 				})
 				.then((response) => {
@@ -289,31 +273,6 @@
 					// your action on error success
 					console.log(error)
 				});
-			},
-			updateItems: function()
-			{
-				if (this.vinModelItems.length > 0)
-				{
-					for (entity of this.vinModelItems)
-					{
-						this.securitySequence()
-						entity.SECURITY_NO = this.security.SECURITY_NO
-					}
-
-				}
-			},
-			securitySequence: function()
-			{
-				// Array of restriction
-				const excep = ['0000', '1111', '2222', '3333', '4444', '5555', '6666', '7777', '8888', '9999']
-
-				this.security.SECURITY_NO = Number(this.security.SECURITY_NO) + 1
-
-				// Increment by 1 if the value is in excep array
-				if (_.includes(excep, this.security.SECURITY_NO.toString()))
-				{
-					this.security.SECURITY_NO = Number(this.security.SECURITY_NO) + 1
-				}
 			},
 			// Add rows using datatables method
 			drawTableContent: function() {
