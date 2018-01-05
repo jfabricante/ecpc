@@ -52,26 +52,21 @@
 							</div>
 							<!-- ./portcode-picker -->
 
-							<!-- serial picker -->
-							<div class="col-md-2">
-								<div class="form-group">
-									<label for="serial">Serial</label>
-									<select name="serial" id="serial" ref="serial" class="select2 form-control" >
-										<option></option>
-										<option v-for="option in serial" v-bind:value="option.SHORT_CODE">
-											{{ option.SHORT_CODE }} - {{ option.DESCRIPTION }}
-										</option>
-									</select>
-								</div>
-							</div>
-							<!-- ./serial-picker -->
-
+							<!-- process -->
 							<div class="col-md-2">
 								<div class="form-group">
 									<label> </label>
 									<input type="submit" name="process" value="Process" ref="process" class="btn btn-flat btn-danger form-control">
 								</div>
 							</div>
+							<!-- ./process -->
+
+							<!-- security -->
+							<div class="col-md-2">
+								<label for=""></label>
+								<button type="button" class="btn btn-flat btn-block btn-info" v-on:click="fetchLastNumber">Set Security</button>
+							</div>
+							<!-- ./security -->
 						</div>
 						<!-- ./row -->
 
@@ -104,19 +99,24 @@
 							</div>
 							<!-- ./last lot -->
 
-							<!-- last lot -->
+							<!-- entry no. -->
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="entry_no">Entry No.</label>
 									<input type="text" name="entry_no" class="form-control" id="entry_no" v-model="entryNo">
 								</div>
 							</div>
-							<!-- ./last lot -->
+							<!-- ./entry no -->
 
+							<!-- last security -->
 							<div class="col-md-2">
-								<label for=""></label>
-								<button type="button" class="btn btn-flat btn-block btn-info" v-on:click="fetchLastNumber">Set Security</button>
+								<div class="form-group">
+									<label>Last Security</label>
+									<p>{{ lastSecurity.SECURITY_NO }}</p>
+								</div>
 							</div>
+							<!-- ./last security -->
+
 						</div>
 						<!-- ./row -->
 					</form>
@@ -137,6 +137,7 @@
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
+								<th>Japan Vin No.</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -149,6 +150,7 @@
 								<td>{{ item.LOT_NO }}</td>
 								<td>{{ item.COLOR }}</td>
 								<td>{{ item.INVOICE_NO }}</td>
+								<td>{{ item.JAPAN_VIN }}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -201,16 +203,16 @@
 			fileUpload: '',
 			excelObject: [],
 			portcode: [],
-			serial: [],
 			classification: '003',
 			entryNo: '',
 			modelLot: '',
 			security: {},
+			lastSecurity: '',
 		},            
 		created() {
 			this.fetchVinModel()
 			this.fetchPortcode()
-			this.fetchSerial()
+			this.getLastNumber()
 		},
 		watch: {
 			selected: function() {
@@ -228,17 +230,12 @@
 
 			$(this.$refs.vin_model).on('change', function() {
 				self.selected = self.getSelectedModel($(this).val())
-				//console.log(self.selected)
 			})
 
 			$(this.$refs.fileUpload).on('change', this.filePicked)
 
 			$(this.$refs.portcode).on('change', function() {
 				self.$set(self.portcode, 'selected', $(this).val())
-			})
-
-			$(this.$refs.serial).on('change', function() {
-				self.$set(self.serial, 'selected', $(this).val())
 			})
 
 			$(this.$refs.process).on('click', this.showModal)
@@ -248,7 +245,7 @@
 				axios.get(appUrl + '/vin/ajax_model_list')
 				.then((response) => {
 					this.vinModel = response.data
-					console.log(this.vinModel)
+					// console.log(this.vinModel)
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -258,15 +255,6 @@
 				axios.get(appUrl + '/portcode/ajax_portcode_list')
 				.then((response) => {
 					this.portcode = response.data
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-			},
-			fetchSerial: function() {
-				axios.get(appUrl + '/serial/ajax_serial_list')
-				.then((response) => {
-					this.serial = response.data
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -295,7 +283,17 @@
 				axios.get(appUrl + '/security/get_last_number')
 				.then((response) => {
 					this.security = response.data
-					console.log(this.security)
+					// console.log(this.security)
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+			},
+			getLastNumber: function() {
+				axios.get(appUrl + '/security/get_last_number')
+				.then((response) => {
+					this.lastSecurity = response.data
+					// console.log(this.security)
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -380,19 +378,27 @@
 					this.vinControl = response.data
 					console.log(response.data)
 
-					if (response.data !== null)
+					if (this.vinControl.VIN_NO.length == 17)
 					{
-						this.separateVin()
-						this.populateItems()
+						if (response.data !== null)
+						{
+							this.separateVin()
+							this.populateItems()
+						}
+						else
+						{
+							this.clearItems()
+							this.calculatedLength = 0
+							this.separator = 0
+							this.vinPref = ''
+							this.vinSuff = ''
+						}
 					}
 					else
 					{
-						this.clearItems()
-						this.calculatedLength = 0
-						this.separator = 0
-						this.vinPref = ''
-						this.vinSuff = ''
+						alert('VIN No. must not less or exceed to 17 characters.');
 					}
+					
 				})
 				.catch((error) => {
 					// your action on error success
@@ -447,7 +453,7 @@
 					var wb = XLSX.read(data, {type: 'binary'});
 
 					// Assume that the first sheet has its value
-					//var sheetName = wb.SheetNames[0]
+					// var sheetName = wb.SheetNames[0]
 
 					// Set the initial value of sheet
 					var sheetName = ''
@@ -462,7 +468,9 @@
 							break
 						}
 					}
+
 					console.log(sheetName)
+
 					if (sheetName === '')
 					{
 						alert('Cannot find sheet that match on the model.')
@@ -480,7 +488,7 @@
 						this.excelObject = _.flatten(this.excelObject)	
 					}
 				};
-
+				// console.log(this.excelObject)
 				// Tell JS To Start Reading The File.. You could delay this if desired
 				reader.readAsBinaryString(oFile);
 			},
@@ -513,9 +521,6 @@
 					}
 					else
 					{
-						console.log(this.selected.LOT_SIZE)
-						console.log(this.excelObject.length)
-
 						if ((this.items.length != undefined) && (this.excelObject.length != undefined))
 						{
 							if (this.items.length == this.excelObject.length)
@@ -524,6 +529,11 @@
 								{
 									this.items[index].ENGINE_NO += excel["Engine No."] + (this.selected.STAMP || '')
 									this.items[index].INVOICE_NO = excel["Invoice No."]
+
+									if (excel.hasOwnProperty('Japan Vin No.'))
+									{
+										this.items[index].JAPAN_VIN  = excel["Japan Vin No."]
+									}
 								}
 							}
 							else
@@ -537,47 +547,71 @@
 			},
 			storeResource: function()
 			{
-				axios({
-					url: appUrl + '/vin_engine/store_ckd_resource',
-					method: 'post',
-					data: {
-						items: this.items,
-						selected_model: this.selected,
-						PORTCODE: this.portcode.selected,
-						SERIAL: this.serial.selected,
-						CLASSIFICATION: this.classification,
-						vin_control: this.vinControl,
-						ENTRY_NO: this.entryNo,
-						security: this.security || '',
-					}
-				})
-				.then((response) => {
-					// Close the modal
+				let verifyEngine = _.filter(this.items, (o) => { return o.ENGINE_NO.length > 4 })
+
+				let verifyInvoice = _.filter(this.items, (o) => { return o.INVOICE_NO.length > 0 })
+
+
+				if (verifyInvoice.length == 0)
+				{
 					$('#myModal').modal('hide')
+					alert('Engine No. column does not have sufficient data to process!')
+				}
+				else if (verifyInvoice.length == 0)
+				{
+					$('#myModal').modal('hide')
+					alert('Invoice No. column does not have sufficient data to process!')
+				}
+				else if (this.entryNo == '')
+				{
+					$('#myModal').modal('hide')
+					alert('Insert value on Entry No.!')
+				}
+				else
+				{
+					axios({
+						url: appUrl + '/vin_engine/store_ckd_resource',
+						method: 'post',
+						data: {
+							items: this.items,
+							selected_model: this.selected,
+							PORTCODE: this.portcode.selected,
+							SERIAL: 'C',
+							CLASSIFICATION: this.classification,
+							vin_control: this.vinControl,
+							ENTRY_NO: this.entryNo,
+							security: this.security,
+						}
+					})
+					.then((response) => {
+						// Close the modal
+						$('#myModal').modal('hide')
 
-					console.log(response.data)
-
-					if (typeof response.data == 'string')
-					{
-						// window.open(appUrl + '/vin_engine/download')
 						console.log(response.data)
-						alert('Process Completed!')
-						location.reload()
-					}
-					else
-					{
-						let objectValues = _.values(response.data)
 
-						alert('Values existed on the resouce ' + objectValues.join(', '))
-					}
-					
-				})
-				.catch((error) => {
-					$('#myModal').modal('hide')
-					alert('There was no data to process.')
-					// your action on error success
-					console.log(error)
-				});
+						if (typeof response.data == 'string')
+						{
+							// window.open(appUrl + '/vin_engine/download')
+							console.log(response.data)
+							alert('Process Completed!')
+							location.reload()
+						}
+						else
+						{
+							let objectValues = _.values(response.data)
+
+							alert('Values existed on the resource ' + objectValues.join(', '))
+						}
+						
+					})
+					.catch((error) => {
+						$('#myModal').modal('hide')
+						alert('There was no data to process.')
+						// your action on error success
+						console.log(error)
+					});
+				}
+				
 			},
 		},
 	});
