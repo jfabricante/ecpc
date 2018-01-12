@@ -55,6 +55,7 @@
 								<th>CP Date</th>
 								<th>Invoice No.</th>
 								<th>Entry No.</th>
+								<th>CP Entry No.</th>
 								<th>Model</th>
 								<th>Lot No.</th>
 								<th>Qty.</th>

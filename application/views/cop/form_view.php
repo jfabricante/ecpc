@@ -56,6 +56,11 @@
 			<input type="text" class="form-control datepicker" id="transmittal_date" name="TRANSMITTAL_DATE" value="<?php echo isset($entity->TRANSMITTAL_DATE) ? date('m/d/Y',  strtotime($entity->TRANSMITTAL_DATE)) : ''; ?>" required>
 		</div>
 
+		<div class="form-group">
+			<label for="cp_entry_no">CP Entry No.</label>
+			<input type="text" class="form-control" id="cp_entry_no" name="CP_ENTRY_NO" value="<?php echo isset($entity->CP_ENTRY_NO) ? $entity->CP_ENTRY_NO : ''; ?>" >
+		</div>
+
 	</div>
 	
 	<div class="modal-footer">
