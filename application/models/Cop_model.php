@@ -18,6 +18,7 @@ class Cop_model extends CI_Model {
 				'a.CP_NO',
 				'b.INVOICE_NO',
 				'a.CP_DATE',
+				'a.CP_ENTRY_NO',
 				'b.LOT_NO',
 				'b.ENTRY_NO',
 				'b.PRODUCT_MODEL',
