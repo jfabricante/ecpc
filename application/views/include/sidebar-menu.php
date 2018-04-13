@@ -100,6 +100,10 @@
 				<li class="<?php echo $menu == 'cop/list_' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/cop/list_') ?>"><i class="fa fa-database"></i><span>CP Entry</span></a></li>
 			<?php endif ?>
 
+			<?php if (in_array($this->session->userdata('user_access'), array('Administrator'))): ?>
+				<li class="<?php echo $menu == 'qr/index' ? 'active' : ''; ?>"><a href="<?php echo base_url('index.php/qr/index') ?>"><i class="fa fa-image"></i><span>QR Codes</span></a></li>
+			<?php endif ?>
+
 		</ul><!-- /.sidebar-menu -->
 
 	</section>
