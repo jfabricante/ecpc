@@ -1,4 +1,9 @@
 <link href="<?php echo base_url('resources/plugins/select2/css/select2.min.css');?>" rel="stylesheet" >
+<style type="text/css">
+	.oracle-form-block {
+		margin-top: 20px;
+	}
+</style>
 <!-- Items block -->
 <section class="content vin_engine">
 	<!-- row -->
@@ -68,6 +73,24 @@
 							<!-- ./create report -->
 
 						</div>
+
+						<?php if ($this->session->userdata('user_access') ==  'Regular'): ?>
+							<div class="row oracle-form-block">
+								<div class="col-md-3 col-md-offset-6">
+									<div class="form-group">
+										<label for="lot_from" class="col-md-5 col-form-label">Oracle Lot No. </label>
+										<div class="col-md-7">
+											<input type="text" name="oracle_lot_no" v-model="oracle_lot_no" class="form-control">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-3">
+									<button type="button" class="btn btn-flat btn-info" v-on:click="updateOracleLot">Update Oracle Lot</button>
+								</div>
+							</div>
+						<?php endif ?>
+
 					</form>
 				</div>
 
@@ -87,6 +110,10 @@
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
+								<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'Regular'))): ?>
+									<th>Oracle Lot No.</th>
+									<th>Original Vin</th>
+								<?php endif ?>
 							</tr>
 						</thead>
 
@@ -111,6 +138,10 @@
 								<td>{{ item.LOT_NO }}</td>
 								<td>{{ item.COLOR }}</td>
 								<td>{{ item.INVOICE_NO }}</td>
+								<?php if (in_array($this->session->userdata('user_access'), array('Administrator', 'Regular'))): ?>
+									<td>{{ oracle_lot_no ? item.ORACLE_LOT_NO = oracle_lot_no : item.ORACLE_LOT_NO }}</td>
+									<td>{{ item.JAPAN_VIN }}</td>
+								<?php endif ?>
 							</tr>
 						</tbody>
 					</table>
@@ -151,6 +182,7 @@
 			lot: [],
 			lot_from: '',
 			lot_to: '',
+			oracle_lot_no: ''
 		},
 		created() {
 			this.fetchVinModel()
@@ -302,6 +334,27 @@
 					$(this).find('.modal-body').html('<img src="' + tmUrl + 'loading.gif" class="img-responsive"/>')
 				});
 			},
+			updateOracleLot: function() {
+				console.log(this.vinModelItems)
+
+				this.showModal()
+				axios({
+					url: appUrl + '/vin_engine/ajax_update_oracle_lot',
+					method: 'post',
+					contentType: "application/xml; charset=utf-8",
+					data: {
+						items: this.vinModelItems || '',
+					}
+				})
+				.then((response) => {
+					$('#myModal').modal('hide')
+					console.log(response)
+				})
+				.catch((error) => {
+					// your action on error success
+					console.log(error)
+				});
+			}
 		}
 	})
 
