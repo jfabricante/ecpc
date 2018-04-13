@@ -189,6 +189,18 @@ class Vin_engine_model extends CI_Model {
 		}
 	}
 
+	public function update_oracle_lot(array $data)
+	{
+		foreach ($data as $entity)
+		{
+			$config = array(
+				'ORACLE_LOT_NO' => $entity['ORACLE_LOT_NO']
+			);
+
+			$this->oracle->update('VIN_ENGINE', $config, array('ID' => $entity['ID']));
+		}
+	}
+
 	public function update_entity($params)
 	{
 		$this->oracle->update('VIN_ENGINE', $params, array('ID' => $params['ID']));
