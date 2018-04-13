@@ -3,7 +3,7 @@
 	<!-- row -->
 	<div class="row">
 		<!-- col-md-6 -->
-		<div class="col-md-12">
+		<div class="<?php echo $this->session->userdata('user_access') == 'SecurityOnly' ? 'col-md-8' : 'col-md-12'?>">
 			<!-- Box danger -->
 			<?php echo $this->session->flashdata('message'); ?>
 
@@ -21,13 +21,15 @@
 								<th>Engine No.</th>
 								<th>Lot</th>
 								<th>Security</th>
-								<th>Color</th>
-								<th>Invoice</th>
-								<th>Year Model</th>
-								<th>Entry</th>
-								<th>Port Code</th>
-								<th>CP</th>
-								<th>Series</th>
+								<?php if (in_array($this->session->userdata('user_access'), array('CPOnly', 'ReadOnly', 'Regular', 'Administrator'))): ?>
+									<th>Color</th>
+									<th>Invoice</th>
+									<th>Year Model</th>
+									<th>Entry</th>
+									<th>Port Code</th>
+									<th>CP</th>
+									<th>Series</th>
+								<?php endif ?>
 							</tr>
 						</thead>
 
@@ -59,13 +61,15 @@
 											<td><?php echo $entity->ENGINE_NO; ?></td>
 											<td><?php echo $entity->LOT_NO; ?></td>
 											<td><?php echo $entity->SECURITY_NO; ?></td>
-											<td><?php echo $entity->COLOR; ?></td>
-											<td><?php echo $entity->INVOICE_NO; ?></td>
-											<td><?php echo $entity->YEAR_MODEL; ?></td>
-											<td><?php echo $entity->ENTRY_NO; ?></td>
-											<td><?php echo $entity->PORTCODE; ?></td>
-											<td><?php echo $entity->CP_NO; ?></td>
-											<td><?php echo $entity->SERIES; ?></td>
+											<?php if (in_array($this->session->userdata('user_access'), array('CPOnly', 'ReadOnly', 'Regular', 'Administrator'))): ?>
+												<td><?php echo $entity->COLOR; ?></td>
+												<td><?php echo $entity->INVOICE_NO; ?></td>
+												<td><?php echo $entity->YEAR_MODEL; ?></td>
+												<td><?php echo $entity->ENTRY_NO; ?></td>
+												<td><?php echo $entity->PORTCODE; ?></td>
+												<td><?php echo $entity->CP_NO; ?></td>
+												<td><?php echo $entity->SERIES; ?></td>
+											<?php endif ?>
 										</tr>
 									<?php endif ?>
 									<?php $count++; ?>
