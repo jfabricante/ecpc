@@ -79,6 +79,7 @@
 									<td><?php echo $entity->CP_DATE ? date('m/d/Y', strtotime($entity->CP_DATE)) : ''; ?></td>
 									<td><?php echo $entity->INVOICE_NO; ?></td>
 									<td><?php echo $entity->ENTRY_NO; ?></td>
+									<td><?php echo $entity->CP_ENTRY_NO; ?></td>
 									<td><?php echo $entity->PRODUCT_MODEL; ?></td>
 									<td><?php echo $entity->LOT_NO; ?></td>
 									<td><?php echo $entity->QTY; ?></td>
