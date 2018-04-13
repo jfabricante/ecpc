@@ -60,9 +60,13 @@ class Login extends CI_Controller {
 				{
 					redirect('/vin_engine/model_view');
 				}
-				else
+				else if (in_array($this->session->userdata('user_access', array('ReadOnly', 'CPOnly'))))
 				{
 					redirect('/cop/list_');
+				}
+				else
+				{
+					redirect('/vin_engine/search_field');
 				}
 			}
 		}
