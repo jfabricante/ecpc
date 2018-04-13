@@ -1107,7 +1107,7 @@ class Vin_engine extends CI_Controller {
 			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
 
 
-			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+			$pdf->Write(0, 'Lot No.: ' . $entity['DESCRIPTION'] . ' ' . $entity['LOT_NO']);
 
 			$qr = $this->_hasChars($entity['QR'], ',');
 
@@ -1145,7 +1145,7 @@ class Vin_engine extends CI_Controller {
 			$pdf->Write(0, 'Model Name: ');
 			$pdf->write1DBarcode($entity['PRODUCT_MODEL'], 'C39', '', '', '', 18, 0.4, $style, 'N');
 
-			$pdf->Write(0, 'Lot Number: ' . $entity['DESCRIPTION'] . '  ' . $entity['LOT_NO']);
+			$pdf->Write(0, 'Lot No.: ' . $entity['DESCRIPTION'] . ' ' . $entity['LOT_NO']);
 			if (count($qr) > 1)
 			{
 				$pdf->Image(FCPATH . '/resources/images/qr/' . $qr[0], '130', '', 31, 31, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
