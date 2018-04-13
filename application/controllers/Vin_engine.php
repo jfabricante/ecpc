@@ -924,7 +924,7 @@ class Vin_engine extends CI_Controller {
 	public function ajax_update_details()
 	{
 		ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 7200);
+		ini_set('max_execution_time', 7200);
 
 		$data = json_decode(file_get_contents("php://input"), true);
 
@@ -935,6 +935,21 @@ class Vin_engine extends CI_Controller {
 
 		$this->_create_pdf($data['items']);
 		$this->_createMasterList($data['items']);
+	}
+
+	public function ajax_update_oracle_lot()
+	{
+		ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 7200);
+
+		$data = json_decode(file_get_contents("php://input"), true);
+
+		if (count($data))
+		{
+			$this->vin_engine_model->update_oracle_lot($data['items']);
+
+			echo json_encode($data);
+		}
 	}
 
 	public function update_cbu_security()
