@@ -1246,6 +1246,91 @@ class Vin_engine extends CI_Controller {
 		$this->load->view('include/template', $data);
 	}
 
+	public function samplepdf()
+	{
+		$this->load->library('pdf');
+
+		$pdf = new PDF();
+
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set some language-dependent strings (optional)
+		if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+		    require_once(dirname(__FILE__).'/lang/eng.php');
+		    $pdf->setLanguageArray($l);
+		}
+
+		// set font
+		$pdf->SetFont('helvetica', '', 25);
+
+		// add a page
+		$pdf->AddPage();
+
+		// -----------------------------------------------------------------------------
+
+		// $pdf->SetFont('helvetica', '', 10);
+
+		// define barcode style
+		$style = array(
+		    'position'     => '',
+		    'align'        => 'L',
+		    'stretch'      => false,
+		    'fitwidth'     => true,
+		    'cellfitalign' => '',
+		    'border'       => false,
+		    'hpadding'     => 'auto',
+		    'vpadding'     => 'auto',
+		    'fgcolor'      => array(0,0,0),
+		    'bgcolor'      => false,
+		    'text'         => true,
+		    'font'         => 'helveticaB',  //array(255,255,255),
+		    'stretchtext'  => 4
+		);
+
+		$style['fontsize'] = 10;
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 30, 12, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 30, 13, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 30, 14, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 30, 15, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 35, 10, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 35, 15, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 35, 20, 0.4, $style, 'N');
+		$pdf->Ln();
+
+		$pdf->write1DBarcode('29-1437', 'C39', '', '', 35, 25, 0.4, $style, 'N');
+		$pdf->Ln();
+
+
+		echo $pdf->Output('report.pdf', 'I');
 	}
 
 	/*public function run_migration()
