@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'username' => 'root',
+	'password' => 'latropcpi',
+	'database' => 'ipc_central',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -93,4 +93,63 @@ $db['default'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
+);
+
+// Current Prod
+$prod = "(DESCRIPTION=
+			(ADDRESS=
+				(PROTOCOL=TCP)
+				(HOST=172.16.1.63)
+				(PORT=1521)
+			)
+			(CONNECT_DATA=
+				(SERVICE_NAME=PROD)
+			)
+		)";
+
+$target_date = strtotime('2018-04-09');
+
+$current_date = strtotime(date('Y-m-d'));
+
+if ($current_date >= $target_date)
+{
+	// EBS
+	$prod = "(DESCRIPTION =
+				(ADDRESS_LIST =
+					(ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.1.86)(PORT = 1521))
+				)
+				(CONNECT_DATA =
+					(SERVICE_NAME = PROD)
+				)
+			)";
+}
+
+
+$dev = "(DESCRIPTION=
+			(ADDRESS=
+				(PROTOCOL=TCP)
+				(HOST=172.16.1.61)
+				(PORT=1521)
+			)
+			(CONNECT_DATA=
+				(SERVICE_NAME=PROD)
+			)
+		)";
+
+$db['oracle'] = array(
+	'hostname' => $prod,
+	'username' => 'apps',
+	'password' => 'apps',
+	'database' => 'ocidb',
+	'dbdriver' => 'oci8',
+	'dbprefix' => 'IPC.IPC_VE_',
+	'pconnect' => FALSE,
+	'db_debug' => FALSE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'autoinit' => TRUE,
+	'stricton' => FALSE
 );
