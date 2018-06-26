@@ -250,6 +250,7 @@ class Vin_engine_model extends CI_Model {
 					'a.ENTRY_NO',
 					'a.COLOR',
 					'a.KEY_NO',
+					'a.JAPAN_VIN',
 					'b.CP_NO',
 					'c.SERIES',
 					'c.PISTON_DISPLACEMENT',
@@ -267,6 +268,7 @@ class Vin_engine_model extends CI_Model {
 					->or_like('a.ENGINE_NO', $params)
 					->or_like('a.INVOICE_NO', $params)
 					->or_like('b.CP_NO', $params)
+					->or_like('a.JAPAN_VIN', $params)
 					->get();
 
 			return $query->result();
