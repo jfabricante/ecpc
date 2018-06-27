@@ -16,19 +16,20 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Model Name</th>
-								<th>Vin No.</th>
-								<th>Engine No.</th>
-								<th>Lot</th>
-								<th>Security</th>
+								<th style="width: 160px;">Model Name</th>
+								<th style="width: 170px;">Vin No.</th>
+								<th style="width: 120px">Engine No.</th>
+								<th style="width: 60px">Lot</th>
+								<th style="width: 80px">Security</th>
 								<?php if (in_array($this->session->userdata('user_access'), array('CPOnly', 'ReadOnly', 'Regular', 'Administrator'))): ?>
-									<th>Color</th>
-									<th>Invoice</th>
+									<th style="width: 120px">Color</th>
+									<th style="width: 150px">Invoice</th>
 									<th>Year Model</th>
-									<th>Entry</th>
-									<th>Port Code</th>
+									<th style="width: 80px">Entry</th>
+									<th style="width: 80px">Port Code</th>
 									<th>CP</th>
 									<th>Series</th>
+									<th>Origin Vin</th>
 								<?php endif ?>
 							</tr>
 						</thead>
@@ -52,6 +53,7 @@
 											<td><input type="text" class="portcode form-control" name="PORTCODE" value="<?php echo $entity->PORTCODE; ?>" /></td>
 											<td><?php echo $entity->CP_NO; ?></td>
 											<td><?php echo $entity->SERIES; ?></td>
+											<td><?php echo $entity->JAPAN_VIN; ?></td>
 										</tr>
 									<?php else : ?>
 										<tr data-id="<?php echo $entity->ID ?>">
