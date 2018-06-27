@@ -137,7 +137,7 @@
 								<th>Lot No.</th>
 								<th>Color</th>
 								<th>Invoice No.</th>
-								<th>Japan Vin No.</th>
+								<th>Origin Vin.</th>
 							</tr>
 						</thead>
 						<tbody>
