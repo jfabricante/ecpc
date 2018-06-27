@@ -84,7 +84,7 @@
 		var appUrl = "<?php echo base_url(); ?>";
 
 		// Put the event before intializing datatables that on every checkbox
-		$('.model-state').on('ifChecked', function() {
+		$(document).on('ifChecked', '.model-state', function() {
 			var $id = $(this).val();
 
 			$.ajax({
@@ -102,7 +102,7 @@
 			});
 		});
 
-		$('.model-state').on('ifUnchecked', function() {
+		$(document).on('ifUnchecked', '.model-state', function() {
 			var $id = $(this).val();
 
 			// Remove access
